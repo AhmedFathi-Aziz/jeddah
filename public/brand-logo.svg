@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" role="img" aria-hidden="true">
+  <!-- 49'1 B71) E'!  (/HF .DAJ) -->
+  <path
+    fill="#1f7f8a"
+    d="M50 8c-2.8 0-5.2 2.1-5.8 4.9C39 28 22 42 22 62c0 15.4 12.6 28 28 28s28-12.6 28-28c0-20-17-34-22.2-49.1C55.2 10.1 52.8 8 50 8z"
+  />
+  <path
+    fill="#7dd3e8"
+    fill-opacity="0.45"
+    d="M38 58c0 6.6 5.4 12 12 12s12-5.4 12-12c0-9-12-22-12-22s-12 13-12 22z"
+  />
+  <ellipse cx="50" cy="24" rx="6" ry="5" fill="#a8e8ef" fill-opacity="0.35" />
+</svg>

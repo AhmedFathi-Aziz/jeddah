@@ -1,0 +1,44 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // انسخ التعديلات غير المسارات إلى wrangler.cf.build.json (npm run deploy:cf)
+  "name": "tasarubat",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "tasarubat" }],
+
+  /**
+   * 1. أنشئ قاعدة: npx wrangler d1 create tasarubat-articles
+   * 2. انسخ database_id المعروض وضعه هنا بدل REPLACE_ME
+   * 3. طبّق الهجرات: npm run db:migrate:remote
+   */
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tasarubat-articles",
+      "database_id": "867aa008-a53c-4c52-9f5b-ef5c93b1f996",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  /*
+   * رفع الغلاف من الجهاز (إلزامي على الحساب قبل النشر):
+   * 1) https://dash.cloudflare.com → اختر الحساب → القائمة: R2 Object Storage
+   * 2) اضغط Enable R2 / Get started وأكمل أي خطوة دفع/تفعيل تظهر لك
+   * 3) من المشروع: npx wrangler r2 bucket create tasarubat-uploads
+   *    (أو أنشئ الدلو يدوياً بنفس الاسم من واجهة R2)
+   * 4) npm run deploy:cf (أو نسختك النظيفة)
+   */
+  // مفعّل بعد تفعيل R2 في الحساب وإنشاء الدلو — بدون ذلك يفشل wrangler deploy [10042]
+  // "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "tasarubat-uploads" }],
+
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://tasarubat-jeddah.com"
+  }
+}

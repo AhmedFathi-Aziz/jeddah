@@ -12,6 +12,12 @@
 # next.js
 /.next/
 /out/
+.open-next
+.open-next.backup-*
+opennext-staging
+
+# رفع الغلافات محلياً (next dev)
+/public/uploads/
 
 # production
 /build
@@ -34,3 +40,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Cloudflare / محلي
+.cf-build-out/
+.wrangler/
+
+# مؤقتات وملفات حساسة
+admin_cookies.txt
+tmp-insulation-src/
+tmp-leak-src/

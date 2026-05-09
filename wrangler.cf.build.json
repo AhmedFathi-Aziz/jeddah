@@ -1,0 +1,22 @@
+{
+  "name": "tasarubat",
+  "main": "opennext-staging/.open-next/worker.js",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": "opennext-staging/.open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "tasarubat" }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tasarubat-articles",
+      "database_id": "867aa008-a53c-4c52-9f5b-ef5c93b1f996",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://tasarubat-jeddah.com"
+  }
+}
