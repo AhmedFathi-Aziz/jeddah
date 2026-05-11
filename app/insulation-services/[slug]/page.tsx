@@ -8,7 +8,7 @@ import { RelatedServicesSection } from "@/components/layout/related-services-sec
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getInsulationServiceBySlug, insulationServices } from "@/lib/insulation-services";
-import { siteConfig } from "@/lib/site-config";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -27,7 +27,7 @@ const sectionTitles = [
   "أسئلة يتكرر طرحها من العملاء",
 ] as const;
 
-function buildLongContent(serviceTitle: string, keywords: string[]): string[] {
+function buildLongContent(serviceTitle: string): string[] {
   const baseSentences = [
     `تبدأ خدمة ${serviceTitle} من فهم حالة المبنى الحالية، لأن التشخيص الدقيق هو الأساس الذي يحدد نجاح النتيجة النهائية.`,
     "نحن لا نعتمد على الحلول المؤقتة، بل نركز على معالجة السبب الجذري للمشكلة بحيث لا تتكرر الأعراض نفسها بعد فترة قصيرة.",
@@ -43,21 +43,15 @@ function buildLongContent(serviceTitle: string, keywords: string[]): string[] {
   const targets = 30;
 
   for (let i = 0; i < targets; i += 1) {
-    const k1 = keywords[i % keywords.length];
-    const k2 = keywords[(i + 1) % keywords.length];
     const s1 = baseSentences[i % baseSentences.length];
     const s2 = baseSentences[(i + 2) % baseSentences.length];
     const s3 = baseSentences[(i + 4) % baseSentences.length];
     paragraphs.push(
-      `${s1} في مشاريع ${serviceTitle} داخل جدة، نهتم بأن يرتبط كل قرار فني بنتيجة قابلة للقياس حتى يحصل العميل على قيمة واضحة مقابل التكلفة. عند الحديث عن ${k1} و${k2}، فالعامل الفارق هو الانضباط في التسلسل التنفيذي: تجهيز صحيح، تطبيق متدرج، ثم فحص تحقق نهائي. ${s2} لذلك نضع خطة تفصيلية لكل موقع على حدة، لأن اختلاف ظروف المباني يعني أن الحل القياسي لا يناسب الجميع. ${s3} بهذه الطريقة تتحول الخدمة من إجراء سريع إلى استثمار طويل الأثر يحسن أداء المبنى ويخفض احتمالات الأعطال اللاحقة.`
+      `${s1} في مشاريع ${serviceTitle} داخل جدة، نهتم بأن يرتبط كل قرار فني بنتيجة قابلة للقياس حتى يحصل العميل على قيمة واضحة مقابل التكلفة. العامل الفارق يظل الانضباط في التسلسل التنفيذي: تجهيز صحيح، تطبيق متدرج، ثم فحص تحقق نهائي. ${s2} لذلك نضع خطة تفصيلية لكل موقع على حدة، لأن اختلاف ظروف المباني يعني أن الحل القياسي لا يناسب الجميع. ${s3} بهذه الطريقة تتحول الخدمة من إجراء سريع إلى استثمار طويل الأثر يحسن أداء المبنى ويخفض احتمالات الأعطال اللاحقة.`,
     );
   }
 
   return paragraphs;
-}
-
-function wordCount(text: string): number {
-  return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
 export async function generateStaticParams() {
@@ -69,11 +63,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = getInsulationServiceBySlug(slug);
   if (!service) return { title: "الخدمة غير موجودة" };
 
-  const path = `/insulation-services/${service.slug}`;
+  const path = absUrl(`/insulation-services/${service.slug}`);
   return {
     title: `${service.title} في جدة`,
     description: `${service.summary} دليل تفصيلي يشمل خطوات التنفيذ، المواد، الأسئلة الشائعة، ونصائح الحفاظ على النتيجة.`,
-    keywords: service.keywords,
     alternates: { canonical: path },
     openGraph: {
       url: path,
@@ -89,8 +82,7 @@ export default async function InsulationServicePage({ params }: Props) {
   const service = getInsulationServiceBySlug(slug);
   if (!service) notFound();
 
-  const paragraphs = buildLongContent(service.title, service.keywords);
-  const contentWords = wordCount(paragraphs.join(" "));
+  const paragraphs = buildLongContent(service.title);
 
   return (
     <main className="mx-auto max-w-7xl px-6 pb-20 pt-10 text-right">
@@ -111,16 +103,8 @@ export default async function InsulationServicePage({ params }: Props) {
         </h1>
         <p className="mt-4 text-lg leading-8 text-muted-foreground">{service.intro}</p>
         <p className="mt-3 text-base leading-8 text-[#2f556d]">
-          هذا الدليل التفصيلي يتناول الخدمة بشكل موسع ويحتوي على أكثر من 2000 كلمة لشرح خطوات التنفيذ، آليات الفحص،
-          النقاط الفنية، والمعايير التي تضمن نتيجة مستقرة على المدى الطويل.
+          يشرح هذا الدليل خطوات التنفيذ، آليات الفحص عند الحاجة، النقاط الفنية، والمعايير التي تساعد على نتيجة مستقرة على المدى الطويل.
         </p>
-        <div className="mt-4 flex flex-wrap justify-end gap-2">
-          {service.keywords.map((keyword) => (
-            <span key={keyword} className="rounded-full bg-[#e8f5f7] px-3 py-1 text-sm font-semibold text-[#226b77]">
-              {keyword}
-            </span>
-          ))}
-        </div>
       </header>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start">
@@ -149,7 +133,6 @@ export default async function InsulationServicePage({ params }: Props) {
             </p>
           </section>
 
-          <p className="text-sm text-muted-foreground">إجمالي كلمات المحتوى التقريبي: {contentWords} كلمة.</p>
         </div>
 
         <aside className="space-y-6 lg:col-span-4">

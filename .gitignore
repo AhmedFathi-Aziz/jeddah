@@ -12,6 +12,10 @@
 # next.js
 /.next/
 /out/
+_export_stash/
+
+# اختياري: قائمة slugs من الإنتاج لبناء static (لا تُرفع إن كانت سرية)
+data/article-slugs-export.json
 .open-next
 .open-next.backup-*
 opennext-staging

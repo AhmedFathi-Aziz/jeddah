@@ -6,6 +6,63 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Bottom sheet (narrow): full visual width */
+  [data-slot="sheet-content"][data-side="bottom"]:not([data-full-bleed]) {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Full-screen drawer: pin both inline edges (avoids 100dvw scrollbar gap) */
+  [data-slot="sheet-content"][data-full-bleed][data-side="left"]:not([data-below-header]),
+  [data-slot="sheet-content"][data-full-bleed][data-side="right"]:not([data-below-header]) {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: none !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-slot="sheet-content"][data-full-bleed][data-side="left"][data-below-header],
+  [data-slot="sheet-content"][data-full-bleed][data-side="right"][data-below-header] {
+    top: var(--site-header-height, 4.75rem) !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: none !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-slot="sheet-content"][data-full-bleed][data-side="bottom"] {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-slot="sheet-content"][data-full-bleed][data-side="top"] {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -3,7 +3,10 @@ import { createRequire } from "node:module";
 
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
-if (process.env.NODE_ENV === "development") {
+/** يُضبط فقط من ‎npm run build:static‎ — لا تضع نفس الاسم في ‎.env.local‎ حتى لا يتحول ‎npm run build‎ إلى تصدير ثابت بالخطأ */
+const staticExport = process.env.TASARUBAT_STATIC_EXPORT === "1";
+
+if (process.env.NODE_ENV === "development" && !staticExport) {
   void initOpenNextCloudflareForDev();
 }
 
@@ -28,9 +31,23 @@ function legacyCoverageRedirects() {
 /** مسار نسبي — يُضبط فقط من ‎npm run deploy:cf‎ (‎opennext-staging‎) */
 const cfStaging = process.env.OPEN_NEXT_BUILD_OUTPUT?.trim();
 
+const sharedRemotePatterns = [
+  {
+    protocol: "https",
+    hostname: "lh3.googleusercontent.com",
+    pathname: "/aida-public/**",
+  },
+  {
+    protocol: "https",
+    hostname: "placehold.co",
+    pathname: "/**",
+  },
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  ...(cfStaging
+  ...(staticExport ? { output: "export" } : {}),
+  ...(cfStaging && !staticExport
     ? {
         distDir: path.join(cfStaging, ".next"),
         typescript: { ignoreBuildErrors: true },
@@ -48,38 +65,49 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
-  images: {
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [128, 256, 384],
-    minimumCacheTTL: 86400,
-    /** يجب أن تتطابق مع أي `quality={n}` على `<Image />` */
-    qualities: [70, 72, 75, 76, 78, 80, 90],
-    dangerouslyAllowSVG: false,
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-        pathname: "/aida-public/**",
+  images: staticExport
+    ? {
+        unoptimized: true,
+        dangerouslyAllowSVG: false,
+        remotePatterns: sharedRemotePatterns,
+      }
+    : {
+        formats: ["image/avif", "image/webp"],
+        deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+        imageSizes: [128, 256, 384],
+        minimumCacheTTL: 86400,
+        qualities: [70, 72, 75, 76, 78, 80, 90],
+        dangerouslyAllowSVG: false,
+        remotePatterns: sharedRemotePatterns,
       },
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-        pathname: "/**",
-      },
-    ],
-  },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [{ key: "Content-Language", value: "ar-SA" }],
-      },
-    ];
-  },
-  async redirects() {
-    return legacyCoverageRedirects();
-  },
+  ...(staticExport
+    ? {}
+    : {
+        async headers() {
+          return [
+            {
+              source: "/:path*",
+              headers: [{ key: "Content-Language", value: "ar-SA" }],
+            },
+            {
+              source: "/blog/:slug*",
+              headers: [
+                {
+                  key: "Cache-Control",
+                  value: "public, s-maxage=900, stale-while-revalidate=86400",
+                },
+              ],
+            },
+          ];
+        },
+      }),
+  ...(!staticExport
+    ? {
+        async redirects() {
+          return legacyCoverageRedirects();
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

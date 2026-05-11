@@ -1,13 +1,10 @@
-export const dynamic = "force-dynamic";
-
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ChevronLeft, Mail } from "lucide-react";
 
-import { ArticleMarkdown } from "@/components/blog/article-markdown";
+import { BlogArticleMarkdownGate } from "@/components/blog/blog-article-markdown-gate";
 import { ArticleHeroSection } from "@/components/blog/article-hero-section";
-import { ArticleTableOfContents } from "@/components/blog/article-table-of-contents";
 import { RequestInspectionBox } from "@/components/layout/request-inspection-box";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { ArticleJsonLd } from "@/components/blog/article-json-ld";
@@ -15,12 +12,30 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { isVisualCoverPlaceholder } from "@/lib/articles/cover-display";
-import { buildMarkdownToc } from "@/lib/articles/markdown-toc";
-import { getArticleBySlug, listPublishedArticles } from "@/lib/articles/repository";
+import { articlePathSlugMatchesStored } from "@/lib/articles/slug-utils";
+import { articleDateLocaleLong } from "@/lib/articles/article-date";
+import {
+  getArticleBySlug,
+  listAllSlugsForStaticBuild,
+  listRecentRelatedArticleCards,
+} from "@/lib/articles/repository";
 import { images } from "@/lib/images";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
+
+/**
+ * مسارات من الملفات + ‎data/article-slugs-export.json‎ (يُملأ قبل النشر) + D1 وقت البناء إن وُجد.
+ * بعد النشر بدون إعادة بناء: شغّل ‎npm run export:blog-slugs‎ ثم ‎deploy:cf‎.
+ */
+export async function generateStaticParams() {
+  return listAllSlugsForStaticBuild();
+}
+
+/** يجب أن يكون معرّفاً كقيمة ثابتة (لا ‎process.env‎) — مطلوب مع ‎output: 'export'‎؛ مقالات جديدة تُضاف عبر ‎generateStaticParams‎ وقت البناء (ملفات + ‎data/article-slugs-export.json‎ + D1 إن وُجد وقت ‎build‎). */
+export const dynamicParams = false;
+
+export const revalidate = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -28,7 +43,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!article) {
     return { title: "المقالة غير موجودة" };
   }
-  const url = `/blog/${article.slug}`;
+  if (!articlePathSlugMatchesStored(slug, article.slug)) {
+    redirect(`/blog/${article.slug}`);
+  }
+  const url = absUrl(`/blog/${article.slug}`);
   return {
     title: article.title,
     description: article.excerpt,
@@ -61,9 +79,11 @@ export default async function BlogArticlePage({ params }: Props) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
-  const allPosts = await listPublishedArticles();
-  const relatedPosts = allPosts.filter((p) => p.slug !== article.slug).slice(0, 3);
-  const toc = buildMarkdownToc(article.content);
+  if (!articlePathSlugMatchesStored(slug, article.slug)) {
+    redirect(`/blog/${article.slug}`);
+  }
+  const relatedPosts = await listRecentRelatedArticleCards(article.id, 3);
+
   return (
     <>
       <ArticleJsonLd article={article} />
@@ -97,11 +117,7 @@ export default async function BlogArticlePage({ params }: Props) {
               <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">
                 {article.title}
               </h1>
-              <p className="text-base text-muted-foreground">
-                {article.createdAt.toLocaleDateString("ar-SA", {
-                  dateStyle: "long",
-                })}
-              </p>
+              <p className="text-base text-muted-foreground">{articleDateLocaleLong(article.createdAt)}</p>
             </header>
 
             <ArticleHeroSection
@@ -116,14 +132,14 @@ export default async function BlogArticlePage({ params }: Props) {
             />
 
             <div className="rounded-2xl border border-[#d9dee2] bg-white p-6 md:p-8">
-              <ArticleTableOfContents items={toc} />
-              <ArticleMarkdown markdown={article.content} />
+              <p className="sr-only">{article.excerpt}</p>
+              <BlogArticleMarkdownGate markdown={article.content} />
             </div>
 
             <footer className="mt-12 border-t border-[#d9dee2] pt-6">
               <p className="text-sm text-muted-foreground">
                 {siteConfig.name} —{" "}
-                <Link href={`${absUrl("/blog")}/${article.slug}`} className="text-primary underline">
+                <Link href={absUrl(`/blog/${article.slug}`)} className="text-primary underline">
                   رابط المقالة الدائم ({article.title})
                 </Link>
               </p>

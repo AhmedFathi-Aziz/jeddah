@@ -8,15 +8,15 @@ import { buttonVariants } from "@/components/ui/button";
 import { jeddahDistricts } from "@/lib/coverage-data";
 import { cn } from "@/lib/utils";
 import { images } from "@/lib/images";
-import { siteConfig } from "@/lib/site-config";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "كشف تسربات المياه في جدة بدون تكسير",
   description:
     "فحص إلكتروني حراري وصوتي لتحديد مصدر التسرب بسرعة في جدة، مع خطة إصلاح واضحة وتنفيذ ميداني.",
-  alternates: { canonical: "/leak-detection" },
+  alternates: { canonical: absUrl("/leak-detection") },
   openGraph: {
-    url: "/leak-detection",
+    url: absUrl("/leak-detection"),
     title: `كشف تسربات المياه — ${siteConfig.name}`,
     description:
       "خدمة كشف تسربات احترافية بأجهزة حديثة وتقرير فني يدعم متابعتك مع شركة المياه عند الحاجة.",

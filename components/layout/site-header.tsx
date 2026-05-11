@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import { Phone, Menu } from "lucide-react";
 
@@ -16,14 +17,38 @@ const nav = [
   { href: "/smart-leak-diagnosis", label: "مُشخّص ذكي" },
   { href: "/insulation", label: "العزل" },
   { href: "/blog", label: "المدونة" },
+  { href: "/news", label: "الأخبار" },
   { href: "/contact", label: "اتصل بنا" },
 ] as const;
 
 export function SiteHeader({ phone }: { phone: string }) {
   const telHref = `tel:${phone}`;
+  const headerRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const el = headerRef.current;
+    if (!el || typeof document === "undefined") return;
+
+    const sync = () => {
+      document.documentElement.style.setProperty(
+        "--site-header-height",
+        `${el.getBoundingClientRect().height}px`,
+      );
+    };
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      document.documentElement.style.removeProperty("--site-header-height");
+    };
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 shrink-0 border-b border-border/80 bg-[#f4f5f7] shadow-sm backdrop-blur-sm supports-[backdrop-filter]:bg-[#f4f5f7]/95">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-[60] shrink-0 border-b border-border/80 bg-[#f4f5f7] shadow-sm backdrop-blur-sm supports-[backdrop-filter]:bg-[#f4f5f7]/95"
+    >
       {/* صف واحد: اسم الموقع فقط ← روابط ← زر الهاتف */}
       <div className="mx-auto flex w-full max-w-7xl min-h-[4.75rem] flex-row flex-wrap items-center justify-center gap-x-3 gap-y-3 px-6 py-3 md:flex-nowrap md:gap-x-6 lg:gap-x-10">
         <Link
@@ -59,7 +84,10 @@ export function SiteHeader({ phone }: { phone: string }) {
         <div className="flex shrink-0 flex-row items-center gap-2">
           <a
             href={telHref}
-            className={cn(buttonVariants({ size: "default" }), "rounded-lg bg-[#1f7f8a] font-semibold whitespace-nowrap text-white hover:bg-[#1a6d76]")}
+            className={cn(
+              buttonVariants({ size: "default" }),
+              "h-auto min-h-11 rounded-full bg-[#1f7f8a] px-6 py-3 font-semibold whitespace-nowrap text-white hover:bg-[#1a6d76] md:min-h-12 md:px-8 md:py-3.5",
+            )}
           >
             <span className="inline-flex flex-row items-center gap-2">
               <Phone className="size-4 shrink-0" aria-hidden />
@@ -75,27 +103,52 @@ export function SiteHeader({ phone }: { phone: string }) {
             >
               <Menu className="size-5" aria-hidden />
             </SheetTrigger>
-            <SheetContent side="bottom" showCloseButton className="max-h-[85vh]" dir="rtl">
-              <nav className="flex flex-col gap-2 text-end" aria-label="قائمة الجوال">
+            <SheetContent
+              side="left"
+              fullBleed
+              insetBelowHeader
+              showCloseButton
+              backdropClassName="z-50 bg-black/30 supports-backdrop-filter:backdrop-blur-[2px]"
+              className="z-50 gap-0 border-0 border-e border-border bg-background p-0 shadow-xl"
+              dir="rtl"
+            >
+              <div className="border-b border-border/80 bg-background px-4 py-3 ps-14">
+                <p className="text-sm font-semibold text-[#123a5a]">القائمة</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">اختر الصفحة</p>
+              </div>
+              <nav
+                className="flex min-h-0 flex-1 flex-col divide-y divide-border/60 overflow-y-auto overscroll-contain px-2 py-1 text-start"
+                aria-label="قائمة الجوال"
+              >
                 {nav.map((item) => (
                   <SheetClose
                     key={item.href}
+                    nativeButton={false}
                     render={
                       <Link
                         href={item.href}
-                        className="block rounded-md px-3 py-3 text-lg font-semibold hover:bg-muted"
+                        className="block w-full rounded-lg px-3 py-3.5 text-start text-base font-semibold text-foreground transition-colors hover:bg-muted/70 active:bg-muted"
                       />
                     }
                   >
                     {item.label}
                   </SheetClose>
                 ))}
-                <SheetClose
-                  render={<a href={telHref} className="block rounded-md px-3 py-3 text-lg font-semibold text-primary hover:bg-muted" />}
-                >
-                  اتصال: {phone}
-                </SheetClose>
               </nav>
+              <div className="shrink-0 border-t border-border bg-muted/25 p-4">
+                <SheetClose
+                  nativeButton={false}
+                  render={
+                    <a
+                      href={telHref}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1f7f8a] px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition-colors hover:bg-[#1a6d76] active:bg-[#156a72]"
+                    />
+                  }
+                >
+                  <Phone className="size-5 shrink-0" aria-hidden />
+                  اتصال مباشر: {phone}
+                </SheetClose>
+              </div>
             </SheetContent>
           </Sheet>
         </div>

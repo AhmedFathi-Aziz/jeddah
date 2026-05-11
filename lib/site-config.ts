@@ -1,4 +1,12 @@
-/** يمنع `new URL("")` أو قيمة غير صالحة من إسقاط كل الصفحات (مثل /admin) في الإنتاج */
+function isLocalSiteHostname(hostname: string): boolean {
+  const h = hostname.toLowerCase();
+  return h === "localhost" || h === "127.0.0.1" || h === "[::1]";
+}
+
+/**
+ * عنوان الموقع العام للـ canonical و JSON-LD والـ OG.
+ * يُفرض HTTPS لأي دومين إنتاج حتى لو وُضع NEXT_PUBLIC_SITE_URL بصيغة http:// (شائع في أخطاء الإعداد).
+ */
 function resolvePublicSiteUrl(): string {
   const fallback = "https://tasarubat-jeddah.com";
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -6,7 +14,11 @@ function resolvePublicSiteUrl(): string {
   const candidate =
     raw.startsWith("http://") || raw.startsWith("https://") ? raw : `https://${raw}`;
   try {
-    return new URL(candidate).href.replace(/\/$/, "");
+    const u = new URL(candidate);
+    if (!isLocalSiteHostname(u.hostname)) {
+      u.protocol = "https:";
+    }
+    return u.href.replace(/\/$/, "");
   } catch {
     return fallback;
   }

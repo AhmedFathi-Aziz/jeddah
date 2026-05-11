@@ -1,4 +1,6 @@
-import { subscribeNewsletter } from "@/app/blog/actions";
+"use client";
+
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +12,7 @@ type Props = {
 };
 
 export function BlogNewsletterForm({ compact = true, size = "default" }: Props) {
+  const router = useRouter();
   const isSm = size === "sm";
 
   const formClass = isSm
@@ -30,8 +33,16 @@ export function BlogNewsletterForm({ compact = true, size = "default" }: Props) 
       ? "h-11 shrink-0 rounded-xl bg-[#197e8f] px-6 text-3xl font-extrabold text-white shadow-sm hover:bg-[#176f7e]"
       : "min-h-12 shrink-0 bg-[#197e8f] font-bold text-white shadow-sm hover:bg-[#176f7e]";
 
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const email = String(fd.get("email") ?? "").trim();
+    const q = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "newsletter=ok" : "newsletter=invalid";
+    router.push(`/blog?${q}`);
+  }
+
   return (
-    <form action={subscribeNewsletter} className={formClass} aria-label="نشرة بريدية">
+    <form onSubmit={onSubmit} className={formClass} aria-label="نشرة بريدية">
       <Input name="email" type="email" dir="ltr" required autoComplete="email" placeholder="name@domain.com" className={inputClass} />
       <Button type="submit" size={isSm ? "sm" : "lg"} className={buttonClass}>
         اشترك

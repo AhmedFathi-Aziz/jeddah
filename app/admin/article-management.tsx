@@ -98,10 +98,7 @@ export function ArticleManagement() {
       <section className="rounded-xl border border-destructive/30 bg-destructive/5 p-5 text-right">
         <h2 className="text-xl font-bold text-primary">إدارة المقالات</h2>
         <p className="mt-2 text-sm text-destructive leading-relaxed">
-          تعذّر تحميل قائمة المقالات ({failDetail ?? "خطأ"}). يمكنك إضافة مقال جديد من النموذج المجاور؛ إن استمر الخطأ نفّذ ترحيل D1:{" "}
-          <code className="rounded bg-muted px-1 font-mono text-xs" dir="ltr">
-            npm run db:migrate:remote
-          </code>
+          تعذّر تحميل قائمة المقالات ({failDetail ?? "خطأ"}).
         </p>
       </section>
     );
@@ -110,6 +107,17 @@ export function ArticleManagement() {
   return (
     <section className="rounded-xl border bg-card p-5 text-right">
       <h2 className="text-xl font-bold text-primary">تعديل وحذف المقالات</h2>
+      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+        المصدر: ملفات Markdown في المجلد{" "}
+        <code className="rounded bg-muted px-1 font-mono" dir="ltr">
+          content/blog
+        </code>
+        . حفظ أو حذف من هنا لا يغيّر الملفات على السيرفر — عدّل الملفات محلياً ثم{" "}
+        <code className="rounded bg-muted px-1 font-mono text-xs" dir="ltr">
+          npm run build
+        </code>{" "}
+        والنشر.
+      </p>
       {rows.length === 0 ? (
         <p className="mt-3 text-sm text-muted-foreground">لا توجد مقالات محفوظة بعد.</p>
       ) : (

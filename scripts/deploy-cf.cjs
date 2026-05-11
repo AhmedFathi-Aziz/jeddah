@@ -8,6 +8,8 @@ const { execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
+const { exportD1BlogSlugs } = require("./export-d1-blog-slugs.cjs");
+
 const root = path.join(__dirname, "..");
 const STAGING_NAME = "opennext-staging";
 
@@ -44,6 +46,15 @@ function flattenDefaultServerBundle() {
     fs.renameSync(from, to);
   }
   fs.rmSync(nested, { recursive: true, force: true });
+}
+
+try {
+  exportD1BlogSlugs(root);
+} catch (e) {
+  console.warn(
+    "[deploy-cf] تعذّر تصدير slugs من D1 (تأكد من wrangler login). يُستمر بالبناء:",
+    e?.message ?? e,
+  );
 }
 
 execSync("npx opennextjs-cloudflare build", { cwd: root, stdio: "inherit", env });

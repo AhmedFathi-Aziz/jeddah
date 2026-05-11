@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const row = getDistrictByCityAndSlug(city, district);
   if (!row) return { title: "المنطقة غير موجودة" };
 
-  const path = `/coverage/${city}/${district}`;
+  const path = absUrl(`/coverage/${city}/${district}`);
   return {
     title: row.label,
     description: `صفحة خدمات ${row.district} في ${row.city.nameAr}: كشف تسربات المياه، العزل المائي والحراري، وإرشادات الصيانة.`,

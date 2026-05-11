@@ -1,5 +1,5 @@
 import { isVisualCoverPlaceholder } from "@/lib/articles/cover-display";
-import type { ArticleFull } from "@/lib/articles/types";
+import type { ArticleCard } from "@/lib/articles/types";
 import { images } from "@/lib/images";
 import { SCHEMA_ORGANIZATION_ID, SCHEMA_WEBSITE_ID } from "@/lib/seo/schema-ids";
 import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
@@ -15,7 +15,7 @@ type JsonLdBlogPost = {
   publisher: { "@id": string };
 };
 
-export function BlogJsonLd({ posts }: { posts: ArticleFull[] }) {
+export function BlogJsonLd({ posts }: { posts: ArticleCard[] }) {
   const blogPosting: JsonLdBlogPost[] = posts.map((post) => ({
     "@type": "BlogPosting",
     headline: post.title,

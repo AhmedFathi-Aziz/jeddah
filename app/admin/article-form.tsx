@@ -69,8 +69,8 @@ export function ArticleForm() {
       </div>
 
       <p className="mb-6 text-sm text-muted-foreground leading-relaxed">
-        الحقل <span className="font-mono text-xs">slug</span> يجب أن يكون بالإنجليزية الصغيرة والأرقام والشرطات فقط (مثال:{" "}
-        <span className="font-mono text-xs">kesaf-jeddah-2026</span>).
+        الحقل <span className="font-mono text-xs">slug</span> يظهر في رابط المقال؛ استخدم حروفاً عربية أو إنجليزية وأرقاماً وشرطات فقط، دون مسافات أو رموز مثل{" "}
+        <span className="font-mono text-xs">/?#</span> (مثال: <span className="font-mono text-xs">kesaf-jeddah-2026</span> أو عنواناً بالعربي مع شرطات).
       </p>
 
       {state?.ok === false && (
@@ -84,7 +84,7 @@ export function ArticleForm() {
           <label htmlFor="slug" className="text-sm font-medium">
             slug <span className="text-destructive">*</span>
           </label>
-          <Input id="slug" name="slug" required dir="ltr" className="h-10 text-left font-mono text-sm" placeholder="kesaf-maa-fi-jeddah" />
+          <Input id="slug" name="slug" required dir="auto" className="h-10 text-sm" placeholder="kesaf-maa-fi-jeddah أو slug-بالعربي" />
         </div>
         <div className="space-y-2">
           <label htmlFor="title" className="text-sm font-medium">

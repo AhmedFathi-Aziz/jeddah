@@ -1,3 +1,5 @@
+"use client";
+
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -8,6 +10,8 @@ import { cn } from "@/lib/utils";
 type Props = {
   markdown: string;
   className?: string;
+  /** من `buildMarkdownToc` على السيرفر لتفادي مسح Markdown مرتين */
+  presetHeadingIds?: string[];
 };
 
 function buildHeadingComponents(ids: string[]): Components {
@@ -38,7 +42,7 @@ function buildHeadingComponents(ids: string[]): Components {
           ? alt
           : "صورة توضيحية ضمن مقال عن كشف التسربات والعزل في جدة";
       return (
-        // eslint-disable-next-line @next/next/no-img-element -- مصادر الصور في Markdown خارجية وغير مضبوطة في `next.config`
+        // eslint-disable-next-line @next/next/no-img-element
         <img src={typeof src === "string" ? src : ""} alt={resolvedAlt} {...props} />
       );
     },
@@ -46,15 +50,13 @@ function buildHeadingComponents(ids: string[]): Components {
 }
 
 /**
- * عرض نص المقال المخزّن كـ Markdown (عناوين، قوائم، جداول، كود…).
+ * يعمل في المتصفح لتقليل استهلاك CPU على Cloudflare Worker (خطأ 1102 مع remark/markdown).
  */
-export function ArticleMarkdown({ markdown, className }: Props) {
+export function ArticleMarkdown({ markdown, className, presetHeadingIds }: Props) {
   const text = markdown.trim();
-  if (!text) {
-    return null;
-  }
+  if (!text) return null;
 
-  const headingIds = getMarkdownHeadingIds(text);
+  const headingIds = presetHeadingIds?.length ? presetHeadingIds : getMarkdownHeadingIds(text);
   const markdownComponents = buildHeadingComponents(headingIds);
 
   return (

@@ -67,16 +67,17 @@ export function HomeInsulationBoxes() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {insulationTopics.map((topic) => (
           <Link
-            key={topic.title}
+            key={topic.slug}
             href={`/insulation-services/${topic.slug}`}
-            className="rounded-2xl border border-[#d7e8ee] bg-white p-5 text-right shadow-[0_12px_28px_-24px_rgba(20,67,86,0.8)] transition-transform hover:-translate-y-0.5"
+            className="group block h-full cursor-pointer rounded-2xl border border-[#d7e8ee] bg-white p-5 text-right shadow-[0_12px_28px_-24px_rgba(20,67,86,0.8)] outline-offset-2 transition-transform hover:-translate-y-0.5 hover:border-[#b8dce6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1f7f8a]"
+            aria-label={`${topic.title} — عرض التفاصيل`}
           >
             <div className="mb-3 flex justify-end">
-              <span className="inline-flex size-9 items-center justify-center rounded-full bg-[#e8f5f7] text-[#2f7f86]">
+              <span className="inline-flex size-9 items-center justify-center rounded-full bg-[#e8f5f7] text-[#2f7f86] transition-colors group-hover:bg-[#d6eef2]">
                 <CheckCircle2 className="size-5" aria-hidden />
               </span>
             </div>
-            <h4 className="text-lg font-extrabold leading-7 text-[#173f55]">{topic.title}</h4>
+            <h4 className="text-lg font-extrabold leading-7 text-[#173f55] group-hover:text-[#1f7f8a]">{topic.title}</h4>
             <p className="mt-2 text-sm leading-7 text-muted-foreground">{topic.summary}</p>
           </Link>
         ))}

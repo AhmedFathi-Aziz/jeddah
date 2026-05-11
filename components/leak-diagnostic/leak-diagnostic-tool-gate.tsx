@@ -9,7 +9,7 @@ const LeakDiagnosticTool = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="min-h-[22rem] animate-pulse rounded-2xl bg-gradient-to-br from-muted/50 to-muted/20"
+        className="min-h-[22rem] animate-pulse rounded-2xl bg-gradient-to-br from-[#ecf8f8]/90 via-[#f5fbfc] to-[#eef6f8]/80"
         aria-hidden
       />
     ),
@@ -50,11 +50,13 @@ export function LeakDiagnosticToolGate() {
         <LeakDiagnosticTool />
       ) : (
         <div
-          className="flex min-h-[22rem] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-[#d7e8ee] bg-[#f8fbfc]/80 p-8 text-center"
+          className="flex min-h-[22rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[#c5e3ea] bg-gradient-to-b from-[#f8fcfd] to-[#eef8fa]/90 p-8 text-center shadow-inner"
           role="status"
         >
-          <span className="text-sm font-medium text-[#4a6677]">جاري تجهيز الأداة عند التمرير…</span>
-          <span className="text-xs text-muted-foreground">لتحسين سرعة الصفحة يُحمّل الاختبار عند ظهوره في الشاشة.</span>
+          <span className="text-sm font-semibold text-[#163d57]">جاري تجهيز الاختبار عند وصولك لهنا…</span>
+          <span className="max-w-sm text-xs leading-relaxed text-[#5a7588]">
+            نحمّل الأداة عند ظهورها في الشاشة لتبقى الصفحة خفيفة وسريعة.
+          </span>
         </div>
       )}
     </div>

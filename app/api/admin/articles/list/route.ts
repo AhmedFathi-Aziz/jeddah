@@ -1,11 +1,9 @@
-import { desc } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { ADMIN_SESSION_COOKIE, verifyAdminSessionValue } from "@/lib/admin/crypto-session";
 import { getArticlesAdminSecret } from "@/lib/admin/env-secret";
-import { getDb } from "@/lib/db/client";
-import { articles } from "@/lib/db/schema";
+import { getAllBlogArticlesMerged } from "@/lib/articles/repository";
 
 async function assertAdminRequest() {
   const secret = await getArticlesAdminSecret();
@@ -20,30 +18,21 @@ export async function GET() {
     return NextResponse.json({ ok: false as const, error: "unauthorized" }, { status: 401 });
   }
 
-  const db = await getDb();
-  if (!db) {
-    return NextResponse.json({ ok: false as const, error: "db-unavailable" }, { status: 503 });
-  }
-
-  try {
-    const rows = await db.select().from(articles).orderBy(desc(articles.createdAt));
-    const list = rows.map((r) => ({
-      id: r.id,
-      slug: r.slug,
-      category: r.category,
-      title: r.title,
-      excerpt: r.excerpt,
-      content: r.content,
-      coverImageUrl: r.coverImageUrl,
-      coverAlt: r.coverAlt,
-      coverWidth: r.coverWidth,
-      coverHeight: r.coverHeight,
-      published: r.published,
-      createdAt: r.createdAt,
-      updatedAt: r.updatedAt,
-    }));
-    return NextResponse.json({ ok: true as const, articles: list });
-  } catch {
-    return NextResponse.json({ ok: false as const, error: "query-failed" }, { status: 500 });
-  }
+  const rows = await getAllBlogArticlesMerged();
+  const list = rows.map((r) => ({
+    id: r.id,
+    slug: r.slug,
+    category: r.category,
+    title: r.title,
+    excerpt: r.excerpt,
+    content: r.content,
+    coverImageUrl: r.cover.src,
+    coverAlt: r.cover.alt,
+    coverWidth: r.cover.width,
+    coverHeight: r.cover.height,
+    published: true,
+    createdAt: r.createdAt.getTime(),
+    updatedAt: r.createdAt.getTime(),
+  }));
+  return NextResponse.json({ ok: true as const, articles: list });
 }

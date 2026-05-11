@@ -41,4 +41,6 @@
   "vars": {
     "NEXT_PUBLIC_SITE_URL": "https://tasarubat-jeddah.com"
   }
+
+  // للنشر الثابت على Cloudflare Pages: npm run build:static ثم npm run deploy:pages (لا يستخدم هذا الملف).
 }

@@ -9,7 +9,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GlobalJsonLd } from "@/components/seo/global-json-ld";
 import { images } from "@/lib/images";
-import { siteConfig } from "@/lib/site-config";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     "عزل فوم جدة",
   ],
   alternates: {
-    canonical: "/",
+    canonical: absUrl("/"),
   },
   openGraph: {
     type: "website",
     locale: siteConfig.locale.replace("_", "-"),
-    url: "/",
+    url: absUrl("/"),
     siteName: siteConfig.name,
     title: "كشف تسربات المياه والعزل بجدة — جدة للتسربات والعزل",
     description:

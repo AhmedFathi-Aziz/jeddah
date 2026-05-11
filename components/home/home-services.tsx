@@ -72,42 +72,53 @@ export function HomeServices() {
         </article>
 
         <div id="insulation" className="flex flex-col gap-6 lg:col-span-4">
-          <Card className="flex-1 rounded-3xl border-0 ring-0 bg-card text-right shadow-[0_14px_34px_-24px_rgba(19,66,89,0.38)] transition-transform hover:-translate-y-0.5">
-            <CardHeader className="pb-3">
-              <div className="mb-4 flex justify-end">
-                <span className="inline-flex size-12 items-center justify-center rounded-full bg-[#eaf6f7] text-[#257a86]">
-                  <Home className="size-6" aria-hidden />
+          <Link
+            href="/insulation-services/thermal-insulation"
+            className="block rounded-3xl outline-offset-2 transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1f7f8a]"
+            aria-label="عزل الأسطح ضد الحرارة والمياه — صفحة الخدمة"
+          >
+            <Card className="h-full flex-1 cursor-pointer rounded-3xl border-0 ring-0 bg-card text-right shadow-[0_14px_34px_-24px_rgba(19,66,89,0.38)] transition-shadow hover:shadow-[0_18px_38px_-22px_rgba(19,66,89,0.42)]">
+              <CardHeader className="pb-3">
+                <div className="mb-4 flex justify-end">
+                  <span className="inline-flex size-12 items-center justify-center rounded-full bg-[#eaf6f7] text-[#257a86]">
+                    <Home className="size-6" aria-hidden />
+                  </span>
+                </div>
+                <CardTitle className="text-xl text-[#163d57]">عزل الأسطح ضد الحرارة والمياه</CardTitle>
+                <CardDescription className="text-base leading-8 text-[#4a6677]">
+                  عزل مائي وحراري لمقاومة حر الصيف وسقوط الأمطار الموسمي على الأسطح السكنية والتجارية.
+                </CardDescription>
+                <span
+                  className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    "mt-2 w-fit self-end gap-1 rounded-lg px-2 text-[#1f7783] hover:bg-[#edf6f7] hover:text-[#165d6f]",
+                  )}
+                >
+                  عرض التفاصيل <ArrowLeft className="size-4 mr-2" aria-hidden />
                 </span>
-              </div>
-              <CardTitle className="text-xl text-[#163d57]">عزل الأسطح ضد الحرارة والمياه</CardTitle>
-              <CardDescription className="text-base leading-8 text-[#4a6677]">
-                عزل مائي وحراري لمقاومة حر الصيف وسقوط الأمطار الموسمي على الأسطح السكنية والتجارية.
-              </CardDescription>
-              <Link
-                href="/insulation"
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "mt-2 w-fit self-end gap-1 rounded-lg px-2 text-[#1f7783] hover:bg-[#edf6f7] hover:text-[#165d6f]",
-                )}
-              >
-                عرض صفحة العزل <ArrowLeft className="size-4 mr-2" aria-hidden />
-              </Link>
-            </CardHeader>
-          </Card>
+              </CardHeader>
+            </Card>
+          </Link>
 
-          <Card className="flex-1 rounded-3xl border-0 ring-0 bg-card text-right shadow-[0_14px_34px_-24px_rgba(19,66,89,0.38)] transition-transform hover:-translate-y-0.5">
-            <CardHeader className="pb-3">
-              <div className="mb-4 flex justify-end">
-                <span className="inline-flex size-12 items-center justify-center rounded-full bg-[#eaf6f7] text-[#257a86]">
-                  <Droplets className="size-6" aria-hidden />
-                </span>
-              </div>
-              <CardTitle className="text-xl text-[#163d57]">عزل خزانات المياه</CardTitle>
-              <CardDescription className="text-base leading-8 text-[#4a6677]">
-                طبقات إيبوكسي مع تقليل التسربات والمحافظة على جودة المياه حيث ينطبق ذلك.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+          <Link
+            href="/insulation-services/tank-epoxy-insulation"
+            className="block rounded-3xl outline-offset-2 transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1f7f8a]"
+            aria-label="عزل خزانات المياه — صفحة الخدمة"
+          >
+            <Card className="h-full flex-1 cursor-pointer rounded-3xl border-0 ring-0 bg-card text-right shadow-[0_14px_34px_-24px_rgba(19,66,89,0.38)] transition-shadow hover:shadow-[0_18px_38px_-22px_rgba(19,66,89,0.42)]">
+              <CardHeader className="pb-3">
+                <div className="mb-4 flex justify-end">
+                  <span className="inline-flex size-12 items-center justify-center rounded-full bg-[#eaf6f7] text-[#257a86]">
+                    <Droplets className="size-6" aria-hidden />
+                  </span>
+                </div>
+                <CardTitle className="text-xl text-[#163d57]">عزل خزانات المياه</CardTitle>
+                <CardDescription className="text-base leading-8 text-[#4a6677]">
+                  طبقات إيبوكسي مع تقليل التسربات والمحافظة على جودة المياه حيث ينطبق ذلك.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
         </div>
       </div>
     </section>

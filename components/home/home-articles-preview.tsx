@@ -4,10 +4,10 @@ import { ArticleCoverOrPlaceholder } from "@/components/blog/article-cover-or-pl
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { listPublishedArticles } from "@/lib/articles/repository";
+import { listPublishedArticleCards } from "@/lib/articles/repository";
 
 export async function HomeArticlesPreview() {
-  const all = await listPublishedArticles();
+  const all = await listPublishedArticleCards();
   const previews = all.slice(0, 3);
 
   return (

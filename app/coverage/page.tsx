@@ -3,14 +3,14 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 
 import { jeddahDistricts } from "@/lib/coverage-data";
-import { siteConfig } from "@/lib/site-config";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "أحياء جدة",
   description: "دليل رسمي لصفحات أحياء جدة. اختر الحي للوصول إلى تفاصيل الخدمة المناسبة بسرعة.",
-  alternates: { canonical: "/coverage" },
+  alternates: { canonical: absUrl("/coverage") },
   openGraph: {
-    url: "/coverage",
+    url: absUrl("/coverage"),
     title: `أحياء جدة | ${siteConfig.name}`,
     description: "تصفح جميع أحياء جدة واختر صفحتك للوصول إلى الخدمة المناسبة.",
     locale: siteConfig.locale.replace("_", "-"),

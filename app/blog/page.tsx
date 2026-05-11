@@ -11,18 +11,19 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { images } from "@/lib/images";
-import { siteConfig } from "@/lib/site-config";
-import { listPublishedArticles } from "@/lib/articles/repository";
+import { absUrl, siteConfig } from "@/lib/site-config";
+import { listPublishedArticleCards } from "@/lib/articles/repository";
 
-export const dynamic = "force-dynamic";
+/** قائمة ثابتة وقت البناء؛ حدّث عبر إعادة النشر بعد ‎export:blog-slugs‎. */
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "مدونة كشف تسربات المياه والعزل في جدة",
   description:
     "مقالات وإرشادات عملية عن كشف التسربات بدون تكسير، العزل الحراري، وفهم استهلاك المياه في منطقة جدة.",
-  alternates: { canonical: "/blog" },
+  alternates: { canonical: absUrl("/blog") },
   openGraph: {
-    url: "/blog",
+    url: absUrl("/blog"),
     title: `مدونة تسربات المياه والعزل — ${siteConfig.name}`,
     description:
       "نصائح تقنية حول التسربات والعزل المائي والحراري لمنزل في جدة.",
@@ -30,14 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ newsletter?: string }>;
-}) {
-  const resolved = await searchParams;
-  const newsletter = resolved?.newsletter;
-  const posts = await listPublishedArticles();
+export default async function BlogPage() {
+  const posts = await listPublishedArticleCards();
 
   const leakSlug = posts.find((p) => p.category.includes("تسرب"))?.slug;
   const roofSlug = posts.find((p) => p.category.includes("العزل الحراري"))?.slug;
@@ -69,16 +64,6 @@ export default async function BlogPage({
       <BlogJsonLd posts={posts} />
       <main className="mx-auto max-w-7xl px-6 pb-20 pt-8 md:pt-12">
         <header className="mb-12 rounded-2xl border-0 bg-card/60 p-6 text-right shadow-sm md:p-8">
-          {newsletter === "ok" && (
-            <p role="status" className="mb-4 rounded-lg bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
-              تم تسجيل البريد (تجربة وهمية؛ اربط السيرفر بحساب بريدي لاحقاً).
-            </p>
-          )}
-          {newsletter === "invalid" && (
-            <p role="alert" className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-              البريد غير صالح.
-            </p>
-          )}
           <h1 className="text-balance text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
             مدونة جدة للتسربات والعزل
           </h1>

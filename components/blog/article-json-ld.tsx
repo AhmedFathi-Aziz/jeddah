@@ -1,3 +1,4 @@
+import { safeArticleDate } from "@/lib/articles/article-date";
 import { isVisualCoverPlaceholder } from "@/lib/articles/cover-display";
 import type { ArticleFull } from "@/lib/articles/types";
 import { images } from "@/lib/images";
@@ -6,7 +7,8 @@ import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
 import { absImageSrc, absUrl, siteConfig } from "@/lib/site-config";
 
 export function ArticleJsonLd({ article }: { article: ArticleFull }) {
-  const articleUrl = `${absUrl("/blog")}/${article.slug}`;
+  const published = safeArticleDate(article.createdAt).toISOString();
+  const articleUrl = absUrl(`/blog/${article.slug}`);
   const imageUrl = isVisualCoverPlaceholder(article.cover.src)
     ? images.blogStains.src
     : absImageSrc(article.cover.src);
@@ -35,8 +37,8 @@ export function ArticleJsonLd({ article }: { article: ArticleFull }) {
         url: articleUrl,
         mainEntityOfPage: { "@type": "WebPage", "@id": `${articleUrl}#webpage`, url: articleUrl },
         image: imageUrl,
-        datePublished: article.createdAt.toISOString(),
-        dateModified: article.createdAt.toISOString(),
+        datePublished: published,
+        dateModified: published,
         inLanguage: "ar-SA",
         author: { "@type": "Organization", "@id": SCHEMA_ORGANIZATION_ID, name: siteConfig.name },
         publisher: { "@id": SCHEMA_ORGANIZATION_ID },

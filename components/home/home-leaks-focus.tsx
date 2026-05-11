@@ -22,6 +22,7 @@ export function HomeLeaksFocus({ phone }: { phone: string }) {
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             quality={76}
+            unoptimized
             className="h-full w-full object-cover"
           />
         </div>

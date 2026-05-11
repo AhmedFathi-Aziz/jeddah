@@ -11,10 +11,7 @@ import { absImageSrc, absUrl, siteConfig } from "@/lib/site-config";
 const SAUDI_ARABIA = { "@type": "Country" as const, name: "المملكة العربية السعودية" };
 const CONTACT_WHATSAPP_URL = `https://wa.me/${siteConfig.phone.replace(/\D/g, "")}`;
 
-/**
- * مدن لإشارة نطاق الخدمة في البيانات المنظمة.
- * إذا كان العمل فعلياً مقتصراً على جدة فقط، احذف الرياض والدمام لتفادي إشارات مضللة لجوجل.
- */
+/** مدن نطاق الخدمة في البيانات المنظمة — مقتصر على جدة. */
 const AREA_SERVED_CITIES = [{ "@type": "City" as const, name: "جدة", alternateName: "Jeddah" }] as const;
 
 /** Organization + LocalBusiness + WebSite على كل الصفحات — أساس SEO وربط المقالات والمدونة */
@@ -43,7 +40,6 @@ export function GlobalJsonLd() {
         address: {
           "@type": "PostalAddress",
           addressLocality: "جدة",
-          addressRegion: "منطقة مكة المكرمة",
           addressCountry: "SA",
         },
       },
@@ -68,7 +64,6 @@ export function GlobalJsonLd() {
         address: {
           "@type": "PostalAddress",
           addressLocality: "جدة",
-          addressRegion: "منطقة مكة المكرمة",
           addressCountry: "SA",
         },
         geo: {
@@ -96,7 +91,7 @@ export function GlobalJsonLd() {
         priceRange: "$$",
         aggregateRating: SCHEMA_MOCK_AGGREGATE_RATING,
         description:
-          "كشف تسربات المياه وخدمات عزل الأسطح والخزانات والفوم في جدة ومنطقة مكة المكرمة.",
+          "كشف تسربات المياه وخدمات عزل الأسطح والخزانات والفوم في جدة.",
       },
       {
         "@type": "WebSite",

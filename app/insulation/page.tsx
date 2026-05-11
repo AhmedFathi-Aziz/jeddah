@@ -8,7 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { jeddahDistricts } from "@/lib/coverage-data";
 import { images } from "@/lib/images";
-import { siteConfig } from "@/lib/site-config";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "أفضل خدمات العزل المائي والحراري بجدة",
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     "جهاز كشف التسربات الإلكتروني Success",
     "عزل لفائف بيتومين للأسطح",
   ],
-  alternates: { canonical: "/insulation" },
+  alternates: { canonical: absUrl("/insulation") },
   openGraph: {
-    url: "/insulation",
+    url: absUrl("/insulation"),
     title: `أفضل خدمات العزل المائي والحراري بجدة — ${siteConfig.name}`,
     description:
       "حلول عزل متكاملة للأسطح والخزانات والحمامات والمطابخ في جدة بمواد معتمدة وضمان حقيقي.",

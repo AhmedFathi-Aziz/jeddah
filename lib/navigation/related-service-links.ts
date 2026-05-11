@@ -48,6 +48,11 @@ const SERVICE_LINK_DEFINITIONS: ServiceRelatedLink[] = [
     description: "إرشادات عملية عن الفواتير والرطوبة وعزل الأسطح في جدة.",
   },
   {
+    href: "/news",
+    title: "الأخبار",
+    description: "مستجدات ونصائح موسمية وتحديثات حول خدمات الكشف والعزل في جدة.",
+  },
+  {
     href: "/#coverage",
     title: "تغطية أحياء جدة",
     description: "صفحات محلية لخدمات الكشف والعزل حسب الحي.",
@@ -77,6 +82,20 @@ function relatedHrefsForPath(normalized: string): string[] {
       "/insulation",
       "/contact",
       "/blog",
+      "/news",
+      "/#coverage",
+    ];
+  }
+
+  if (normalized.startsWith("/news/") && normalized !== "/news") {
+    return [
+      "/",
+      "/services",
+      "/leak-detection",
+      "/news",
+      "/blog",
+      "/contact",
+      "/insulation",
       "/#coverage",
     ];
   }
@@ -90,6 +109,7 @@ function relatedHrefsForPath(normalized: string): string[] {
       "/services",
       "/contact",
       "/blog",
+      "/news",
       "/#coverage",
     ];
   }
@@ -102,14 +122,16 @@ function relatedHrefsForPath(normalized: string): string[] {
       "/insulation",
       "/contact",
       "/blog",
+      "/news",
       "/#coverage",
     ],
-    "/services": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/contact", "/blog", "/#coverage"],
-    "/leak-detection": ["/", "/smart-leak-diagnosis", "/insulation", "/services", "/contact", "/blog", "/#coverage"],
-    "/smart-leak-diagnosis": ["/", "/leak-detection", "/insulation", "/services", "/contact", "/blog", "/#coverage"],
-    "/insulation": ["/", "/leak-detection", "/smart-leak-diagnosis", "/services", "/contact", "/blog", "/#coverage"],
-    "/contact": ["/", "/services", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/blog", "/#coverage"],
-    "/blog": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/services", "/contact", "/#coverage"],
+    "/services": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/contact", "/blog", "/news", "/#coverage"],
+    "/leak-detection": ["/", "/smart-leak-diagnosis", "/insulation", "/services", "/contact", "/blog", "/news", "/#coverage"],
+    "/smart-leak-diagnosis": ["/", "/leak-detection", "/insulation", "/services", "/contact", "/blog", "/news", "/#coverage"],
+    "/insulation": ["/", "/leak-detection", "/smart-leak-diagnosis", "/services", "/contact", "/blog", "/news", "/#coverage"],
+    "/contact": ["/", "/services", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/blog", "/news", "/#coverage"],
+    "/blog": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/services", "/contact", "/news", "/#coverage"],
+    "/news": ["/", "/leak-detection", "/blog", "/services", "/contact", "/insulation", "/#coverage"],
   };
 
   return map[normalized] ?? map["/"];

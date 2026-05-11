@@ -13,6 +13,9 @@ import { HomeWhy } from "@/components/home/home-why";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { siteConfig } from "@/lib/site-config";
 
+/** ISR للصفحة الرئيسية (معاينة المقالات) — يطابق مدة كاش المقالات في المستودع. */
+export const revalidate = 900;
+
 export default function HomePage() {
   return (
     <>

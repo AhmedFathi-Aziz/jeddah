@@ -84,11 +84,11 @@ export const images = {
   },
   /** صور محلية — صفحة الرئيسية (تسربات) */
   leakLocalTools03: {
-    src: "/images/leaks/tools-03.png",
-    alt: "كشف تسربات المياه بجدة — أجهزة فحص إلكترونية ميدانية على أحدث الطرق",
-    title: "كشف تسربات المياه بجدة — أحدث أجهزة الفحص الميداني",
-    width: 1600,
-    height: 900,
+    src: "/images/leaks/kashf-handheld-diagnostic.webp",
+    alt: "فني يمسك جهاز تشخيص صناعي برتقالي متصل بكابل مع شاشة بيانات تقنية أمام مواسير وصمامات — فحص ضغط وتسربات",
+    title: "جهاز فحص ضغط وتشخيص تقني للشبكات — كشف تسربات المياه",
+    width: 1024,
+    height: 583,
   },
   leakLocalTools02: {
     src: "/images/leaks/tools-02.png",
@@ -98,11 +98,11 @@ export const images = {
     height: 900,
   },
   leakLocalRepair01: {
-    src: "/images/leaks/repair-01.png",
-    alt: "إصلاح تسرب المياه في جدة بعد تحديد المصدر بواسطة فني متخصص",
-    title: "علاج وإصلاح تسربات المياه — جدة",
-    width: 1600,
-    height: 900,
+    src: "/images/leaks/leak-repair-smart-meter.webp",
+    alt: "فني بسترة برتقالية وسماعات واقية يمسك جهاز قياس إلكتروني بشاشة رقمية متصل بصمام أصفر على شبكة مواسير — صيانة وتشخيص ميداني",
+    title: "قياس وضبط تقني على الشبكة — علاج وإصلاح بعد التشخيص",
+    width: 1024,
+    height: 583,
   },
   insulationFoamSpray: {
     src: "/images/insulation/insulation-foam-spray.webp",

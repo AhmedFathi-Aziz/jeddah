@@ -2,7 +2,7 @@ import type { DrizzleD1Database } from "drizzle-orm/d1";
 
 import * as schema from "@/lib/db/schema";
 
-const slugRe = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+import { isValidArticleSlug, normalizeArticleSlugParam } from "./slug-utils";
 
 function clampCoverDimension(value: unknown, fallback: number): number {
   const n = typeof value === "number" ? value : Number(value);
@@ -59,7 +59,7 @@ export async function insertArticleFromPayload(
     return { ok: false, code: "bad_input", message: "حقول ناقصة" };
   }
 
-  const s = slug.trim();
+  const s = normalizeArticleSlugParam(slug);
   const c = category.trim();
   const ti = title.trim();
   const ex = excerpt.trim();
@@ -69,12 +69,12 @@ export async function insertArticleFromPayload(
     return { ok: false, code: "bad_input", message: "املأ كل الحقول المطلوبة" };
   }
 
-  if (!slugRe.test(s)) {
+  if (!isValidArticleSlug(s)) {
     return {
       ok: false,
       code: "bad_slug",
       message:
-        "slug غير مسموح: استخدم حروفاً إنجليزية صغيرة وأرقاماً وشرطات فقط (مثل kesaf-maa-jeddah).",
+        "slug غير مسموح: استخدم حروفاً وأرقاماً وشرطات دون مسافات أو رموز مثل / ? # (عربي أو إنجليزي).",
     };
   }
 

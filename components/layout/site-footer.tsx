@@ -18,7 +18,7 @@ export function SiteFooter({
         <div className="text-right space-y-3">
           <p className="text-lg font-bold text-primary">{siteConfig.name}</p>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            خدمات متخصصة لكشف تسربات المياه وعزل الأسطح والخزانات في جدة ومنطقة مكة بالمملكة العربية السعودية.
+            خدمات متخصصة لكشف تسربات المياه وعزل الأسطح والخزانات في جدة بالمملكة العربية السعودية.
           </p>
         </div>
         <nav className="text-right" aria-label="خدمات">
@@ -60,6 +60,11 @@ export function SiteFooter({
               </Link>
             </li>
             <li>
+              <Link href="/news" className="hover:text-primary hover:underline">
+                الأخبار
+              </Link>
+            </li>
+            <li>
               <Link href="/#faq" className="hover:text-primary hover:underline">
                 الأسئلة الشائعة
               </Link>
@@ -81,7 +86,7 @@ export function SiteFooter({
           <address className="not-italic text-sm text-muted-foreground space-y-2">
             <span className="flex flex-row-reverse items-start gap-2 justify-end">
               <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
-              جدة، منطقة مكة المكرمة، المملكة العربية السعودية
+              جدة، المملكة العربية السعودية
             </span>
             <a href={tel} className="flex flex-row-reverse items-center gap-2 justify-end font-medium text-foreground hover:underline">
               <Phone className="size-4 shrink-0" aria-hidden />

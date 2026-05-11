@@ -208,8 +208,8 @@ export function LeakDiagnosticTool() {
                     setStep(2);
                   }}
                   className={cn(
-                    "flex w-full flex-col rounded-2xl border-2 border-[#d7e8ee] bg-white p-4 text-right shadow-sm transition-all",
-                    "hover:border-[#1f7f8a]/50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f7f8a]/40",
+                    "flex w-full flex-col rounded-2xl border-0 bg-white p-4 text-right shadow-[0_12px_28px_-16px_rgba(19,66,89,0.22)] ring-1 ring-[#d7e8ee]/80 transition-all",
+                    "hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-14px_rgba(19,66,89,0.28)] hover:ring-[#1f7f8a]/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f7f8a]/45",
                     "min-h-[5.5rem] justify-center",
                   )}
                 >
@@ -251,9 +251,9 @@ export function LeakDiagnosticTool() {
                     setStep(3);
                   }}
                   className={cn(
-                    "flex w-full min-h-[4.5rem] items-center justify-center rounded-2xl border-2 border-[#d7e8ee] bg-white px-3 py-4 text-center shadow-sm transition-all",
+                    "flex min-h-[4.5rem] w-full items-center justify-center rounded-2xl border-0 bg-white px-3 py-4 text-center shadow-[0_12px_28px_-16px_rgba(19,66,89,0.22)] ring-1 ring-[#d7e8ee]/80 transition-all",
                     "text-base font-bold text-[#163d57]",
-                    "hover:border-[#1f7f8a]/50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f7f8a]/40",
+                    "hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-14px_rgba(19,66,89,0.28)] hover:ring-[#1f7f8a]/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f7f8a]/45",
                   )}
                 >
                   {opt.label}
@@ -278,7 +278,7 @@ export function LeakDiagnosticTool() {
 
       {step === 3 && diagnosis && location && property && (
         <section className="space-y-6" aria-labelledby="quiz-result-title">
-          <div className="rounded-2xl border-2 border-[#1f7f8a]/25 bg-gradient-to-br from-[#ecf8f8] to-white p-6 shadow-sm md:p-8">
+          <div className="rounded-2xl border-0 bg-gradient-to-br from-[#ecf8f8] to-white p-6 shadow-[0_16px_40px_-18px_rgba(19,66,89,0.28)] ring-1 ring-[#1f7f8a]/20 md:p-8">
             <div className="mb-3 flex flex-row-reverse items-center gap-2 text-[#1f7f8a]">
               <CheckCircle2 className="size-6 shrink-0" aria-hidden />
               <h2 id="quiz-result-title" className="text-lg font-extrabold text-[#163d57] md:text-xl">
