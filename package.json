@@ -17,6 +17,7 @@
     "deploy:cf": "node scripts/deploy-cf.cjs",
     "export:blog-slugs": "node scripts/export-d1-blog-slugs.cjs",
     "articles:from-demo": "npx tsx scripts/export-demo-to-md.ts",
+    "articles:export-from-d1": "node scripts/export-d1-articles-to-md.cjs",
     "db:migrate:local": "wrangler d1 migrations apply tasarubat-articles --local",
     "db:migrate:remote": "wrangler d1 migrations apply tasarubat-articles --remote",
     "process-logo": "node scripts/remove-logo-black-bg.cjs",

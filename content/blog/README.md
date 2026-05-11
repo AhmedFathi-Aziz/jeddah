@@ -22,6 +22,9 @@
 
 - توليد المقالات الأربعة من العرض التجريبي إلى هذا المجلد:  
   `npm run articles:from-demo`
+- **تصدير كل المقالات المنشورة من D1 إلى ملفات `.md` هنا** (بعد `npx wrangler login`):  
+  `npm run articles:export-from-d1`  
+  ثم ادفع التغييرات إلى Git ليظهر المحتوى على **Cloudflare Pages** عند البناء الثابت.
 - ثم البناء والنشر إلى Cloudflare كالمعتاد:  
   `npm run deploy:cf`
 
