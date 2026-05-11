@@ -1,21 +1,20 @@
 /**
  * يصدّر **كل** صفوف جدول المقالات من D1 إلى Markdown.
  *
+ * ملاحظة: ‎wrangler d1 execute --file‎ في الإصدارات الحديثة قد يعيد **ملخصاً** بدل صفوف الـ SELECT؛
+ * لذلك نستخدم ‎--command‎ مع تمرير آمن عبر ‎execFileSync‎ (بدون shell).
+ *
  * - منشور → ‎content/blog/<slug>.md‎
- * - غير منشور → ‎content/blog-drafts/<slug>.md‎ (ما لم يُضبط ‎EXPORT_D1_PUBLISHED_ONLY‎)
+ * - غير منشور → ‎content/blog-drafts/<slug>.md‎
  *
  * ‎EXPORT_D1_PUBLISHED_ONLY=1‎ → منشورات فقط إلى ‎content/blog‎
- * ‎EXPORT_D1_LOCAL=1‎ → استعلام ‎--local‎ بدل ‎--remote‎
+ * ‎EXPORT_D1_LOCAL=1‎ → ‎--local‎ بدل ‎--remote‎
+ * ‎SKIP_D1_EXPORT=1‎ → خروج فوري (للبناء بدون D1)
  *
  *   npm run articles:export-from-d1
- *
- * على Cloudflare Pages: استخدم ‎npm run build:pages‎ (يصدّر من D1 ثم ‎build:static‎).
- * لازم يكون ‎CLOUDFLARE_API_TOKEN‎ (صلاحيات D1) متاحاً في بيئة البناء — ‎wrangler login‎ غير تفاعلي في CI.
- * لتخطّي التصدير يدوياً: ‎SKIP_D1_EXPORT=1‎ ثم ‎npm run articles:export-from-d1‎ (يخرج فوراً بنجاح).
  */
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 const fs = require("fs");
-const os = require("os");
 const path = require("path");
 
 const stringify = require("gray-matter/lib/stringify");
@@ -25,8 +24,56 @@ const root = path.join(__dirname, "..");
 const outPublished = path.join(root, "content", "blog");
 const outDrafts = path.join(root, "content", "blog-drafts");
 
-/** صفوف أصغر = JSON أصغر من Wrangler وأقل احتمالاً لاقتطاع الاستجابة */
-const PAGE_SIZE = 40;
+const wranglerCli = path.join(root, "node_modules", "wrangler", "wrangler-dist", "cli.js");
+const wranglerConfig = path.join(root, "wrangler.jsonc");
+
+/**
+ * ‎process.execPath‎ قد يشير إلى Node مضمّن (مثل Cursor) بسلوك stdout غير موثوق مع Wrangler.
+ * عند ‎npm run‎ يضبط npm ‎npm_node_execpath‎ على Node الفعلي — نستخدمه أولاً.
+ */
+function nodeForWrangler() {
+  const override = process.env.TASARUBAT_NODE_FOR_WRANGLER;
+  if (override && fs.existsSync(override)) return override;
+  const npmNode = process.env.npm_node_execpath;
+  if (npmNode && fs.existsSync(npmNode)) return npmNode;
+  return process.platform === "win32" ? "node.exe" : "node";
+}
+
+function runWranglerSql(sql) {
+  if (!fs.existsSync(wranglerCli)) {
+    throw new Error(`لم يُعثر على wrangler CLI: ${wranglerCli} — نفّذ npm ci أولاً.`);
+  }
+  const oneLine = sql.replace(/\s+/g, " ").trim();
+  const remoteFlag = process.env.EXPORT_D1_LOCAL === "1" ? "--local" : "--remote";
+  /** مثل ‎bin/wrangler.js‎ — بدونها قد يخرج Wrangler بـ 0 بدون أي stdout على Windows. */
+  const args = [
+    "--no-warnings",
+    "--experimental-vm-modules",
+    wranglerCli,
+    "d1",
+    "execute",
+    DB_NAME,
+  ];
+  if (fs.existsSync(wranglerConfig)) args.push("--config", wranglerConfig);
+  args.push(remoteFlag, "--command", oneLine, "--json");
+
+  const env = { ...process.env };
+  delete env.CI;
+  /** ‎WRANGLER_LOG=error‎ يُفرغ stdout لـ ‎d1 execute --json‎ (Wrangler 4.x). */
+  delete env.WRANGLER_LOG;
+
+  try {
+    return execFileSync(nodeForWrangler(), args, {
+      cwd: root,
+      encoding: "utf8",
+      maxBuffer: 256 * 1024 * 1024,
+      env,
+    });
+  } catch (e) {
+    const stderr = e.stderr ? String(e.stderr) : "";
+    throw new Error(`${e?.message ?? e}\n${stderr}`);
+  }
+}
 
 function parseWranglerRows(stdout) {
   const raw = String(stdout);
@@ -47,12 +94,18 @@ function parseWranglerRows(stdout) {
 
   for (const batch of batches) {
     if (Array.isArray(batch?.results)) {
-      rows.push(...batch.results);
+      for (const row of batch.results) {
+        if (row && typeof row === "object" && !Array.isArray(row)) rows.push(row);
+      }
       continue;
     }
     if (Array.isArray(batch?.result)) {
       for (const block of batch.result) {
-        if (Array.isArray(block?.results)) rows.push(...block.results);
+        if (Array.isArray(block?.results)) {
+          for (const row of block.results) {
+            if (row && typeof row === "object" && !Array.isArray(row)) rows.push(row);
+          }
+        }
       }
     }
   }
@@ -60,35 +113,10 @@ function parseWranglerRows(stdout) {
   return rows;
 }
 
-function runQuery(sql) {
-  const tmpSql = path.join(
-    os.tmpdir(),
-    `d1-export-articles-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}.sql`,
-  );
-  fs.writeFileSync(tmpSql, sql, "utf8");
-  const remoteFlag = process.env.EXPORT_D1_LOCAL === "1" ? "--local" : "--remote";
-  try {
-    return execSync(`npx wrangler d1 execute ${DB_NAME} ${remoteFlag} --file="${tmpSql}" --json`, {
-      cwd: root,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-      maxBuffer: 256 * 1024 * 1024,
-      shell: true,
-      env: { ...process.env, WRANGLER_LOG: "error", CI: "true" },
-    });
-  } finally {
-    try {
-      fs.unlinkSync(tmpSql);
-    } catch {
-      /* ignore */
-    }
-  }
-}
-
 function runCount(publishedOnly) {
   const wh = publishedOnly ? "WHERE published = 1" : "";
-  const sql = `SELECT COUNT(*) AS cnt FROM articles ${wh};`;
-  const out = runQuery(sql);
+  const sql = `SELECT COUNT(*) AS cnt FROM articles ${wh}`;
+  const out = runWranglerSql(sql);
   const rows = parseWranglerRows(out);
   const n = Number(rows[0]?.cnt ?? rows[0]?.CNT ?? 0);
   return Number.isFinite(n) ? n : 0;
@@ -160,38 +188,33 @@ function rowToFrontmatter(norm) {
   };
 }
 
-/** OFFSET على ‎ORDER BY rowid‎ ثابت في SQLite/D1 */
+/**
+ * صف واحد لكل استعلام — يتجنّب حد طول سطر الأوامر مع ‎--command‎
+ * ويتفادى سلوك ‎--file‎ الذي يعيد ملخصاً بدل الصفوف.
+ */
 function fetchAllRows(publishedOnly) {
+  const total = runCount(publishedOnly);
   const all = [];
-  let offset = 0;
   const whereSql = publishedOnly ? "WHERE published = 1" : "";
 
-  for (let guard = 0; guard < 10000; guard += 1) {
-    const sql = `SELECT rowid, id, slug, category, title, excerpt, content, cover_image_url, cover_alt, cover_width, cover_height, published, created_at, updated_at
-FROM articles ${whereSql}
-ORDER BY rowid ASC
-LIMIT ${PAGE_SIZE} OFFSET ${offset};`;
-
-    let stdout;
-    try {
-      stdout = runQuery(sql);
-    } catch (e) {
-      console.error("[export-d1-articles-to-md] فشل الاستعلام:", e?.message ?? e);
-      process.exit(1);
-    }
-
+  for (let offset = 0; offset < total; offset += 1) {
+    const sql = `SELECT rowid, id, slug, category, title, excerpt, content, cover_image_url, cover_alt, cover_width, cover_height, published, created_at, updated_at FROM articles ${whereSql} ORDER BY rowid ASC LIMIT 1 OFFSET ${offset}`;
+    const stdout = runWranglerSql(sql);
     const rows = parseWranglerRows(stdout).map(normalizeRow).filter(Boolean);
-    if (!rows.length) break;
-
-    all.push(...rows);
-    offset += rows.length;
-    if (rows.length < PAGE_SIZE) break;
+    if (rows[0]) {
+      all.push(rows[0]);
+    } else {
+      console.warn(`[export-d1-articles-to-md] تحذير: لا صف عند OFFSET ${offset} (المتوقع ${total}).`);
+    }
+    if ((offset + 1) % 25 === 0 || offset + 1 === total) {
+      process.stdout.write(`\r[export-d1-articles-to-md] جلب ${offset + 1}/${total}…`);
+    }
   }
+  if (total > 0) process.stdout.write("\n");
 
   return all;
 }
 
-/** مسار ملف فريد عند تعارض اسم الملف مع مقال آخر (slug مختلف بعد safeBasename) */
 function uniqueFilePath(dir, base, id) {
   let p = path.join(dir, `${base}.md`);
   if (!fs.existsSync(p)) return p;
@@ -201,7 +224,7 @@ function uniqueFilePath(dir, base, id) {
     const prev = matter(fs.readFileSync(p, "utf8"));
     if (String(prev.data?.id ?? "") === id) return p;
   } catch {
-    /* إن تعذّر القراءة نعتبر تعارضاً */
+    /* ignore */
   }
 
   const short = id.replace(/-/g, "").slice(0, 10);
@@ -222,19 +245,24 @@ function main() {
   const expected = runCount(publishedOnly);
   console.log(`[export-d1-articles-to-md] عدد الصفوف في D1 (${remoteLabel}): ${expected}`);
 
-  const rows = fetchAllRows(publishedOnly);
-  if (!rows.length) {
+  if (expected === 0) {
     console.warn(
       publishedOnly
-        ? "[export-d1-articles-to-md] لا توجد مقالات منشورة."
-        : "[export-d1-articles-to-md] لا توجد صفوف في articles.",
+        ? "[export-d1-articles-to-md] لا توجد مقالات منشورة في D1."
+        : "[export-d1-articles-to-md] لا توجد صفوف في جدول articles.",
     );
+    return;
+  }
+
+  const rows = fetchAllRows(publishedOnly);
+  if (!rows.length) {
+    console.warn("[export-d1-articles-to-md] فشل جلب الصفوف رغم COUNT > 0 — راجع wrangler login أو EXPORT_D1_LOCAL.");
     return;
   }
 
   if (expected > 0 && rows.length !== expected) {
     console.warn(
-      `[export-d1-articles-to-md] تحذير: جُلب ${rows.length} صفاً بينما COUNT أعطى ${expected}. إن كان الفرق كبيراً، جرّب EXPORT_D1_LOCAL=1 أو تحقق من الاتصال/القاعدة.`,
+      `[export-d1-articles-to-md] تحذير: جُلب ${rows.length} صفاً بينما COUNT = ${expected}.`,
     );
   }
 
@@ -266,16 +294,10 @@ function main() {
   }
 
   if (publishedOnly) {
-    console.log(`[export-d1-articles-to-md] تم: ${nPub} ملفاً → content/blog/ (متوقع منشور: ${expected})`);
+    console.log(`[export-d1-articles-to-md] تم: ${nPub} ملفاً → content/blog/ (COUNT: ${expected})`);
   } else {
     console.log(
-      `[export-d1-articles-to-md] تم: ${nPub} منشور → content/blog/ | ${nDraft} مسودة → content/blog-drafts/ | صفوف مُجلَبة: ${rows.length} (COUNT: ${expected})`,
-    );
-  }
-
-  if (expected > 0 && nPub + nDraft < expected) {
-    console.warn(
-      "[export-d1-articles-to-md] عدد الملفات أقل من COUNT — راجع صفوفاً بلا slug أو أخطاء أعلاه.",
+      `[export-d1-articles-to-md] تم: ${nPub} منشور → content/blog/ | ${nDraft} مسودة → content/blog-drafts/ | صفوف: ${rows.length}`,
     );
   }
 }
