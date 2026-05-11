@@ -43,7 +43,9 @@ function parseArticleFile(raw: string, filename: string): ArticleFull | null {
 function readMarkdownFilesOnly(): ArticleFull[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];
 
-  const names = fs.readdirSync(CONTENT_DIR).filter((n) => n.endsWith(".md") && !n.startsWith("_"));
+  const names = fs.readdirSync(CONTENT_DIR).filter(
+    (n) => n.endsWith(".md") && !n.startsWith("_") && n.toLowerCase() !== "readme.md",
+  );
   const out: ArticleFull[] = [];
 
   for (const name of names) {
@@ -68,7 +70,7 @@ let mergedCache: ArticleFull[] | null = null;
  * في التطوير يُعاد القراءة كل مرة لتسهيل التعديل على الملفات.
  */
 export function getMergedBlogArticles(): ArticleFull[] {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "development" || process.env.TASARUBAT_STATIC_EXPORT === "1") {
     mergedCache = null;
   }
   if (mergedCache) return mergedCache;

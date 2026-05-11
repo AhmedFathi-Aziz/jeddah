@@ -105,7 +105,11 @@ const getAllMergedFromDisk = unstable_cache(
 );
 
 const getAllArticles = cache(async (): Promise<ArticleFull[]> => {
-  const raw = await getAllMergedFromDisk();
+  /** مع ‎TASARUBAT_STATIC_EXPORT‎ لا نستخدم ‎unstable_cache‎ حتى لا تُخزَّن قائمة فارغة/قديمة بين مراحل توليد الصفحات على بيئة البناء. */
+  const raw =
+    process.env.TASARUBAT_STATIC_EXPORT === "1"
+      ? await getAllMergedUncached()
+      : await getAllMergedFromDisk();
   return raw.map(hydrateArticleFull);
 });
 
