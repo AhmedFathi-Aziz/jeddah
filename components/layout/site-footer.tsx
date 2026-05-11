@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Phone, MapPin } from "lucide-react";
 
-import { siteConfig } from "@/lib/site-config";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 export function SiteFooter({
   phone,
@@ -78,6 +78,11 @@ export function SiteFooter({
               <Link href="/contact" className="hover:text-primary hover:underline">
                 اتصل بنا
               </Link>
+            </li>
+            <li>
+              <a href={absUrl("/sitemap.xml")} className="hover:text-primary hover:underline">
+                خريطة الموقع
+              </a>
             </li>
           </ul>
         </nav>

@@ -79,6 +79,7 @@ export default function RootLayout({
       <head>
         <link rel="dns-prefetch" href="//lh3.googleusercontent.com" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
+        <link rel="sitemap" type="application/xml" title="Sitemap" href={absUrl("/sitemap.xml")} />
       </head>
       <body lang="ar-SA" dir="rtl" className="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased text-start">
         <GoogleAnalytics />
