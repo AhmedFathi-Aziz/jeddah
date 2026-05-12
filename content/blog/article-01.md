@@ -8,7 +8,7 @@ excerpt: >-
   تعرف على أسباب التسرب وطرق الكشف بدون تكسير وأفضل شركات العزل وكشف
   التسربات في جدة.
 coverSrc: >-
-  https://res.cloudinary.com/dq5fx6ndl/image/upload/v1778455316/%D8%B4%D8%B1%D9%83%D8%A9_%D8%AA%D9%86%D8%B8%D9%8A%D9%81_%D9%88%D8%B1%D8%B4_%D8%AD%D8%B4%D8%B1%D8%A7%D8%AA_%D8%A8%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6_qnp77l.png
+  https://res.cloudinary.com/dq5fx6ndl/image/upload/v1778338775/%D8%AE%D8%AF%D9%85%D8%A7%D8%AA_%D8%A7%D9%84%D8%B9%D8%B2%D9%84_%D9%88%D8%A7%D9%84%D8%AA%D8%B3%D8%B1%D8%A8%D8%A7%D8%AA_-_%D8%AC%D8%AF%D8%A9_lucfra.png
 coverAlt: كشف تسربات المياه في المنزل بجدة باستخدام أجهزة حديثة
 coverWidth: 800
 coverHeight: 320
