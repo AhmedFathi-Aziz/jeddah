@@ -5,6 +5,7 @@ import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { getMarkdownHeadingIds } from "@/lib/articles/markdown-toc";
+import { optimizeArticleImageSrc } from "@/lib/article-image-url";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -36,14 +37,24 @@ function buildHeadingComponents(ids: string[]): Components {
     ),
     h4: "h5",
     h5: "h6",
-    img: ({ alt, src, node: _node, ...props }) => {
+    img: (props) => {
+      const { alt, src, node: _node, ...rest } = props;
+      void _node;
       const resolvedAlt =
         typeof alt === "string" && alt.trim() !== ""
           ? alt
           : "صورة توضيحية ضمن مقال عن كشف التسربات والعزل في جدة";
+      const raw = typeof src === "string" ? src : "";
+      const optimized = optimizeArticleImageSrc(raw);
       return (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={typeof src === "string" ? src : ""} alt={resolvedAlt} {...props} />
+        <img
+          {...rest}
+          src={optimized}
+          alt={resolvedAlt}
+          loading="lazy"
+          decoding="async"
+        />
       );
     },
   };

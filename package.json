@@ -22,7 +22,10 @@
     "db:migrate:local": "wrangler d1 migrations apply tasarubat-articles --local",
     "db:migrate:remote": "wrangler d1 migrations apply tasarubat-articles --remote",
     "process-logo": "node scripts/remove-logo-black-bg.cjs",
-    "index:google": "node scripts/google-indexing-notify.cjs"
+    "images:optimize-public": "node scripts/optimize-public-images.mjs",
+    "index:google": "node scripts/google-indexing-notify.cjs",
+    "index:indexnow": "node scripts/indexnow-notify.mjs",
+    "index:indexnow:sitemap": "node scripts/indexnow-notify.mjs --from-sitemap"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

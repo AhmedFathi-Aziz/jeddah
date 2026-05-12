@@ -11,12 +11,14 @@ import { GlobalJsonLd } from "@/components/seo/global-json-ld";
 import { images } from "@/lib/images";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
+/** خط عربي مُحمَّل عبر ‎next/font‎ (بدون ‎@import‎) لتقليل حجز النص وتحسين CLS مقارنةً بخطوط الطرف الثالث. */
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
   adjustFontFallback: true,
+  preload: true,
 });
 
 export const viewport: Viewport = {
@@ -79,6 +81,8 @@ export default function RootLayout({
       <head>
         <link rel="dns-prefetch" href="//lh3.googleusercontent.com" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="//res.cloudinary.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="sitemap" type="application/xml" title="Sitemap" href={absUrl("/sitemap.xml")} />
       </head>
       <body lang="ar-SA" dir="rtl" className="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased text-start">

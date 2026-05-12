@@ -42,6 +42,11 @@ const sharedRemotePatterns = [
     hostname: "placehold.co",
     pathname: "/**",
   },
+  {
+    protocol: "https",
+    hostname: "res.cloudinary.com",
+    pathname: "/**",
+  },
 ];
 
 /** @type {import('next').NextConfig} */

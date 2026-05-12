@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { optimizeArticleImageSrc } from "@/lib/article-image-url";
 import { cn } from "@/lib/utils";
 
 /**
@@ -12,7 +13,11 @@ function isNextOptimizedSrc(src: string): boolean {
     const u = new URL(src);
     if (u.protocol !== "https:" && u.protocol !== "http:") return false;
     const host = u.hostname.toLowerCase();
-    return host === "placehold.co" || host === "lh3.googleusercontent.com";
+    return (
+      host === "placehold.co" ||
+      host === "lh3.googleusercontent.com" ||
+      host === "res.cloudinary.com"
+    );
   } catch {
     return false;
   }
@@ -48,13 +53,14 @@ type PropsFill = {
 export function ArticleCoverImage(props: PropsFixed | PropsFill) {
   const { src, alt, title, className, sizes, priority, fetchPriority, quality } = props;
   const resolvedTitle = title ?? alt;
+  const displaySrc = optimizeArticleImageSrc(src);
 
   if ("fill" in props && props.fill) {
     if (isNextOptimizedSrc(src)) {
       return (
         <Image
           fill
-          src={src}
+          src={displaySrc}
           alt={alt}
           title={resolvedTitle}
           className={className}
@@ -70,7 +76,7 @@ export function ArticleCoverImage(props: PropsFixed | PropsFill) {
         {/* روابط صور من لوحة التحكم — `<Image />` يتطلب قائمة نطاقات في `next.config` */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={src}
+          src={displaySrc}
           alt={alt}
           title={resolvedTitle}
           className={cn("absolute inset-0 h-full w-full object-cover", className)}
@@ -87,7 +93,7 @@ export function ArticleCoverImage(props: PropsFixed | PropsFill) {
   if (isNextOptimizedSrc(src)) {
     return (
       <Image
-        src={src}
+        src={displaySrc}
         alt={alt}
         title={resolvedTitle}
         width={width}
@@ -105,7 +111,7 @@ export function ArticleCoverImage(props: PropsFixed | PropsFill) {
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={src}
+        src={displaySrc}
         alt={alt}
         title={resolvedTitle}
         width={width}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FileBadge2, ScanSearch, Wrench } from "lucide-react";
 
 import { images } from "@/lib/images";
@@ -48,16 +49,14 @@ export function HomeLeaksFeatureBoxes() {
             className="overflow-hidden rounded-2xl border border-[#d7e8ee] bg-white text-right shadow-[0_14px_32px_-26px_rgba(20,67,86,0.8)]"
           >
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#eef6f8]">
-              {/* <img> مباشرة من public — يضمن ظهور الصور في كل بيئات النشر دون كاش تحسين Next */}
-              <img
+              <Image
+                fill
                 src={card.image.src}
                 alt={card.image.alt}
                 title={card.image.title}
-                width={card.image.width}
-                height={card.image.height}
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                 loading="lazy"
-                decoding="async"
-                className="absolute inset-0 h-full w-full object-cover"
+                className="object-cover"
               />
             </div>
 

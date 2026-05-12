@@ -76,7 +76,7 @@ export const images = {
   },
   /** غلاف محلي — كشف تسربات المياه في جدة (بانر تسويقي) */
   articleLeakJeddahHero: {
-    src: "/images/blog/kashf-tasrabat-miah-jeddah-cover.png",
+    src: "/images/blog/kashf-tasrabat-miah-jeddah-cover.webp",
     alt: "فني كشف تسربات المياه في جدة يستخدم أجهزة حديثة للكشف عن التسرب في الجدران بدون تكسير",
     title: "كشف تسربات المياه بجدة — أجهزة حديثة بدون تكسير",
     width: 1200,
@@ -91,7 +91,7 @@ export const images = {
     height: 583,
   },
   leakLocalTools02: {
-    src: "/images/leaks/tools-02.png",
+    src: "/images/leaks/tools-02.webp",
     alt: "فني كشف تسربات في جدة يفحص التسرب بجهاز ميداني دقيق",
     title: "فحص تسربات ميداني دقيق — جدة",
     width: 1600,
