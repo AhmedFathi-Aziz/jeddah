@@ -1,17 +1,33 @@
 import { safeArticleDate } from "@/lib/articles/article-date";
 import { isVisualCoverPlaceholder } from "@/lib/articles/cover-display";
+import type { TocEntry } from "@/lib/articles/markdown-toc";
 import type { ArticleFull } from "@/lib/articles/types";
 import { images } from "@/lib/images";
 import { SCHEMA_ORGANIZATION_ID, SCHEMA_WEBSITE_ID } from "@/lib/seo/schema-ids";
 import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
 import { absImageSrc, absUrl, siteConfig } from "@/lib/site-config";
 
-export function ArticleJsonLd({ article }: { article: ArticleFull }) {
+export function ArticleJsonLd({ article, toc = [] }: { article: ArticleFull; toc?: TocEntry[] }) {
   const published = safeArticleDate(article.createdAt).toISOString();
   const articleUrl = absUrl(`/blog/${article.slug}`);
   const imageUrl = isVisualCoverPlaceholder(article.cover.src)
     ? images.blogStains.src
     : absImageSrc(article.cover.src);
+
+  const tocList =
+    toc.length > 0
+      ? {
+          "@type": "ItemList",
+          "@id": `${articleUrl}#toc`,
+          name: "جدول المحتويات",
+          itemListElement: toc.map((entry, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: entry.text,
+            url: `${articleUrl}#${entry.id}`,
+          })),
+        }
+      : null;
 
   const data = {
     "@context": "https://schema.org",
@@ -43,7 +59,9 @@ export function ArticleJsonLd({ article }: { article: ArticleFull }) {
         author: { "@type": "Organization", "@id": SCHEMA_ORGANIZATION_ID, name: siteConfig.name },
         publisher: { "@id": SCHEMA_ORGANIZATION_ID },
         isPartOf: { "@id": SCHEMA_WEBSITE_ID, "@type": "WebSite" },
+        ...(tocList ? { hasPart: { "@id": `${articleUrl}#toc` } } : {}),
       },
+      ...(tocList ? [tocList] : []),
     ],
   };
 

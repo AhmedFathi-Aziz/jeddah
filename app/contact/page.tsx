@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { WhatsAppLogo } from "@/components/icons/whatsapp-logo";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -138,7 +139,7 @@ export default function ContactPage() {
                   "h-11 rounded-xl border-[#8cc7d2] px-6 font-semibold text-[#154c69] hover:bg-[#edf8fa]",
                 )}
               >
-                <MessageCircle className="size-4 shrink-0" aria-hidden />
+                <WhatsAppLogo className="size-4 shrink-0 text-[#25D366]" />
                 واتساب
               </a>
             )}
@@ -229,7 +230,7 @@ export default function ContactPage() {
                         "inline-flex w-full flex-row-reverse items-center justify-center gap-2 rounded-xl border-[#8cc7d2] font-semibold text-[#154c69] hover:bg-[#edf8fa]",
                       )}
                     >
-                      <MessageCircle className="size-4 shrink-0" aria-hidden />
+                      <WhatsAppLogo className="size-4 shrink-0 text-[#25D366]" />
                       فتح واتساب
                     </a>
                   </div>

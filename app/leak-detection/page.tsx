@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Activity, SearchCheck, Wrench } from "lucide-react";
 
+import { WhatsAppLogo } from "@/components/icons/whatsapp-logo";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { buttonVariants } from "@/components/ui/button";
 import { jeddahDistricts } from "@/lib/coverage-data";
@@ -294,9 +295,10 @@ export default function LeakDetectionPage() {
             rel="noopener noreferrer"
             className={cn(
               buttonVariants({ variant: "outline", size: "lg" }),
-              "h-11 rounded-xl border-[#cfd8dd] px-6 font-semibold text-[#154c69] hover:bg-[#eef2f4]",
+              "inline-flex h-11 items-center gap-2 rounded-xl border-[#25D366]/50 bg-[#25D366] px-6 font-semibold text-white hover:bg-[#20bd5a]",
             )}
           >
+            <WhatsAppLogo className="size-5 shrink-0 text-white" />
             إرسال الحالة عبر واتساب
           </a>
         </div>

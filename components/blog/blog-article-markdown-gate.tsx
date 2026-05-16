@@ -16,8 +16,11 @@ const BlogArticleMarkdownClient = dynamic(
   },
 );
 
-type Props = { markdown: string };
+type Props = {
+  markdown: string;
+  presetHeadingIds?: string[];
+};
 
-export function BlogArticleMarkdownGate({ markdown }: Props) {
-  return <BlogArticleMarkdownClient markdown={markdown} />;
+export function BlogArticleMarkdownGate({ markdown, presetHeadingIds }: Props) {
+  return <BlogArticleMarkdownClient markdown={markdown} presetHeadingIds={presetHeadingIds} />;
 }

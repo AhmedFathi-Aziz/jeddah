@@ -33,6 +33,29 @@ export type TocEntry = {
   id: string;
 };
 
+export type TocNode = TocEntry & { children: TocNode[] };
+
+/** يبني شجرة عناوين متداخلة (h2 ← h3 ← h4) لجدول محتويات هرمي وصديق لمحركات البحث */
+export function buildTocTree(items: TocEntry[]): TocNode[] {
+  const root: TocNode[] = [];
+  const stack: TocNode[] = [];
+
+  for (const item of items) {
+    const node: TocNode = { ...item, children: [] };
+    while (stack.length > 0 && stack[stack.length - 1]!.level >= item.level) {
+      stack.pop();
+    }
+    if (stack.length === 0) {
+      root.push(node);
+    } else {
+      stack[stack.length - 1]!.children.push(node);
+    }
+    stack.push(node);
+  }
+
+  return root;
+}
+
 export function buildMarkdownToc(markdown: string): TocEntry[] {
   const entries: TocEntry[] = [];
   const counts = new Map<string, number>();
@@ -53,4 +76,12 @@ export function buildMarkdownToc(markdown: string): TocEntry[] {
 
 export function getMarkdownHeadingIds(markdown: string): string[] {
   return buildMarkdownToc(markdown).map((e) => e.id);
+}
+
+/** يحذف أول عنوان (#) إن وُجدت أقسام لاحقة — يتجنب تكرار عنوان المقال في جدول المحتويات */
+export function getTocDisplayEntries(items: TocEntry[]): TocEntry[] {
+  if (items.length > 1 && items[0]?.level === 2) {
+    return items.slice(1);
+  }
+  return items;
 }

@@ -3,7 +3,11 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ChevronLeft, Mail } from "lucide-react";
 
+import { ArticleRecentPostsPanel } from "@/components/blog/article-recent-posts-panel";
+import { ArticleStickyCta } from "@/components/blog/article-sticky-cta";
+import { ArticleTableOfContents } from "@/components/blog/article-table-of-contents";
 import { BlogArticleMarkdownGate } from "@/components/blog/blog-article-markdown-gate";
+import { buildMarkdownToc, getTocDisplayEntries } from "@/lib/articles/markdown-toc";
 import { ArticleHeroSection } from "@/components/blog/article-hero-section";
 import { RequestInspectionBox } from "@/components/layout/request-inspection-box";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
@@ -82,14 +86,16 @@ export default async function BlogArticlePage({ params }: Props) {
   if (!articlePathSlugMatchesStored(slug, article.slug)) {
     redirect(`/blog/${article.slug}`);
   }
-  const relatedPosts = await listRecentRelatedArticleCards(article.id, 3);
+  const recentPosts = await listRecentRelatedArticleCards(article.id, 4);
+  const toc = buildMarkdownToc(article.content);
+  const tocDisplay = getTocDisplayEntries(toc);
 
   return (
     <>
-      <ArticleJsonLd article={article} />
+      <ArticleJsonLd article={article} toc={tocDisplay} />
       <main className="mx-auto max-w-7xl px-6 pb-20 pt-8 text-right md:pt-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-          <article className="lg:col-span-8">
+          <article className="min-w-0 lg:col-span-9">
             <nav className="mb-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               <Link href="/" className="hover:text-primary">
                 الرئيسية
@@ -132,8 +138,43 @@ export default async function BlogArticlePage({ params }: Props) {
             />
 
             <div className="rounded-2xl border border-[#d9dee2] bg-white p-6 md:p-8">
-              <p className="sr-only">{article.excerpt}</p>
-              <BlogArticleMarkdownGate markdown={article.content} />
+              {article.excerpt ? (
+                <p className="mb-8 border-b border-[#d9dee2]/70 pb-6 text-lg leading-relaxed text-[#1b5a73] md:text-xl">
+                  {article.excerpt}
+                </p>
+              ) : null}
+
+              <ArticleRecentPostsPanel posts={recentPosts} compact className="mb-6 lg:hidden" />
+              <ArticleStickyCta
+                phone={siteConfig.phone}
+                phoneDisplay={siteConfig.phoneDisplay}
+                className="mb-6 lg:hidden"
+              />
+              {tocDisplay.length > 0 ? (
+                <ArticleTableOfContents items={tocDisplay} className="lg:hidden" />
+              ) : null}
+
+              <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(240px,300px)] lg:gap-10 lg:items-start">
+                <div className="min-w-0">
+                  <BlogArticleMarkdownGate
+                    markdown={article.content}
+                    presetHeadingIds={toc.map((e) => e.id)}
+                  />
+                </div>
+
+                <aside className="hidden lg:block">
+                  <div className="sticky top-24 space-y-4">
+                    <ArticleRecentPostsPanel posts={recentPosts} compact />
+                    <ArticleStickyCta
+                      phone={siteConfig.phone}
+                      phoneDisplay={siteConfig.phoneDisplay}
+                    />
+                    {tocDisplay.length > 0 ? (
+                      <ArticleTableOfContents items={tocDisplay} variant="sidebar" />
+                    ) : null}
+                  </div>
+                </aside>
+              </div>
             </div>
 
             <footer className="mt-12 border-t border-[#d9dee2] pt-6">
@@ -146,27 +187,10 @@ export default async function BlogArticlePage({ params }: Props) {
             </footer>
           </article>
 
-          <aside className="space-y-6 lg:col-span-4">
+          <aside className="space-y-6 lg:col-span-3">
             <RequestInspectionBox phone={siteConfig.phone} />
 
-            <Card className="border-0 ring-0 bg-[#f8fbfc] shadow-[0_12px_30px_-20px_rgba(19,66,89,0.32)]">
-              <CardHeader>
-                <CardTitle className="text-[#163d57]">مقالات ذات صلة</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {relatedPosts.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    className="block rounded-lg border-0 bg-white px-4 py-3 text-sm font-semibold leading-relaxed text-[#1b5a73] shadow-[0_10px_24px_-18px_rgba(19,66,89,0.28)] hover:bg-[#eef7f9] hover:text-[#163d57]"
-                  >
-                    {post.title}
-                  </Link>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.32)]">
+            <Card className="border border-[#d9dee2] bg-white shadow-sm ring-0">
               <CardHeader>
                 <CardTitle className="flex items-center justify-center gap-2 text-[#163d57]">
                   <Mail className="size-4" aria-hidden />

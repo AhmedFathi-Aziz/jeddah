@@ -8,3 +8,11 @@ export function safeArticleDate(value: unknown): Date {
 export function articleDateLocaleLong(value: unknown, locale = "ar-SA"): string {
   return safeArticleDate(value).toLocaleDateString(locale, { dateStyle: "long" });
 }
+
+export function articleDateLocaleShort(value: unknown, locale = "ar-SA"): string {
+  return safeArticleDate(value).toLocaleDateString(locale, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
