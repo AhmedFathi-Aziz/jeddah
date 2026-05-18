@@ -65,6 +65,16 @@ export function SiteFooter({
               </Link>
             </li>
             <li>
+              <Link href="/#encyclopedia" className="hover:text-primary hover:underline">
+                الموسوعة
+              </Link>
+            </li>
+            <li>
+              <Link href="/#keywords" className="hover:text-primary hover:underline">
+                دليل البحث
+              </Link>
+            </li>
+            <li>
               <Link href="/#faq" className="hover:text-primary hover:underline">
                 الأسئلة الشائعة
               </Link>

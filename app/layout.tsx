@@ -9,6 +9,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GlobalJsonLd } from "@/components/seo/global-json-ld";
 import { images } from "@/lib/images";
+import { ALL_SITE_KEYWORDS, PRIMARY_KEYWORDS } from "@/lib/seo/keyword-clusters";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 /** خط عربي مُحمَّل عبر ‎next/font‎ (بدون ‎@import‎) لتقليل حجز النص وتحسين CLS مقارنةً بخطوط الطرف الثالث. */
@@ -29,17 +30,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default:
-      "كشف تسربات المياه جدة | عزل أسطح وخزانات وفوم بجدة — جدة للتسربات والعزل",
+      "كشف تسربات المياه جدة | عزل أسطح وخزانات وفوم — شركة متخصصة | جدة للتسربات والعزل",
     template: `%s | ${siteConfig.name}`,
   },
   description:
-    "شركة متخصصة في كشف تسربات المياه بجدة بدون تكسير، عزل أسطح ومائي وحراري، عزل خزانات وفوم بالمملكة العربية السعودية. معاينات، وتقارير فنية وتغطية أحياء جدة.",
-  keywords: [
-    "كشف تسربات المياه جدة",
-    "عزل أسطح جدة",
-    "عزل خزانات",
-    "عزل فوم جدة",
-  ],
+    "المرجع الأول في جدة لكشف تسربات المياه بدون تكسير والعزل المائي والحراري: أسطح، خزانات، فوم، حمامات، تقارير معتمدة، 60 حيّاً، وموسوعة كاملة للبحث عن أي خدمة تخص التسربات والعزل.",
+  keywords: [...PRIMARY_KEYWORDS, ...ALL_SITE_KEYWORDS],
   alternates: {
     canonical: absUrl("/"),
   },

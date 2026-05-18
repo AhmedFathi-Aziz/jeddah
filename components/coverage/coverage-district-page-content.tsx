@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { ArrowLeft, Phone } from "lucide-react";
+import { ArrowLeft, Phone, Shield, Droplets, Thermometer } from "lucide-react";
 
 import { RequestInspectionBox } from "@/components/layout/request-inspection-box";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { jeddahDistricts, type ResolvedCoverageDistrict } from "@/lib/coverage-data";
+import { getDistrictHighlight } from "@/lib/seo/coverage-district-highlights";
+import { getDistrictFaqItems } from "@/lib/seo/coverage-district-seo";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 
@@ -12,126 +14,64 @@ type Props = {
   row: ResolvedCoverageDistrict;
 };
 
-const districtHighlights: Record<
-  string,
-  { intro: string; painPoint: string; focus: string; note: string }
-> = {
-  "al-shatie": {
-    intro: "في حي الشاطئ تزداد تحديات الرطوبة بسبب القرب من الساحل، لذلك نعتمد فحصًا دقيقًا قبل أي معالجة.",
-    painPoint: "أكثر ما يزعج العملاء هو تكرار بقع الرطوبة وارتفاع الفاتورة دون معرفة السبب الحقيقي.",
-    focus: "نركز على كشف مصدر التسرب أولًا ثم تحديد الحل الأنسب للجدران والأسطح والخزانات.",
-    note: "التدخل المبكر يقلل كثيرًا من تكاليف الصيانة ويمنع تلف التشطيبات.",
+const SERVICE_LINKS = [
+  {
+    href: "/leak-detection",
+    title: "كشف تسربات المياه بدون تكسير",
+    desc: "فحص حراري وصوتي وتقرير واضح قبل الإصلاح.",
+    Icon: Droplets,
   },
-  "al-marjan": {
-    intro: "خدمة حي المرجان مصممة للمباني السكنية الحديثة التي تحتاج كشفًا غير هدّام قدر الإمكان.",
-    painPoint: "الشكوى المتكررة تكون من ارتفاع مفاجئ في فاتورة المياه مع عدم وجود تسريب ظاهر.",
-    focus: "نستخدم فحصًا إلكترونيًا لتحديد مكان الخلل بدقة قبل بدء الإصلاح.",
-    note: "التقرير الواضح يساعد المالك على اتخاذ قرار سريع ودقيق.",
+  {
+    href: "/insulation",
+    title: "عزل أسطح وخزانات بجدة",
+    desc: "فوم وإيبوكسي وبيتومين مع ضمان يصل إلى 10 سنوات.",
+    Icon: Thermometer,
   },
-  "al-muhammadiyah": {
-    intro: "في حي المحمدية نهتم بسرعة الاستجابة لأن التأخير يزيد احتمال توسع الرطوبة داخل المبنى.",
-    painPoint: "ألم العميل غالبًا يكون في تضخم الفاتورة والحاجة لتوثيق فني واضح.",
-    focus: "ننفذ مسار عمل يبدأ بالمعاينة ثم الفحص ثم الإصلاح بخطة مكتوبة.",
-    note: "المعالجة المبكرة تمنع تدهور العزل وتقلل الإصلاحات المستقبلية.",
+  {
+    href: "/smart-leak-diagnosis",
+    title: "المشخّص الذكي للتسربات",
+    desc: "تقييم أولي سريع قبل حجز الزيارة الميدانية.",
+    Icon: Shield,
   },
-  "al-naim": {
-    intro: "خدماتنا في حي النعيم تركز على الكشف السريع للتسربات الداخلية والخارجية.",
-    painPoint: "كثير من الحالات تأتي بعد ملاحظة رائحة رطوبة أو ضعف ضغط مفاجئ.",
-    focus: "نحدد نقطة التسرب بدقة ثم نقدم خيارات علاج عملية حسب حالة الشبكة.",
-    note: "كل خطوة تكون موضحة للعميل لتجنب أي لبس أثناء التنفيذ.",
-  },
-  "al-salamah": {
-    intro: "في حي السلامة نقدم خدمة كشف تسربات وعزل متكاملة للمنازل والعمائر.",
-    painPoint: "أغلب العملاء يريدون حلًا فعليًا يوقف المشكلة بدل المعالجات المؤقتة.",
-    focus: "نعتمد على فحص تقني وتقرير مبسط يوضح السبب الجذري للتسرب.",
-    note: "الهدف هو إنهاء المشكلة مع أقل أثر على التشطيبات.",
-  },
-  "ar-rawdah": {
-    intro: "خدمة حي الروضة مبنية على الخبرة في معالجة التسربات المتكررة في دورات المياه والمطابخ.",
-    painPoint: "العميل يبحث عن شركة تفهم مشكلة الفاتورة وتقدم تقريرًا معتمدًا عند الحاجة.",
-    focus: "نبدأ بفحص شامل ثم نعالج مصدر الخلل مباشرة بخامات مناسبة.",
-    note: "المتابعة بعد الإصلاح جزء مهم لضمان ثبات النتيجة.",
-  },
-  "al-hamra": {
-    intro: "في حي الحمراء نهتم بالكشف المبكر لأن الرطوبة الخفية قد تتطور سريعًا داخل الجدران.",
-    painPoint: "التحدي الأكبر يكون في اكتشاف السبب الحقيقي قبل أي تكسير عشوائي.",
-    focus: "ننفذ كشفًا احترافيًا يحدد مكان التسرب ثم نضع خطة إصلاح واضحة.",
-    note: "هذا الأسلوب يحافظ على الوقت ويقلل التكلفة الإجمالية.",
-  },
-  "as-samer": {
-    intro: "خدمة حي السامر تجمع بين كشف التسربات والعزل الوقائي للحد من تكرار المشكلة.",
-    painPoint: "غالبًا ما يطلب العملاء حلاً نهائيًا بعد تجارب سابقة غير دقيقة.",
-    focus: "نركز على السبب الحقيقي للتسرب وتوثيق كل مرحلة بوضوح.",
-    note: "كلما كان التشخيص دقيقًا كانت نتيجة الإصلاح أفضل وأكثر استدامة.",
-  },
-  "al-hamdaniyah": {
-    intro: "في حي الحمدانية نوفر فحصًا ميدانيًا سريعًا مع تحديد دقيق لمصدر التسرب.",
-    painPoint: "الوجع الأساسي هو ارتفاع الفاتورة بشكل غير منطقي والحاجة إلى تقرير رسمي.",
-    focus: "نطبق منهجًا واضحًا من الحجز إلى الفحص ثم الإصلاح والضمان.",
-    note: "المعالجة المبكرة تساعد على حماية البنية وتقليل الهدر.",
-  },
-  "al-faysaliyah": {
-    intro: "خدمة حي الفيصلية موجهة للحالات التي تحتاج تشخيصًا احترافيًا دون تعطيل طويل.",
-    painPoint: "كثير من البلاغات تبدأ من مؤشرات بسيطة ثم تتضح كحالات تسرب خفي.",
-    focus: "نحدد مكان الخلل أولًا ثم نقدم حلًا مناسبًا لطبيعة الموقع.",
-    note: "الوضوح في التقرير يسهل متابعة الإجراءات المطلوبة.",
-  },
-  "as-safa": {
-    intro: "في حي الصفا نعالج التسربات بأجهزة دقيقة مع أولوية لسلامة التشطيبات.",
-    painPoint: "العملاء يهتمون بسرعة حل المشكلة خاصة عند وجود ارتفاع واضح في الفاتورة.",
-    focus: "نقدم كشفًا إلكترونيًا وتقريرًا واضحًا مع توصيات إصلاح عملية.",
-    note: "الجودة في التنفيذ تقلل احتمالات رجوع المشكلة.",
-  },
-  "al-aziziyah": {
-    intro: "خدمات حي العزيزية تغطي كشف التسربات والعزل للأسطح والخزانات وخطوط التغذية.",
-    painPoint: "أكثر ما يسبب القلق هو صعوبة تحديد المصدر بدقة من أول زيارة.",
-    focus: "نستخدم أدوات فحص حديثة للوصول إلى السبب الجذري بسرعة.",
-    note: "هذا يقلل تكرار الأعطال ويوفر على العميل مصاريف إضافية.",
-  },
-  abhur: {
-    intro: "في حي أبحر نوفر خدمة متخصصة تناسب الظروف الساحلية وتأثير الرطوبة.",
-    painPoint: "العملاء غالبًا يبحثون عن شركة معتمدة تفهم مشكلة الفاتورة والتقرير الرسمي.",
-    focus: "نبدأ بكشف دقيق للتسرب ثم إصلاح مناسب مع توثيق واضح للحالة.",
-    note: "الاستجابة السريعة هنا تصنع فرقًا كبيرًا في تقليل الأضرار.",
-  },
-};
+] as const;
 
 export function CoverageDistrictPageContent({ row }: Props) {
   const tel = `tel:${siteConfig.phone}`;
-  const districtHeadline = `أفضل شركة كشف تسربات في ${row.district} بجدة`;
-  const districtContent = districtHighlights[row.slug] ?? {
-    intro: `في ${row.district} نقدم خدمة كشف تسربات احترافية مبنية على فحص دقيق وتشخيص واضح.`,
-    painPoint: "يركز العملاء عادة على حل ارتفاع الفاتورة ومعرفة سبب المشكلة بدقة.",
-    focus: "ننفذ خطة عمل منظمة من المعاينة وحتى الإصلاح النهائي.",
-    note: "التدخل المبكر يمنع توسع الأضرار ويحافظ على التشطيبات.",
-  };
+  const districtContent = getDistrictHighlight(row.slug, row.district);
+  const faqItems = getDistrictFaqItems(row.district, row.city.nameAr);
+
   const howSteps = [
-    "الاتصال والحجز: نستقبل الطلب ونحدد موعدًا مناسبًا حسب موقعك داخل الحي.",
-    "الفحص الإلكتروني: نستخدم أجهزة كشف دقيقة (بدون تكسير عشوائي) للوصول لمصدر الخلل.",
-    "تحديد المشكلة: نحدد نقطة التسرب في الخزان أو الحمام أو المطبخ أو الشبكة الداخلية.",
-    "الإصلاح والضمان: ننفذ المعالجة بخامات مناسبة مع توضيح الضمان والتوصيات.",
+    `الاتصال والحجز: نستقبل طلبك في ${row.district} ونحدد موعدًا مناسبًا داخل الحي.`,
+    "الفحص الإلكتروني: أجهزة حرارية وصوتية لتحديد مصدر التسرب دون تكسير عشوائي.",
+    "تحديد المشكلة: توثيق النقطة في الخزان أو الحمام أو السطح أو الشبكة الداخلية.",
+    "الإصلاح والضمان: معالجة بالخامات المناسبة مع توضيح الضمان والتوصيات الوقائية.",
   ] as const;
+
   const tips = [
     "إغلاق المحابس الرئيسية عند مغادرة المنزل لفترات طويلة.",
     "فحص الخزان الأرضي دوريًا للتأكد من عدم وجود تشققات.",
     "مراقبة عداد المياه في وقت عدم الاستهلاك لاكتشاف أي تسرب خفي.",
     "تطبيق عزل مائي وحراري مناسب للأسطح للحد من الرطوبة والتلف.",
-    "طلب تقرير كشف تسربات معتمد فور ملاحظة ارتفاع غير منطقي في الفاتورة.",
+    `طلب تقرير كشف تسربات معتمد فور ملاحظة ارتفاع غير منطقي في الفاتورة في ${row.district}.`,
   ] as const;
+
   const searchPhrases = [
-    `أفضل شركة كشف تسربات في ${row.district} بجدة`,
-    `شركة كشف تسربات معتمدة في ${row.district}`,
-    `كشف تسربات المياه بدون تكسير في ${row.district}`,
-    `فحص تسربات الخزانات والأسطح في ${row.district}`,
-    `علاج ارتفاع فاتورة المياه في ${row.district}`,
-    `فني كشف تسربات منازل وفلل في ${row.district}`,
+    `كشف تسربات المياه في ${row.district} جدة`,
+    `شركة كشف تسربات ${row.district}`,
+    `عزل أسطح ${row.district}`,
+    `عزل خزانات ${row.district}`,
+    `كشف تسربات بدون تكسير ${row.district}`,
+    `فني كشف تسربات ${row.district}`,
+    `ارتفاع فاتورة المياه ${row.district}`,
   ] as const;
+
   const quickFacts = [
-    `نطاق الخدمة: ${row.district} وما حوله داخل ${row.city.nameAr}.`,
-    "نوع الفحص: تشخيص دقيق قبل بدء أي معالجة.",
-    "أسلوب التنفيذ: خطوات واضحة مع شرح فني مبسط للعميل.",
-    "الهدف: حل المشكلة من جذورها وتقليل احتمالات تكرارها.",
+    `نطاق الخدمة: ${row.district} ومحيطه داخل ${row.city.nameAr}.`,
+    "الفحص: تشخيص إلكتروني قبل أي معالجة أو تكسير.",
+    "العزل: أسطح، خزانات، حمامات — حسب حالة المبنى.",
+    "التقرير: توثيق فني عند الحاجة لمتابعة شركة المياه.",
   ] as const;
+
   const districtLinks = jeddahDistricts
     .filter((district) => district.id !== row.slug)
     .slice(0, 24);
@@ -139,23 +79,27 @@ export function CoverageDistrictPageContent({ row }: Props) {
   return (
     <>
       <Link
-        href="/#coverage"
+        href="/coverage"
         className={cn(
           buttonVariants({ variant: "ghost", size: "sm" }),
           "mb-6 inline-flex items-center gap-2 rounded-xl border-0 bg-white px-4 text-[#3c596d] shadow-[0_10px_24px_-18px_rgba(19,66,89,0.28)] hover:bg-[#f8fbfc]",
         )}
       >
         <ArrowLeft className="size-4" aria-hidden />
-        العودة لقسم الأحياء
+        دليل جميع أحياء جدة
       </Link>
 
-      <nav className="mb-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+      <nav aria-label="مسار التنقل" className="mb-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-primary">
           الرئيسية
         </Link>
         <ArrowLeft className="size-4" aria-hidden />
-        <Link href="/#coverage" className="hover:text-primary">
+        <Link href="/coverage" className="hover:text-primary">
           أحياء جدة
+        </Link>
+        <ArrowLeft className="size-4" aria-hidden />
+        <Link href="/#coverage" className="hover:text-primary">
+          خريطة الأحياء
         </Link>
         <ArrowLeft className="size-4" aria-hidden />
         <span className="font-semibold text-primary">{row.district}</span>
@@ -163,15 +107,21 @@ export function CoverageDistrictPageContent({ row }: Props) {
 
       <header className="mb-8 space-y-4 rounded-2xl border-0 bg-gradient-to-b from-[#f8fbfc] to-white p-6 shadow-[0_12px_30px_-20px_rgba(19,66,89,0.32)] md:p-8">
         <p className="text-base font-semibold text-muted-foreground">
-          {row.city.nameAr} — {row.district}
+          {row.city.nameAr} — خدمة ميدانية في {row.district}
         </p>
-        <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">{row.label}</h1>
+        <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">
+          {row.label}
+        </h1>
         <p className="text-lg leading-8 text-muted-foreground">
-          {districtContent.intro} {districtContent.painPoint} {districtContent.focus} {districtContent.note}
+          {districtContent.intro} {districtContent.painPoint} {districtContent.focus}{" "}
+          {districtContent.note}
         </p>
+        {districtContent.localContext ? (
+          <p className="text-base leading-8 text-muted-foreground">{districtContent.localContext}</p>
+        ) : null}
         <p className="text-lg leading-8 text-muted-foreground">
-          {districtHeadline} ليست مجرد عبارة دعائية، بل التزام عملي يبدأ من المعاينة الدقيقة، يمر بتحديد السبب الجذري
-          للمشكلة، وينتهي بتنفيذ معالجة واضحة المعالم تمنع تكرار الخلل قدر الإمكان.
+          نقدم في {row.district} كشف تسربات المياه والعزل المائي والحراري بخطة واضحة: معاينة، فحص،
+          تقرير، ثم إصلاح أو عزل يناسب منزلك أو عمارتك — مع أقل تأثير ممكن على التشطيبات.
         </p>
       </header>
 
@@ -181,7 +131,7 @@ export function CoverageDistrictPageContent({ row }: Props) {
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.35)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">معلومات سريعة عن الخدمة</CardTitle>
+              <CardTitle className="text-[#163d57]">معلومات سريعة — {row.district}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3 text-base leading-8 text-muted-foreground">
@@ -215,27 +165,53 @@ export function CoverageDistrictPageContent({ row }: Props) {
         </aside>
 
         <div className="space-y-8 lg:col-span-8">
+          <section aria-labelledby="local-services-heading">
+            <h2 id="local-services-heading" className="mb-4 text-2xl font-extrabold text-[#163d57]">
+              خدماتنا في {row.district}
+            </h2>
+            <ul className="grid gap-3 sm:grid-cols-3">
+              {SERVICE_LINKS.map(({ href, title, desc, Icon }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="flex h-full flex-col rounded-xl border border-[#e8edf0] bg-white p-4 text-right shadow-sm transition hover:border-[#c5dde8] hover:bg-[#f8fbfc]"
+                  >
+                    <Icon className="mb-2 size-5 text-[#1f7f8a]" aria-hidden />
+                    <span className="font-semibold text-[#163d57]">{title}</span>
+                    <span className="mt-1 text-sm leading-6 text-muted-foreground">{desc}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
               <CardTitle className="text-[#163d57]">ماذا نقدم في {row.district}؟</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
               <p>
-                نقدم فحصًا دقيقًا للتسربات باستخدام وسائل كشف غير هدّامة قدر الإمكان، مع تقرير مبسّط يوضح مصدر المشكلة وخيارات
-                المعالجة.
+                فحص دقيق للتسربات بوسائل غير هدّامة قدر الإمكان، مع تقرير يوضح مصدر المشكلة وخيارات
+                المعالجة — مناسب لمن يبحث عن كشف تسربات المياه في {row.district} بدون تكسير واسع.
               </p>
               <p>
-                عند الحاجة، ننفذ عزلًا مائيًا أو حراريًا حسب حالة السطح أو الخزان أو خطوط التغذية، مع مراعاة ظروف المناخ الساحلي
-                في {row.city.nameAr}. لذلك يبحث كثير من العملاء عن خدمات مثل كشف تسربات المياه بدون تكسير، وعزل الأسطح والخزانات
-                بمعايير تنفيذ واضحة.
+                عزل مائي وحراري للأسطح والخزانات والحمامات حسب حالة المبنى ومناخ {row.city.nameAr}.
+                ننفذ عزل فوم وإيبوكسي ولفائف بيتومينية بعد معاينة تحدد السماكة والمادة المناسبة.
               </p>
               <p>
-                إذا لاحظت ارتفاعًا مفاجئًا في الفاتورة أو بقع رطوبة أو ضعف ضغط، ننصح بجدولة معاينة مبكرة قبل توسّع الضرر، خاصة
-                في الحالات التي تحتاج فني كشف تسربات محترف داخل {row.district}.
+                عند ارتفاع الفاتورة أو بقع الرطوبة أو ضعف الضغط، ننصح بمعاينة مبكرة في {row.district}{" "}
+                قبل توسّع الضرر على الخرسانة والدهانات.
               </p>
               <p>
-                نقدم كذلك حلولًا متكاملة تشمل كشف تسربات الحمامات، كشف تسربات المطابخ، فحص تمديدات المياه الداخلية، ومعالجة
-                الرطوبة الصاعدة في الجدران قبل وصولها إلى مراحل أكثر تكلفة وتعقيدًا.
+                للتفاصيل العامة راجع{" "}
+                <Link href="/services" className="font-semibold text-[#1f7f8a] hover:underline">
+                  دليل الخدمات
+                </Link>{" "}
+                أو{" "}
+                <Link href="/#encyclopedia" className="font-semibold text-[#1f7f8a] hover:underline">
+                  موسوعة الموقع
+                </Link>
+                .
               </p>
             </CardContent>
           </Card>
@@ -244,77 +220,44 @@ export function CoverageDistrictPageContent({ row }: Props) {
             <CardHeader>
               <CardTitle className="text-[#163d57]">كيف نقوم بالكشف في {row.district}؟</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
-              {howSteps.map((step) => (
-                <p key={step}>{step}</p>
-              ))}
+            <CardContent>
+              <ol className="list-decimal space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
+                {howSteps.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
             </CardContent>
           </Card>
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">تحليل تفصيلي لمشكلات التسرب في {row.district}</CardTitle>
+              <CardTitle className="text-[#163d57]">
+                تحليل مشكلات التسرب والعزل في {row.district}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
               <p>
-                تختلف طبيعة التسربات من مبنى لآخر داخل {row.district}. بعض الحالات تكون بسبب خطوط تغذية قديمة أو وصلات ضعيفة داخل
-                دورات المياه والمطابخ، بينما تظهر حالات أخرى على شكل رطوبة صاعدة في الجدران نتيجة تسرب خفي مستمر. لذلك لا نعتمد
-                على التخمين، بل نبدأ بخطوات تشخيص دقيقة تشمل مراجعة الاستهلاك، متابعة سلوك العداد، وفحص نقاط الشبكة الأكثر عرضة
-                للأعطال.
+                تختلف طبيعة التسربات بين الشقق والفلل والعمائر في {row.district}. قد يكون السبب
+                مواسير قديمة، وصلات حمام مخفية، خزانًا علويًا، أو ضعف عزل سطح بعد الأمطار. لا
+                نعتمد التخمين: نراجع الاستهلاك وسلوك العداد ونفحص النقاط الأكثر عرضة للأعطال.
               </p>
               <p>
-                كثير من السكان في {row.district} مرّوا بتجارب سابقة فيها تكسير عشوائي بدون نتيجة واضحة. نهجنا
-                مختلف: نحدد نقطة الخلل أولًا ثم نوصي بأقل تدخل ممكن لتحقيق إصلاح فعلي. هذا الأسلوب يوفر الوقت، ويحمي التشطيبات،
-                ويمنع تكرار نفس المشكلة خلال فترة قصيرة، خصوصًا في طلبات كشف تسربات الحمامات والمطابخ وتمديدات المياه الداخلية.
+                كثير من السكان جرّبوا تكسيرًا عشوائيًا دون نتيجة. نهجنا: تحديد النقطة أولًا ثم أقل
+                تدخل ممكن — يوفر الوقت ويحمي السيراميك والدهانات في {row.district}.
               </p>
               <p>
-                بعد التشخيص، نوضح للعميل سيناريوهات الحل بحسب الحالة: إصلاح موضعي، إعادة تأهيل جزء من الشبكة، أو تنفيذ عزل مائي
-                وحراري تكميلي للأسطح والخزانات إذا كان التسرب مرتبطًا بعوامل مناخية. في كل الأحوال، تكون الخطة مكتوبة وواضحة حتى
-                يعرف العميل ما سيتم تنفيذه ولماذا.
-              </p>
-              <p>
-                لهذا السبب يفضّل كثير من العملاء البحث عن شركة كشف تسربات معتمدة في {row.district} تمتلك خبرة ميدانية حقيقية،
-                وتقدّم تقريرًا واضحًا وخطوات تنفيذ قابلة للمتابعة بعد انتهاء العمل.
+                بعد التشخيص نوضح خيارات الإصلاح أو العزل التكميلي للأسطح والخزانات، بخطة مكتوبة
+                يفهمها العميل قبل الموافقة على التنفيذ.
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">خطة عملنا داخل {row.district}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
-              <p>
-                نعتمد داخل {row.district} على خطة عمل واضحة من ثلاث مراحل: فحص وتشخيص، معالجة فنية، ثم متابعة للتأكد من استقرار
-                الوضع. هذا التسلسل يضمن أن الإصلاح لا يكون مؤقتًا، وأن كل خطوة تنفذ على أساس ملاحظات دقيقة من أرض الواقع.
-              </p>
-              <p>
-                عند وجود ارتفاع مفاجئ في الفاتورة أو ظهور رطوبة غير مبررة، يكون عامل الوقت مهمًا جدًا. التدخل السريع يقلل استهلاك
-                المياه، ويحافظ على الدهانات والديكورات، ويحد من امتداد الضرر إلى أجزاء أخرى من العقار، وهو ما يجعل خدمة
-                كشف تسربات المياه في {row.district} خطوة أساسية قبل أي إصلاحات إضافية.
-              </p>
-              <p>
-                كما نقدم بعد التنفيذ إرشادات عملية مبسطة: كيفية متابعة العداد، متى يفضل إعادة الفحص، وما العلامات المبكرة التي
-                تستدعي التواصل الفوري. هذه الخطوات تساعد على حماية المنزل أو المنشأة وتخفيف المصروفات غير المتوقعة.
-              </p>
-              <p>
-                سواء كان العقار فيلا، شقة، عمارة سكنية، أو منشأة تجارية في {row.city.nameAr}، فإن جودة التشخيص هي نقطة البداية
-                الصحيحة. لذلك نحرص أن تكون كل زيارة مرتبطة بهدف محدد: اكتشاف السبب الجذري، تنفيذ حل مناسب، ثم التأكد من استقرار
-                الحالة بعد الإصلاح.
-              </p>
-              <p>
-                إذا كنت تبحث عن أفضل فني كشف تسربات في {row.district} مع خدمة منظمة وتواصل واضح، فالأهم هو اختيار جهة تعمل وفق
-                خطة فحص دقيقة وتوصيات عملية تقلل احتمالات رجوع المشكلة.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
-            <CardHeader>
-              <CardTitle className="text-[#163d57]">نصائح عملية لتقليل فاتورة المياه</CardTitle>
+              <CardTitle className="text-[#163d57]">نصائح لتقليل فاتورة المياه في {row.district}</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc space-y-3 pr-6 text-base leading-8 text-muted-foreground">
+              <ul className="list-disc space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
                 {tips.map((tip) => (
                   <li key={tip}>{tip}</li>
                 ))}
@@ -322,13 +265,33 @@ export function CoverageDistrictPageContent({ row }: Props) {
             </CardContent>
           </Card>
 
+          <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]" id="faq">
+            <CardHeader>
+              <CardTitle className="text-[#163d57]">
+                أسئلة شائعة — كشف التسربات والعزل في {row.district}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {faqItems.map((item) => (
+                <article
+                  key={item.question}
+                  className="rounded-xl border border-[#e8edf0] bg-[#f8fbfc] p-4"
+                >
+                  <h3 className="text-base font-bold leading-8 text-[#163d57]">س: {item.question}</h3>
+                  <p className="mt-2 text-base leading-8 text-muted-foreground">ج: {item.answer}</p>
+                </article>
+              ))}
+            </CardContent>
+          </Card>
+
           <Card className="border-0 ring-0 bg-[#f8fbfc] shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">تصفح باقي أحياء جدة</CardTitle>
+              <CardTitle className="text-[#163d57]">أحياء جدة القريبة والمجاورة</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-base leading-8 text-muted-foreground">
-                يمكنك الانتقال مباشرة إلى صفحات الأحياء الأخرى للاطلاع على تفاصيل الخدمة حسب المنطقة.
+                انتقل إلى صفحة حي آخر لمعرفة تفاصيل الخدمة المحلية — كل الروابط تحافظ على نفس
+                هيكل الموقع.
               </p>
               <ul className="grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2">
                 {districtLinks.map((district) => (
@@ -347,12 +310,19 @@ export function CoverageDistrictPageContent({ row }: Props) {
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">عبارات يبحث عنها العملاء في {row.district}</CardTitle>
+              <CardTitle className="text-[#163d57]">
+                كلمات بحث شائعة في {row.district}
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc space-y-3 pr-6 text-base leading-8 text-muted-foreground">
+              <ul className="flex flex-wrap justify-end gap-2">
                 {searchPhrases.map((phrase) => (
-                  <li key={phrase}>{phrase}</li>
+                  <li
+                    key={phrase}
+                    className="rounded-full bg-[#eef7f9] px-3 py-1 text-sm font-medium text-[#35566a]"
+                  >
+                    {phrase}
+                  </li>
                 ))}
               </ul>
             </CardContent>

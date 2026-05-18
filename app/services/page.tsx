@@ -3,33 +3,22 @@ import Link from "next/link";
 import { ShieldCheck, Building2 } from "lucide-react";
 
 import { ServicesPageBody } from "@/components/services/services-page-body";
+import { EncyclopediaSection } from "@/components/seo/encyclopedia-section";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { images } from "@/lib/images";
-import { absUrl, siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
+import { siteConfig } from "@/lib/site-config";
 
-export const metadata: Metadata = {
-  title: "خدمات كشف تسربات المياه والعزل الحراري والمائي في جدة",
+export const metadata: Metadata = buildPageMetadata({
+  title: "دليل خدمات كشف التسربات والعزل في جدة",
   description:
-    "شرح تفصيلي لخدمات كشف التسربات بدون تكسير، عزل الأسطح والخزانات والفوم، حقن الخزانات، معاينة مجانية، وتغطية أحياء جدة — جدة للتسربات والعزل.",
-  alternates: { canonical: absUrl("/services") },
-  openGraph: {
-    url: absUrl("/services"),
-    title: `جميع خدمات كشف التسربات والعزل — ${siteConfig.name}`,
-    description:
-      "كشف تسربات إلكتروني، عزل مائي وحراري للأسطح والخزانات والحمامات، تقارير فنية، واستجابة سريعة في جدة وأحيائها.",
-    locale: siteConfig.locale.replace("_", "-"),
-    images: [
-      {
-        url: images.leakDetection.src,
-        width: images.leakDetection.width,
-        height: images.leakDetection.height,
-        alt: images.leakDetection.alt,
-      },
-    ],
-  },
-};
+    "كل خدمات كشف تسربات المياه والعزل في جدة: بدون تكسير، فوم، خزانات، حمامات، فواتير، تقارير، و60 حيّاً — مرجع واحد لأي بحث في المجال.",
+  path: "/services",
+  keywords: keywordsForPath("/services"),
+  ogTitle: `خدمات التسربات والعزل — ${siteConfig.name}`,
+});
 
 export default function ServicesPage() {
   return (
@@ -71,6 +60,11 @@ export default function ServicesPage() {
       <div className="mt-10 max-w-4xl">
         <ServicesPageBody />
       </div>
+
+      <EncyclopediaSection
+        heading="فهرس موسوعة التسربات والعزل"
+        className="mx-auto mt-12 max-w-4xl rounded-2xl border border-[#e8eef1] bg-[#f7f9fa] p-6 text-right md:p-8"
+      />
 
       <section className="mx-auto mt-12 max-w-4xl rounded-2xl border border-[#e8eef1] bg-white p-6 text-right shadow-[0_12px_32px_-20px_rgba(19,66,89,0.28)]">
         <h2 className="inline-flex items-center gap-2 text-xl font-bold text-[#163d57]">

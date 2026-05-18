@@ -3,6 +3,8 @@ import {
   SCHEMA_ORGANIZATION_ID,
   SCHEMA_WEBSITE_ID,
 } from "@/lib/seo/schema-ids";
+import { ALL_SITE_KEYWORDS } from "@/lib/seo/keyword-clusters";
+import { insulationServices } from "@/lib/insulation-services";
 import { SCHEMA_MOCK_AGGREGATE_RATING } from "@/lib/seo/aggregate-rating-mock";
 import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
 import { images } from "@/lib/images";
@@ -13,6 +15,22 @@ const CONTACT_WHATSAPP_URL = `https://wa.me/${siteConfig.phone.replace(/\D/g, ""
 
 /** مدن نطاق الخدمة في البيانات المنظمة — مقتصر على جدة. */
 const AREA_SERVED_CITIES = [{ "@type": "City" as const, name: "جدة", alternateName: "Jeddah" }] as const;
+
+const KNOWS_ABOUT = ALL_SITE_KEYWORDS;
+
+const SERVICE_CATALOG = [
+  { name: "كشف تسربات المياه في جدة", path: "/leak-detection" },
+  { name: "خدمات العزل المائي والحراري", path: "/insulation" },
+  { name: "دليل الخدمات والموسوعة", path: "/services" },
+  { name: "مشخّص تسربات المياه الذكي", path: "/smart-leak-diagnosis" },
+  { name: "مدونة التسربات والعزل", path: "/blog" },
+  { name: "دليل أحياء جدة", path: "/coverage" },
+  { name: "اتصل بنا — معاينة وحجز", path: "/contact" },
+  ...insulationServices.map((s) => ({
+    name: `${s.title} في جدة`,
+    path: `/insulation-services/${s.slug}`,
+  })),
+] as const;
 
 /** Organization + LocalBusiness + WebSite على كل الصفحات — أساس SEO وربط المقالات والمدونة */
 export function GlobalJsonLd() {
@@ -37,6 +55,7 @@ export function GlobalJsonLd() {
           },
         ],
         sameAs: [CONTACT_WHATSAPP_URL],
+        knowsAbout: KNOWS_ABOUT,
         address: {
           "@type": "PostalAddress",
           addressLocality: "جدة",
@@ -90,8 +109,23 @@ export function GlobalJsonLd() {
         ],
         priceRange: "$$",
         aggregateRating: SCHEMA_MOCK_AGGREGATE_RATING,
+        knowsAbout: KNOWS_ABOUT,
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "خدمات كشف التسربات والعزل في جدة",
+          itemListElement: SERVICE_CATALOG.map((svc) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: svc.name,
+              url: absUrl(svc.path),
+              areaServed: AREA_SERVED_CITIES[0],
+              provider: { "@id": SCHEMA_LOCAL_BUSINESS_ID },
+            },
+          })),
+        },
         description:
-          "كشف تسربات المياه وخدمات عزل الأسطح والخزانات والفوم في جدة.",
+          "موسوعة وخدمات متخصصة في كشف تسربات المياه وعزل الأسطح والخزانات والفوم في جدة.",
       },
       {
         "@type": "WebSite",

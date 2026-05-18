@@ -9,19 +9,20 @@ import { RelatedServicesSection } from "@/components/layout/related-services-sec
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { images } from "@/lib/images";
-import { absUrl, siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "مُشخّص تسربات المياه الذكي — اختبار قصير",
-  description:
-    "اختبار تفاعلي بالعربية لتقدير مصدر تسرب المياه في جدة: الجدران، السقف، الأرضيات، أو ارتفاع الفاتورة. احجز فحصاً مجانياً بجهاز الإيكوفون عبر واتساب.",
-  alternates: { canonical: absUrl("/smart-leak-diagnosis") },
-  openGraph: {
-    url: absUrl("/smart-leak-diagnosis"),
-    title: `مُشخّص تسربات المياه الذكي — ${siteConfig.name}`,
+  ...buildPageMetadata({
+    title: "مُشخّص تسربات المياه الذكي — اختبار مجاني",
     description:
-      "مساعد تفاعلي لتشخيص أولي لتسربات المياه ثم حجز فحص إلكتروني في جدة.",
-    locale: siteConfig.locale.replace("_", "-"),
+      "اختبار تسربات المياه بالعربية: حدد مصدر التسرب (جدار، سقف، خزان، فاتورة) في جدة ثم احجز فحصاً إلكترونياً مجانياً.",
+    path: "/smart-leak-diagnosis",
+    keywords: keywordsForPath("/smart-leak-diagnosis"),
+    ogTitle: `مُشخّص التسربات — ${siteConfig.name}`,
+  }),
+  openGraph: {
     images: [
       {
         url: images.leakDetection.src,

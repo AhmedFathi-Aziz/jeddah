@@ -1,38 +1,67 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { MapPin, BookOpen } from "lucide-react";
 
 import { jeddahDistricts } from "@/lib/coverage-data";
-import { absUrl, siteConfig } from "@/lib/site-config";
+import { buildCoverageIndexJsonLd } from "@/lib/seo/coverage-district-seo";
+import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
+import { siteConfig } from "@/lib/site-config";
 
-export const metadata: Metadata = {
-  title: "أحياء جدة",
-  description: "دليل رسمي لصفحات أحياء جدة. اختر الحي للوصول إلى تفاصيل الخدمة المناسبة بسرعة.",
-  alternates: { canonical: absUrl("/coverage") },
-  openGraph: {
-    url: absUrl("/coverage"),
-    title: `أحياء جدة | ${siteConfig.name}`,
-    description: "تصفح جميع أحياء جدة واختر صفحتك للوصول إلى الخدمة المناسبة.",
-    locale: siteConfig.locale.replace("_", "-"),
-  },
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "دليل أحياء جدة — كشف تسربات وعزل",
+  description:
+    "60 صفحة محلية لأحياء جدة: كشف تسربات بدون تكسير، عزل أسطح وخزانات، أسئلة شائعة، وكلمات بحث لكل حي.",
+  path: "/coverage",
+  keywords: keywordsForPath("/coverage"),
+  ogTitle: `أحياء جدة | ${siteConfig.name}`,
+});
 
 export default function CoverageIndexPage() {
+  const jsonLd = buildCoverageIndexJsonLd();
+
   return (
     <main className="mx-auto max-w-7xl px-6 pb-20 pt-10 text-right">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
+
       <header className="mb-10 rounded-2xl bg-gradient-to-b from-[#f8fbfc] to-white p-6 shadow-[0_12px_30px_-20px_rgba(19,66,89,0.32)] md:p-8">
-        <p className="mb-3 text-base font-semibold text-[#2f556d]">أحياء جدة</p>
+        <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-[#1f7f8a]">
+          <BookOpen className="size-4" aria-hidden />
+          SEO محلي — جدة
+        </p>
         <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">
-          دليل أحياء جدة للخدمات الميدانية
+          دليل أحياء جدة: كشف تسربات المياه والعزل
         </h1>
         <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
-          تم تنظيم الصفحات التالية بطريقة رسمية وواضحة لتسهيل الوصول إلى تفاصيل كل حي، مع تنقل سريع بين المناطق.
+          {jeddahDistricts.length} صفحة محلية تغطي أحياء جدة — كل صفحة تشرح خدمات كشف التسربات
+          والعزل المائي والحراري داخل الحي: معاينة، فحص إلكتروني، تقارير، وأسئلة شائعة باسم
+          المنطقة. اختر حيّك أدناه أو ارجع إلى{" "}
+          <Link href="/#coverage" className="font-semibold text-[#1f7f8a] hover:underline">
+            خريطة الأحياء في الرئيسية
+          </Link>
+          .
+        </p>
+        <p className="mt-3 max-w-3xl text-base leading-8 text-muted-foreground">
+          للمحتوى العام راجع{" "}
+          <Link href="/services" className="font-semibold text-[#1f7f8a] hover:underline">
+            دليل الخدمات
+          </Link>
+          ،{" "}
+          <Link href="/leak-detection" className="font-semibold text-[#1f7f8a] hover:underline">
+            كشف التسربات
+          </Link>
+          ، و{" "}
+          <Link href="/insulation" className="font-semibold text-[#1f7f8a] hover:underline">
+            العزل
+          </Link>
+          .
         </p>
       </header>
 
       <section aria-labelledby="districts-heading">
         <h2 id="districts-heading" className="mb-6 text-2xl font-bold text-[#163d57]">
-          جميع الأحياء
+          جميع أحياء جدة ({jeddahDistricts.length})
         </h2>
         <ul className="grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {jeddahDistricts.map((district) => (

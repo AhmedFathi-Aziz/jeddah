@@ -11,22 +11,24 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { images } from "@/lib/images";
-import { absUrl, siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
+import { siteConfig } from "@/lib/site-config";
 import { listPublishedArticleCards } from "@/lib/articles/repository";
 
 /** قائمة ثابتة وقت البناء؛ حدّث عبر إعادة النشر بعد ‎export:blog-slugs‎. */
 export const revalidate = false;
 
 export const metadata: Metadata = {
-  title: "مدونة كشف تسربات المياه والعزل في جدة",
-  description:
-    "مقالات وإرشادات عملية عن كشف التسربات بدون تكسير، العزل الحراري، وفهم استهلاك المياه في منطقة جدة.",
-  alternates: { canonical: absUrl("/blog") },
-  openGraph: {
-    url: absUrl("/blog"),
-    title: `مدونة تسربات المياه والعزل — ${siteConfig.name}`,
+  ...buildPageMetadata({
+    title: "مدونة كشف تسربات المياه والعزل في جدة",
     description:
-      "نصائح تقنية حول التسربات والعزل المائي والحراري لمنزل في جدة.",
+      "مقالات عن كشف التسربات، عزل الأسطح، ارتفاع فاتورة المياه، رطوبة الجدران، وعزل الخزانات — دليل عربي لسكان جدة.",
+    path: "/blog",
+    keywords: keywordsForPath("/blog"),
+    ogTitle: `مدونة التسربات والعزل — ${siteConfig.name}`,
+  }),
+  openGraph: {
     images: [{ url: images.blogStains.src, width: images.blogStains.width, height: images.blogStains.height, alt: images.blogStains.alt }],
   },
 };

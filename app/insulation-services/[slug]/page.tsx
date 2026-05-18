@@ -8,7 +8,8 @@ import { RelatedServicesSection } from "@/components/layout/related-services-sec
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getInsulationServiceBySlug, insulationServices } from "@/lib/insulation-services";
-import { absUrl, siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -63,18 +64,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = getInsulationServiceBySlug(slug);
   if (!service) return { title: "الخدمة غير موجودة" };
 
-  const path = absUrl(`/insulation-services/${service.slug}`);
-  return {
+  const path = `/insulation-services/${service.slug}`;
+  return buildPageMetadata({
     title: `${service.title} في جدة`,
-    description: `${service.summary} دليل تفصيلي يشمل خطوات التنفيذ، المواد، الأسئلة الشائعة، ونصائح الحفاظ على النتيجة.`,
-    alternates: { canonical: path },
-    openGraph: {
-      url: path,
-      title: `${service.title} | ${siteConfig.name}`,
-      description: `${service.summary} مع شرح عملي مفصل عن التنفيذ في جدة.`,
-      locale: siteConfig.locale.replace("_", "-"),
-    },
-  };
+    description: `${service.summary} — دليل تنفيذ، مواد، أسعار تقديرية، وضمان في جدة. ${service.keywords.slice(0, 3).join("، ")}.`,
+    path,
+    keywords: [...service.keywords, service.title, "عزل بجدة"],
+    ogTitle: `${service.title} | ${siteConfig.name}`,
+  });
 }
 
 export default async function InsulationServicePage({ params }: Props) {

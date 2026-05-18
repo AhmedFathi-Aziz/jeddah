@@ -5,23 +5,26 @@ import { Activity, SearchCheck, Wrench } from "lucide-react";
 
 import { WhatsAppLogo } from "@/components/icons/whatsapp-logo";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
+import { EncyclopediaSection } from "@/components/seo/encyclopedia-section";
+import { LEAK_DETECTION_FAQ_ITEMS } from "@/lib/seo/leak-detection-faq-data";
 import { buttonVariants } from "@/components/ui/button";
 import { jeddahDistricts } from "@/lib/coverage-data";
 import { cn } from "@/lib/utils";
 import { images } from "@/lib/images";
-import { absUrl, siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "كشف تسربات المياه في جدة بدون تكسير",
-  description:
-    "فحص إلكتروني حراري وصوتي لتحديد مصدر التسرب بسرعة في جدة، مع خطة إصلاح واضحة وتنفيذ ميداني.",
-  alternates: { canonical: absUrl("/leak-detection") },
-  openGraph: {
-    url: absUrl("/leak-detection"),
-    title: `كشف تسربات المياه — ${siteConfig.name}`,
+  ...buildPageMetadata({
+    title: "كشف تسربات المياه في جدة بدون تكسير",
     description:
-      "خدمة كشف تسربات احترافية بأجهزة حديثة وتقرير فني يدعم متابعتك مع شركة المياه عند الحاجة.",
-    locale: siteConfig.locale.replace("_", "-"),
+      "كشف تسربات المياه بجدة بدون تكسير: فحص حراري وصوتي، كشف خزانات وحمامات وأسطح، تقرير معتمد لشركة المياه، وإصلاح بخطة واضحة.",
+    path: "/leak-detection",
+    keywords: keywordsForPath("/leak-detection"),
+    ogTitle: `كشف تسربات المياه — ${siteConfig.name}`,
+  }),
+  openGraph: {
     images: [
       {
         url: images.leakGalleryPipelineScan.src,
@@ -75,6 +78,19 @@ const quickCheckItems = [
 ] as const;
 
 export default function LeakDetectionPage() {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: LEAK_DETECTION_FAQ_ITEMS.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   const leakGallery = [
     images.leakGalleryPipelineScan,
     images.leakGalleryBathroomMeter,
@@ -89,6 +105,7 @@ export default function LeakDetectionPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <section className="rounded-3xl border border-[#e8edf0] bg-white p-7 text-right shadow-[0_16px_32px_-24px_rgba(19,66,89,0.35)] md:p-10">
         <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-[#f1f4f6] px-4 py-2 text-sm font-semibold text-[#1f7f8a]">
           <SearchCheck className="size-4" aria-hidden />
@@ -301,6 +318,24 @@ export default function LeakDetectionPage() {
             <WhatsAppLogo className="size-5 shrink-0 text-white" />
             إرسال الحالة عبر واتساب
           </a>
+        </div>
+      </section>
+
+      <EncyclopediaSection
+        categoryId="leak-detection"
+        heading="مواضيع ذات صلة من موسوعة كشف التسربات"
+        className="mt-8 rounded-2xl border border-[#e8edf0] bg-white p-6 text-right md:p-8"
+      />
+
+      <section className="mt-8 rounded-2xl border border-[#e8edf0] bg-[#f7f9fa] p-6 text-right md:p-8">
+        <h2 className="text-2xl font-extrabold text-[#163d57]">أسئلة شائعة عن كشف التسربات في جدة</h2>
+        <div className="mt-4 space-y-4">
+          {LEAK_DETECTION_FAQ_ITEMS.map((item) => (
+            <article key={item.question} className="rounded-xl border border-[#e8edf0] bg-white p-4">
+              <h3 className="text-lg font-bold leading-8 text-[#163d57]">س: {item.question}</h3>
+              <p className="mt-2 text-base leading-8 text-[#4a6677]">ج: {item.answer}</p>
+            </article>
+          ))}
         </div>
       </section>
 

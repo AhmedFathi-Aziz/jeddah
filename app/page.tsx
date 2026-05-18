@@ -10,6 +10,8 @@ import { HomeInsulationFocus } from "@/components/home/home-insulation-focus";
 import { HomeLeaksFocus } from "@/components/home/home-leaks-focus";
 import { HomeJsonLd } from "@/components/home/home-json-ld";
 import { HomeServices } from "@/components/home/home-services";
+import { HomeEncyclopedia } from "@/components/home/home-encyclopedia";
+import { HomeKeywordIndex } from "@/components/home/home-keyword-index";
 import { HomeWhy } from "@/components/home/home-why";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { siteConfig } from "@/lib/site-config";
@@ -52,6 +54,8 @@ export default function HomePage() {
         <HomeLeaksFocus phone={siteConfig.phone} />
         <HomeLeaksFeatureBoxes />
         <HomeWhy />
+        <HomeEncyclopedia />
+        <HomeKeywordIndex />
         <HomeFaq />
         <HomeDistricts />
         <HomeArticlesPreview />

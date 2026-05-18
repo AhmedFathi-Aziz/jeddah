@@ -29,11 +29,12 @@ export function HomeHero({ phone }: { phone: string }) {
       <div className="relative z-10 mx-auto flex min-h-[min(85vh,820px)] max-w-7xl flex-col justify-center px-6 py-16 text-white">
         <div className="me-auto max-w-2xl text-right">
           <h1 id="hero-heading" className="text-balance text-3xl font-extrabold leading-tight md:text-4xl lg:text-5xl">
-            أفضل شركة كشف تسربات المياه بجدة
-            <span className="mt-2 block text-[#8fd8dc]">بأحدث التقنيات وبدون تكسير</span>
+            كشف تسربات المياه والعزل في جدة
+            <span className="mt-2 block text-[#8fd8dc]">موسوعة متخصصة — فحص بدون تكسير وعزل معتمد</span>
           </h1>
           <p className="mt-6 text-pretty text-lg text-white/95 leading-relaxed">
-            نقدم حلولاً متكاملة لكشف وإصلاح تسربات المياه في جدة بأجهزة صوتية وحرارية دقيقة، لحماية منزلك وتقليل هدر المياه.
+            مرجعك العربي لكشف التسربات وعزل الأسطح والخزانات في جدة: أدلة عملية، أسئلة شائعة، وأجهزة صوتية وحرارية
+            دقيقة لحماية منزلك وتقليل هدر المياه وفاتورة الاستهلاك.
           </p>
           <div className="mt-8 flex flex-row-reverse flex-wrap justify-end gap-4">
             <a

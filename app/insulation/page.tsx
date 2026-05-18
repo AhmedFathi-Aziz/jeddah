@@ -4,50 +4,25 @@ import Link from "next/link";
 import { Thermometer, Droplets, Shield, CheckCircle2, BadgeCheck } from "lucide-react";
 
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
+import { EncyclopediaSection } from "@/components/seo/encyclopedia-section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { jeddahDistricts } from "@/lib/coverage-data";
 import { images } from "@/lib/images";
-import { absUrl, siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "أفضل خدمات العزل المائي والحراري بجدة",
-  description:
-    "عزل مائي وحراري بجدة، عزل خزانات المياه، عزل الأسطح بالفوم، عزل حمامات ومطابخ، مع أفضل سعر متر العزل بجدة وضمان يصل إلى 10 سنوات.",
-  keywords: [
-    "عزل مائي وحراري بجدة",
-    "عزل خزانات المياه بجدة",
-    "عزل الأسطح بالفوم",
-    "أفضل مواد عزل مائي للمباني",
-    "عزل أسطح هناجر ومستودعات بجدة",
-    "عزل حمامات ومطابخ",
-    "سعر متر العزل بجدة",
-    "عزل خزانات بجدة مع الضمان",
-    "عزل فوم بجدة",
-    "تقرير كشف تسربات المياه معتمد",
-    "شركة كشف تسربات المياه بجدة معتمدة",
-    "كشف تسربات المياه شركة المياه الوطنية",
-    "شهادة ضمان على العزل بجدة",
-    "فحص تسربات الخزانات المعتمد",
-    "حل مشكلة الرطوبة في الجدران بجدة",
-    "علاج تسريب مياه السقف بجدة",
-    "أسباب ارتفاع فاتورة المياه بجدة",
-    "طريقة كشف تسربات المياه في الحمامات",
-    "إصلاح كسر مواسير المياه بدون تكسير",
-    "علاج تشققات خزانات المياه الأرضية",
-    "عزل سيكو بروف (CIC) بجدة",
-    "عزل إيبوكسي خزانات المياه",
-    "عزل فوم بولي يوريثان مائي وحراري",
-    "جهاز كشف التسربات الإلكتروني Success",
-    "عزل لفائف بيتومين للأسطح",
-  ],
-  alternates: { canonical: absUrl("/insulation") },
-  openGraph: {
-    url: absUrl("/insulation"),
-    title: `أفضل خدمات العزل المائي والحراري بجدة — ${siteConfig.name}`,
+  ...buildPageMetadata({
+    title: "عزل مائي وحراري بجدة — أسطح وخزانات وفوم",
     description:
-      "حلول عزل متكاملة للأسطح والخزانات والحمامات والمطابخ في جدة بمواد معتمدة وضمان حقيقي.",
-    locale: siteConfig.locale.replace("_", "-"),
+      "عزل أسطح وخزانات وحمامات بجدة: فوم وبيتومين وإيبوكسي وسيكو بروف، سعر المتر، ضمان حتى 10 سنوات، وحل رطوبة الجدران وتسريب السقف.",
+    path: "/insulation",
+    keywords: keywordsForPath("/insulation"),
+    ogTitle: `عزل مائي وحراري بجدة — ${siteConfig.name}`,
+  }),
+  openGraph: {
     images: [
       {
         url: images.insulationFoamSpray.src,
@@ -305,6 +280,12 @@ export default function InsulationPage() {
           ))}
         </ul>
       </section>
+
+      <EncyclopediaSection
+        categoryId="insulation"
+        heading="مواضيع العزل من موسوعة الموقع"
+        className="mt-8 rounded-2xl border border-[#E7EBF0] bg-white p-6 text-right shadow-[0_12px_24px_-20px_rgba(71,85,105,0.25)] md:p-8"
+      />
 
       <section className="mt-8 rounded-2xl border border-[#E7EBF0] bg-white p-6 text-right shadow-[0_12px_24px_-20px_rgba(71,85,105,0.25)] md:p-8">
         <h2 className="text-2xl font-extrabold text-[#334155]">الأسئلة الشائعة</h2>

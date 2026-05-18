@@ -17,7 +17,7 @@ export function HomeFaq() {
           الأسئلة الشائعة
         </h2>
         <p className="text-muted-foreground text-balance leading-relaxed">
-          إجابات مختصرة حول كشف التسربات والعزل في المنازل بجدة
+          موسوعة أسئلة وأجوبة حول كشف التسربات والعزل المائي والحراري في منازل وفلل جدة
         </p>
       </header>
       <Accordion multiple className="w-full rounded-xl border bg-card divide-y divide-border px-4">

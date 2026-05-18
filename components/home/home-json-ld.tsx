@@ -15,9 +15,12 @@ export function HomeJsonLd() {
   }));
 
   const keyPages = [
+    { name: "موسوعة التسربات والعزل", path: "/#encyclopedia" },
+    { name: "دليل الكلمات المفتاحية", path: "/#keywords" },
     { name: "الخدمات", path: "/services" },
     { name: "كشف التسربات", path: "/leak-detection" },
     { name: "العزل", path: "/insulation" },
+    { name: "المشخّص الذكي", path: "/smart-leak-diagnosis" },
     { name: "اتصل بنا", path: "/contact" },
     { name: "المدونة", path: "/blog" },
   ] as const;

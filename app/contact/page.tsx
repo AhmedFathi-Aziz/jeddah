@@ -18,6 +18,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { SCHEMA_LOCAL_BUSINESS_ID, SCHEMA_ORGANIZATION_ID } from "@/lib/seo/schema-ids";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
@@ -39,31 +41,18 @@ const serviceKeywordLinks = [
   { href: "/services", label: "دليل الخدمات الكامل" },
 ] as const;
 
-export const metadata: Metadata = {
-  title: "اتصل بنا — كشف تسربات وعزل في جدة",
+export const metadata: Metadata = buildPageMetadata({
+  title: "اتصل بنا — كشف تسربات وعزل جدة",
   description:
-    "تواصل مع جدة للتسربات والعزل: كشف تسربات المياه الإلكتروني، عزل حراري ومائي، عزل خزانات وفوم، معاينات وطوارئ في جدة وأحيائها.",
-  keywords: [
+    "هاتف وواتساب لحجز كشف تسربات أو عزل في جدة: فحص إلكتروني، عزل فوم وخزانات، طوارئ تسرب، ومعاينة مجانية.",
+  path: "/contact",
+  keywords: keywordsForPath("/contact", [
     "اتصل شركة كشف تسربات جدة",
-    "كشف تسربات المياه بدون تكسير",
-    "فحص تسربات إلكتروني",
-    "عزل حراري ومائي جدة",
-    "عزل خزانات مياه إيبوكسي",
-    "عزل فوم أسطح",
-    "عزل حمامات تسربات",
-    "حقن خزانات علاج شروخ",
     "طوارئ تسرب مياه جدة",
     "معاينة مجانية عزل",
-  ],
-  alternates: { canonical: absUrl("/contact") },
-  openGraph: {
-    url: absUrl("/contact"),
-    title: `اتصل بنا — ${siteConfig.name}`,
-    description:
-      "هاتف، واتساب، ومجالات العمل: كشف التسربات، العزل الحراري والمائي، وعزل الخزانات في جدة.",
-    locale: siteConfig.locale.replace("_", "-"),
-  },
-};
+  ]),
+  ogTitle: `اتصل بنا — ${siteConfig.name}`,
+});
 
 export default function ContactPage() {
   const tel = `tel:${siteConfig.phone}`;
