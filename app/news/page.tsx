@@ -3,8 +3,10 @@ import Link from "next/link";
 import { Calendar, ChevronLeft, Newspaper } from "lucide-react";
 
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
+import { NewsSourceLink } from "@/components/news/news-source-link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { formatNewsDate } from "@/lib/news/format-date";
 import { listNews } from "@/lib/news/repository";
 import { images } from "@/lib/images";
 import { absUrl, siteConfig } from "@/lib/site-config";
@@ -29,18 +31,6 @@ export const metadata: Metadata = {
     ],
   },
 };
-
-function formatNewsDate(iso: string): string {
-  try {
-    return new Date(`${iso}T12:00:00`).toLocaleDateString("ar-SA", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return iso;
-  }
-}
 
 export default function NewsPage() {
   const items = listNews();
@@ -83,6 +73,11 @@ export default function NewsPage() {
               </time>
               <h2 className="text-xl font-extrabold leading-snug text-[#163d57] md:text-2xl">{item.title}</h2>
               <p className="mt-3 flex-1 text-base leading-relaxed text-[#4a6677]">{item.excerpt}</p>
+              {item.sourceName && item.sourceUrl && (
+                <div className="mt-3 text-sm text-[#5a7588]">
+                  المصدر: <NewsSourceLink name={item.sourceName} url={item.sourceUrl} />
+                </div>
+              )}
               <Link
                 href={`/news/${item.slug}`}
                 className={cn(

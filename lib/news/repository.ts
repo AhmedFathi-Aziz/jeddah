@@ -1,14 +1,14 @@
-import { newsItems } from "./demo-news";
+import { getMergedNews } from "./markdown-store";
 import type { NewsItem } from "./types";
 
 export function listNews(): NewsItem[] {
-  return [...newsItems].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  return getMergedNews();
 }
 
 export function getNewsBySlug(slug: string): NewsItem | null {
-  return newsItems.find((n) => n.slug === slug) ?? null;
+  return getMergedNews().find((n) => n.slug === slug) ?? null;
 }
 
 export function getAllNewsSlugs(): string[] {
-  return newsItems.map((n) => n.slug);
+  return getMergedNews().map((n) => n.slug);
 }

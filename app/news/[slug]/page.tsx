@@ -3,6 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Calendar } from "lucide-react";
 
+import { NewsArticleMarkdownGate } from "@/components/news/news-article-markdown-gate";
+import { NewsSourceLink } from "@/components/news/news-source-link";
+import { getMarkdownHeadingIds } from "@/lib/articles/markdown-toc";
+import { formatNewsDate } from "@/lib/news/format-date";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -10,18 +14,6 @@ import { getAllNewsSlugs, getNewsBySlug, listNews } from "@/lib/news/repository"
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
-
-function formatNewsDate(iso: string): string {
-  try {
-    return new Date(`${iso}T12:00:00`).toLocaleDateString("ar-SA", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return iso;
-  }
-}
 
 export function generateStaticParams() {
   return getAllNewsSlugs().map((slug) => ({ slug }));
@@ -51,6 +43,7 @@ export default async function NewsArticlePage({ params }: Props) {
   if (!item) notFound();
 
   const others = listNews().filter((n) => n.slug !== item.slug).slice(0, 3);
+  const headingIds = item.markdown ? getMarkdownHeadingIds(item.markdown) : [];
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-12 md:py-16">
@@ -77,13 +70,33 @@ export default async function NewsArticlePage({ params }: Props) {
           </time>
           <h1 className="text-balance text-3xl font-extrabold leading-tight text-[#163d57] md:text-4xl">{item.title}</h1>
           <p className="mt-4 text-lg leading-relaxed text-[#4a6677]">{item.excerpt}</p>
+          {item.sourceName && item.sourceUrl && (
+            <div className="mt-4 text-sm text-[#5a7588]">
+              المصدر: <NewsSourceLink name={item.sourceName} url={item.sourceUrl} />
+            </div>
+          )}
         </header>
 
-        <div className="prose prose-slate mt-8 max-w-none text-right prose-p:text-[#4a6677] prose-p:leading-[1.9] prose-p:text-base md:prose-p:text-lg prose-headings:text-[#163d57]">
-          {item.body.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
+        {item.markdown ? (
+          <NewsArticleMarkdownGate
+            markdown={item.markdown}
+            presetHeadingIds={headingIds}
+            className="prose prose-slate mt-8 max-w-none text-right prose-p:text-[#4a6677] prose-p:leading-[1.9] prose-p:text-base md:prose-p:text-lg prose-headings:text-[#163d57]"
+          />
+        ) : (
+          <div className="prose prose-slate mt-8 max-w-none text-right prose-p:text-[#4a6677] prose-p:leading-[1.9] prose-p:text-base md:prose-p:text-lg prose-headings:text-[#163d57]">
+            {item.body.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        )}
+
+        {item.sourceName && item.sourceUrl && (
+          <aside className="mt-8 rounded-xl border border-[#d7e8ee] bg-[#fafcfd] px-4 py-3 text-sm text-[#4a6677]">
+            <span className="font-medium text-[#163d57]">الخبر الأصلي: </span>
+            <NewsSourceLink name={item.sourceName} url={item.sourceUrl} />
+          </aside>
+        )}
       </article>
 
       {others.length > 0 && (
