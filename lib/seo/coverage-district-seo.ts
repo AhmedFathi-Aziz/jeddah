@@ -1,40 +1,23 @@
 import type { Metadata } from "next";
 
 import type { ResolvedCoverageDistrict } from "@/lib/coverage-data";
+import { getDistrictRichContent } from "@/lib/seo/coverage-district-content";
 import { PRIMARY_KEYWORDS } from "@/lib/seo/keyword-clusters";
 import { SCHEMA_LOCAL_BUSINESS_ID } from "@/lib/seo/schema-ids";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 export type CoverageFaqItem = { question: string; answer: string };
 
-/** أسئلة شائعة مولّدة لكل حي — فريدة بالاسم لتحسين SEO المحلي */
-export function getDistrictFaqItems(district: string, cityAr: string): CoverageFaqItem[] {
-  return [
-    {
-      question: `هل تقدمون كشف تسربات المياه في ${district} بجدة؟`,
-      answer: `نعم، نغطي ${district} ضمن ${cityAr} بزيارات ميدانية لفحص التسربات بأجهزة حرارية وصوتية، مع تقرير يوضح مصدر المشكلة قبل أي إصلاح.`,
-    },
-    {
-      question: `كم يستغرق كشف التسرب في ${district}؟`,
-      answer: `الشقة أو الدور الصغير غالبًا في زيارة واحدة. الفلل والعمائر الأكبر قد تحتاج ساعتين أو أكثر حسب عدد الحمامات والخزانات؛ نعطيك تقديرًا بعد سؤال قصير عن الحالة.`,
-    },
-    {
-      question: `هل يمكن الكشف بدون تكسير في ${district}؟`,
-      answer: `نعم، نعتمد فحصًا إلكترونيًا لتحديد النقطة بدقة وتجنب التكسير العشوائي. أحيانًا يُفتح موضع ضيق فوق النقطة المؤكدة فقط — وليس هدم حمام كامل.`,
-    },
-    {
-      question: `ما خدمات العزل المتوفرة في ${district}؟`,
-      answer: `عزل أسطح (فوم وبيتومين)، عزل خزانات بالإيبوكسي، وعزل حمامات بالفوم — بعد معاينة ميدانية تُحدد المادة والسعر لكل متر.`,
-    },
-    {
-      question: `هل تقدمون تقريرًا لشركة المياه الوطنية من ${district}؟`,
-      answer: `نوفر تقريرًا فنيًا يوثّق نتيجة الفحص عند الحاجة لمتابعة الفاتورة أو الإثبات الرسمي، وفق ما يُقاس ميدانيًا دون وعود خارج نطاق الفحص.`,
-    },
-    {
-      question: `متى أطلب معاينة عاجلة في ${district}؟`,
-      answer: `عند ارتفاع مفاجئ في الفاتورة، رطوبة متوسعة، صوت مياه في الجدار، أو تحرك العداد بعد إغلاق المحابس — كلما كان التدخل أسرع قلّ الضرر على التشطيبات والخرسانة.`,
-    },
-  ];
+/** أسئلة شائعة — من المحتوى الغني لكل حي عند توفره */
+export function getDistrictFaqItems(
+  district: string,
+  cityAr: string,
+  districtSlug?: string,
+): CoverageFaqItem[] {
+  if (districtSlug) {
+    return getDistrictRichContent(districtSlug, district, cityAr).faq;
+  }
+  return getDistrictRichContent("", district, cityAr).faq;
 }
 
 export function buildCoverageDistrictMetadata(
@@ -45,9 +28,12 @@ export function buildCoverageDistrictMetadata(
   const path = absUrl(`/coverage/${citySlug}/${districtSlug}`);
   const districtShort = row.district.replace(/^حي\s+/, "");
 
+  const rich = getDistrictRichContent(districtSlug, row.district, row.city.nameAr);
+  const descSnippet = rich.highlight.intro.slice(0, 120).trim();
+
   return {
     title: row.label,
-    description: `كشف تسربات المياه وعزل أسطح وخزانات في ${row.district} بجدة: فحص بدون تكسير، تقارير فنية، عزل فوم وإيبوكسي، واستجابة سريعة داخل الحي. ${siteConfig.name}.`,
+    description: `${descSnippet}… كشف تسربات وعزل في ${row.district} بجدة — فحص بدون تكسير، تقارير فنية، فوم وإيبوكسي. ${siteConfig.name}.`,
     keywords: [
       ...PRIMARY_KEYWORDS,
       `كشف تسربات المياه ${districtShort}`,
@@ -84,7 +70,7 @@ export function buildCoverageDistrictJsonLd(
 ) {
   const path = `/coverage/${citySlug}/${districtSlug}`;
   const pageUrl = absUrl(path);
-  const faqItems = getDistrictFaqItems(row.district, row.city.nameAr);
+  const faqItems = getDistrictFaqItems(row.district, row.city.nameAr, districtSlug);
   const placeName = `${row.district}، ${row.city.nameAr}`;
 
   return {

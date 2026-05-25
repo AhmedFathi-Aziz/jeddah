@@ -4,9 +4,8 @@ import { ArrowLeft, Phone, Shield, Droplets, Thermometer } from "lucide-react";
 import { RequestInspectionBox } from "@/components/layout/request-inspection-box";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { jeddahDistricts, type ResolvedCoverageDistrict } from "@/lib/coverage-data";
-import { getDistrictHighlight } from "@/lib/seo/coverage-district-highlights";
-import { getDistrictFaqItems } from "@/lib/seo/coverage-district-seo";
+import { getDistrictById, jeddahDistricts, type ResolvedCoverageDistrict } from "@/lib/coverage-data";
+import { getDistrictRichContent } from "@/lib/seo/coverage-district-content";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 
@@ -37,44 +36,15 @@ const SERVICE_LINKS = [
 
 export function CoverageDistrictPageContent({ row }: Props) {
   const tel = `tel:${siteConfig.phone}`;
-  const districtContent = getDistrictHighlight(row.slug, row.district);
-  const faqItems = getDistrictFaqItems(row.district, row.city.nameAr);
+  const content = getDistrictRichContent(row.slug, row.district, row.city.nameAr);
+  const { highlight } = content;
 
-  const howSteps = [
-    `الاتصال والحجز: نستقبل طلبك في ${row.district} ونحدد موعدًا مناسبًا داخل الحي.`,
-    "الفحص الإلكتروني: أجهزة حرارية وصوتية لتحديد مصدر التسرب دون تكسير عشوائي.",
-    "تحديد المشكلة: توثيق النقطة في الخزان أو الحمام أو السطح أو الشبكة الداخلية.",
-    "الإصلاح والضمان: معالجة بالخامات المناسبة مع توضيح الضمان والتوصيات الوقائية.",
-  ] as const;
-
-  const tips = [
-    "إغلاق المحابس الرئيسية عند مغادرة المنزل لفترات طويلة.",
-    "فحص الخزان الأرضي دوريًا للتأكد من عدم وجود تشققات.",
-    "مراقبة عداد المياه في وقت عدم الاستهلاك لاكتشاف أي تسرب خفي.",
-    "تطبيق عزل مائي وحراري مناسب للأسطح للحد من الرطوبة والتلف.",
-    `طلب تقرير كشف تسربات معتمد فور ملاحظة ارتفاع غير منطقي في الفاتورة في ${row.district}.`,
-  ] as const;
-
-  const searchPhrases = [
-    `كشف تسربات المياه في ${row.district} جدة`,
-    `شركة كشف تسربات ${row.district}`,
-    `عزل أسطح ${row.district}`,
-    `عزل خزانات ${row.district}`,
-    `كشف تسربات بدون تكسير ${row.district}`,
-    `فني كشف تسربات ${row.district}`,
-    `ارتفاع فاتورة المياه ${row.district}`,
-  ] as const;
-
-  const quickFacts = [
-    `نطاق الخدمة: ${row.district} ومحيطه داخل ${row.city.nameAr}.`,
-    "الفحص: تشخيص إلكتروني قبل أي معالجة أو تكسير.",
-    "العزل: أسطح، خزانات، حمامات — حسب حالة المبنى.",
-    "التقرير: توثيق فني عند الحاجة لمتابعة شركة المياه.",
-  ] as const;
-
-  const districtLinks = jeddahDistricts
-    .filter((district) => district.id !== row.slug)
-    .slice(0, 24);
+  const neighborLinks =
+    content.neighborSlugs.length > 0
+      ? content.neighborSlugs
+          .map((id) => getDistrictById(id))
+          .filter((d): d is NonNullable<typeof d> => d != null)
+      : jeddahDistricts.filter((d) => d.id !== row.slug).slice(0, 8);
 
   return (
     <>
@@ -112,17 +82,18 @@ export function CoverageDistrictPageContent({ row }: Props) {
         <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">
           {row.label}
         </h1>
-        <p className="text-lg leading-8 text-muted-foreground">
-          {districtContent.intro} {districtContent.painPoint} {districtContent.focus}{" "}
-          {districtContent.note}
+        <p className="text-lg leading-8 text-muted-foreground">{highlight.intro}</p>
+        <p className="text-base leading-8 text-muted-foreground">
+          <strong className="text-[#163d57]">ما يقلق السكان:</strong> {highlight.painPoint}
         </p>
-        {districtContent.localContext ? (
-          <p className="text-base leading-8 text-muted-foreground">{districtContent.localContext}</p>
+        <p className="text-base leading-8 text-muted-foreground">
+          <strong className="text-[#163d57]">نهجنا في الحي:</strong> {highlight.focus}
+        </p>
+        {highlight.localContext ? (
+          <p className="text-base leading-8 text-muted-foreground">{highlight.localContext}</p>
         ) : null}
-        <p className="text-lg leading-8 text-muted-foreground">
-          نقدم في {row.district} كشف تسربات المياه والعزل المائي والحراري بخطة واضحة: معاينة، فحص،
-          تقرير، ثم إصلاح أو عزل يناسب منزلك أو عمارتك — مع أقل تأثير ممكن على التشطيبات.
-        </p>
+        <p className="text-lg leading-8 text-muted-foreground">{content.heroExtra}</p>
+        <p className="text-sm leading-7 text-muted-foreground">{highlight.note}</p>
       </header>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start">
@@ -135,7 +106,7 @@ export function CoverageDistrictPageContent({ row }: Props) {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3 text-base leading-8 text-muted-foreground">
-                {quickFacts.map((fact) => (
+                {content.quickFacts.map((fact) => (
                   <li key={fact}>{fact}</li>
                 ))}
               </ul>
@@ -187,21 +158,23 @@ export function CoverageDistrictPageContent({ row }: Props) {
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
+              <CardTitle className="text-[#163d57]">طبيعة المباني والمنطقة في {row.district}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
+              {content.buildingProfile.map((para) => (
+                <p key={para.slice(0, 40)}>{para}</p>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
+            <CardHeader>
               <CardTitle className="text-[#163d57]">ماذا نقدم في {row.district}؟</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
-              <p>
-                فحص دقيق للتسربات بوسائل غير هدّامة قدر الإمكان، مع تقرير يوضح مصدر المشكلة وخيارات
-                المعالجة — مناسب لمن يبحث عن كشف تسربات المياه في {row.district} بدون تكسير واسع.
-              </p>
-              <p>
-                عزل مائي وحراري للأسطح والخزانات والحمامات حسب حالة المبنى ومناخ {row.city.nameAr}.
-                ننفذ عزل فوم وإيبوكسي ولفائف بيتومينية بعد معاينة تحدد السماكة والمادة المناسبة.
-              </p>
-              <p>
-                عند ارتفاع الفاتورة أو بقع الرطوبة أو ضعف الضغط، ننصح بمعاينة مبكرة في {row.district}{" "}
-                قبل توسّع الضرر على الخرسانة والدهانات.
-              </p>
+              {content.servicesDetail.map((para) => (
+                <p key={para.slice(0, 48)}>{para}</p>
+              ))}
               <p>
                 للتفاصيل العامة راجع{" "}
                 <Link href="/services" className="font-semibold text-[#1f7f8a] hover:underline">
@@ -222,7 +195,7 @@ export function CoverageDistrictPageContent({ row }: Props) {
             </CardHeader>
             <CardContent>
               <ol className="list-decimal space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
-                {howSteps.map((step) => (
+                {content.inspectionSteps.map((step) => (
                   <li key={step}>{step}</li>
                 ))}
               </ol>
@@ -232,33 +205,53 @@ export function CoverageDistrictPageContent({ row }: Props) {
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
               <CardTitle className="text-[#163d57]">
-                تحليل مشكلات التسرب والعزل في {row.district}
+                مشكلات التسرب والعزل الشائعة في {row.district}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
-              <p>
-                تختلف طبيعة التسربات بين الشقق والفلل والعمائر في {row.district}. قد يكون السبب
-                مواسير قديمة، وصلات حمام مخفية، خزانًا علويًا، أو ضعف عزل سطح بعد الأمطار. لا
-                نعتمد التخمين: نراجع الاستهلاك وسلوك العداد ونفحص النقاط الأكثر عرضة للأعطال.
-              </p>
-              <p>
-                كثير من السكان جرّبوا تكسيرًا عشوائيًا دون نتيجة. نهجنا: تحديد النقطة أولًا ثم أقل
-                تدخل ممكن — يوفر الوقت ويحمي السيراميك والدهانات في {row.district}.
-              </p>
-              <p>
-                بعد التشخيص نوضح خيارات الإصلاح أو العزل التكميلي للأسطح والخزانات، بخطة مكتوبة
-                يفهمها العميل قبل الموافقة على التنفيذ.
-              </p>
+            <CardContent className="space-y-5 text-base leading-8 text-muted-foreground">
+              {content.problemAnalysis.map((para) => (
+                <p key={para.slice(0, 48)}>{para}</p>
+              ))}
             </CardContent>
           </Card>
 
+          <Card className="border-0 ring-0 bg-gradient-to-b from-[#eef7f9] to-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
+            <CardHeader>
+              <CardTitle className="text-[#163d57]">العزل المائي والحراري في {row.district}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
+              {content.insulationParagraphs.map((para) => (
+                <p key={para.slice(0, 48)}>{para}</p>
+              ))}
+            </CardContent>
+          </Card>
+
+          {content.scenarios.length > 0 ? (
+            <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
+              <CardHeader>
+                <CardTitle className="text-[#163d57]">حالات واقعية من {row.district}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                {content.scenarios.map((scenario) => (
+                  <article
+                    key={scenario.title}
+                    className="rounded-xl border border-[#e8edf0] bg-[#f8fbfc] p-5"
+                  >
+                    <h3 className="text-lg font-bold text-[#163d57]">{scenario.title}</h3>
+                    <p className="mt-2 text-base leading-8 text-muted-foreground">{scenario.body}</p>
+                  </article>
+                ))}
+              </CardContent>
+            </Card>
+          ) : null}
+
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">نصائح لتقليل فاتورة المياه في {row.district}</CardTitle>
+              <CardTitle className="text-[#163d57]">نصائح محلية لتقليل فاتورة المياه في {row.district}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="list-disc space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
-                {tips.map((tip) => (
+                {content.tips.map((tip) => (
                   <li key={tip}>{tip}</li>
                 ))}
               </ul>
@@ -272,7 +265,7 @@ export function CoverageDistrictPageContent({ row }: Props) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {faqItems.map((item) => (
+              {content.faq.map((item) => (
                 <article
                   key={item.question}
                   className="rounded-xl border border-[#e8edf0] bg-[#f8fbfc] p-4"
@@ -286,15 +279,14 @@ export function CoverageDistrictPageContent({ row }: Props) {
 
           <Card className="border-0 ring-0 bg-[#f8fbfc] shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">أحياء جدة القريبة والمجاورة</CardTitle>
+              <CardTitle className="text-[#163d57]">أحياء جدة القريبة من {row.district}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-base leading-8 text-muted-foreground">
-                انتقل إلى صفحة حي آخر لمعرفة تفاصيل الخدمة المحلية — كل الروابط تحافظ على نفس
-                هيكل الموقع.
+                كل حي له صفحة مستقلة بمحتوى مختلف — انتقل للحي المجاور لمزيد من التفاصيل المحلية.
               </p>
               <ul className="grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2">
-                {districtLinks.map((district) => (
+                {neighborLinks.map((district) => (
                   <li key={district.id}>
                     <Link
                       href={district.href}
@@ -310,13 +302,11 @@ export function CoverageDistrictPageContent({ row }: Props) {
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">
-                كلمات بحث شائعة في {row.district}
-              </CardTitle>
+              <CardTitle className="text-[#163d57]">كلمات بحث شائعة في {row.district}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="flex flex-wrap justify-end gap-2">
-                {searchPhrases.map((phrase) => (
+                {content.searchPhrases.map((phrase) => (
                   <li
                     key={phrase}
                     className="rounded-full bg-[#eef7f9] px-3 py-1 text-sm font-medium text-[#35566a]"

@@ -164,7 +164,7 @@ const NORTH_VILLA_SLUGS = new Set([
   "al-muntazahat",
 ]);
 
-function generatedHighlight(slug: string, districtName: string): DistrictHighlight {
+export function generatedHighlight(slug: string, districtName: string): DistrictHighlight {
   if (COASTAL_SLUGS.has(slug)) {
     return {
       intro: `في ${districtName} نراعي تأثير القرب من البحر: رطوبة عالية وملوحة قد تضعف الوصلات والعزل.`,
