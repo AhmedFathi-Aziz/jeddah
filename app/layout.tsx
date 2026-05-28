@@ -75,6 +75,11 @@ export default function RootLayout({
   return (
     <html lang="ar-SA" dir="rtl" className={`${cairo.variable}`} suppressHydrationWarning>
       <head>
+        <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="JqMAOEQnuwcO52rcELlsHQ"
+          async
+        />
         <link rel="dns-prefetch" href="//lh3.googleusercontent.com" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="//res.cloudinary.com" />
