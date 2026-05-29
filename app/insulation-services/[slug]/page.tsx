@@ -128,6 +128,28 @@ export default async function InsulationServicePage({ params }: Props) {
               الفحص والتجهيز والتطبيق والمتابعة، تظهر النتيجة بشكل واضح في الأداء اليومي للمبنى، وفي انخفاض الأعطال
               المستقبلية، وتحسن الراحة العامة. لهذا السبب نوصي دائمًا بالتنفيذ عبر فريق مختص يمتلك خبرة محلية في ظروف جدة.
             </p>
+            <p className="mt-3 text-sm leading-7 text-[#4a6677]">
+              روابط مفيدة:{" "}
+              <Link href="/insulation" className="font-semibold text-[#1f7f8a] hover:underline">
+                صفحة العزل
+              </Link>
+              {" · "}
+              <Link href="/leak-detection" className="font-semibold text-[#1f7f8a] hover:underline">
+                كشف التسربات
+              </Link>
+              {" · "}
+              <Link href="/blog/عزل-أسطح-بجدة" className="font-semibold text-[#1f7f8a] hover:underline">
+                دليل عزل الأسطح
+              </Link>
+              {" · "}
+              <Link href="/blog/عزل-خزانات-بجدة" className="font-semibold text-[#1f7f8a] hover:underline">
+                عزل الخزانات
+              </Link>
+              {" · "}
+              <Link href="/coverage" className="font-semibold text-[#1f7f8a] hover:underline">
+                أحياء جدة
+              </Link>
+            </p>
           </section>
 
         </div>

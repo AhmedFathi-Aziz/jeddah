@@ -37,12 +37,12 @@ export const KEYWORD_TOPICS: KeywordTopic[] = [
   { keyword: "جهاز كشف التسربات", href: "/leak-detection", category: "leak" },
   { keyword: "كشف تسربات بالأشعة الحرارية", href: "/leak-detection", category: "leak" },
   { keyword: "كشف تسربات صوتي إيكوفون", href: "/leak-detection", category: "leak" },
-  { keyword: "كشف تسربات الخزانات", href: "/leak-detection", category: "leak" },
-  { keyword: "كشف تسربات الحمامات", href: "/leak-detection", category: "leak" },
-  { keyword: "كشف تسربات المطابخ", href: "/leak-detection", category: "leak" },
-  { keyword: "كشف تسربات الأسطح", href: "/leak-detection", category: "leak" },
+  { keyword: "كشف تسربات الحمامات", href: "/blog/كشف-تسربات-الحمامات", category: "leak" },
+  { keyword: "كشف تسربات المطابخ", href: "/blog/كشف-تسربات-المطابخ-بجدة", category: "leak" },
+  { keyword: "كشف تسربات الأسطح", href: "/blog/كشف-تسربات-الأسطح-بجدة", category: "leak" },
+  { keyword: "كشف تسربات الخزانات", href: "/blog/كشف-تسربات-الخزانات-بجدة", category: "leak" },
   { keyword: "كشف تسربات مواسير مخفية", href: "/leak-detection", category: "leak" },
-  { keyword: "إصلاح تسربات المياه جدة", href: "/leak-detection", category: "leak" },
+  { keyword: "إصلاح تسربات المياه جدة", href: "/blog/إصلاح-تسربات-المياه", category: "leak" },
   { keyword: "فني كشف تسربات جدة", href: "/leak-detection", category: "leak" },
   { keyword: "أفضل شركة كشف تسربات جدة", href: "/leak-detection", category: "leak" },
   { keyword: "شركة كشف تسربات معتمدة", href: "/leak-detection", category: "leak" },
@@ -80,11 +80,13 @@ export const KEYWORD_TOPICS: KeywordTopic[] = [
   { keyword: "حل رطوبة الجدران جدة", href: "/insulation", category: "insulation" },
 
   // —— الفواتير والتشخيص ——
-  { keyword: "ارتفاع فاتورة المياه جدة", href: "/blog", category: "bill" },
-  { keyword: "فاتورة المياه مرتفعة", href: "/smart-leak-diagnosis", category: "bill" },
-  { keyword: "تسريب مياه خفي يرفع الفاتورة", href: "/smart-leak-diagnosis", category: "bill" },
-  { keyword: "كيف أكتشف تسرب المياه", href: "/blog", category: "bill" },
+  { keyword: "ارتفاع فاتورة المياه جدة", href: "/blog/ارتفاع-فاتورة-المياه-جدة", category: "bill" },
+  { keyword: "فاتورة المياه مرتفعة", href: "/blog/ارتفاع-فاتورة-المياه-جدة", category: "bill" },
+  { keyword: "تسريب مياه خفي يرفع الفاتورة", href: "/blog/kaif-taktashif-tasarobat-almiyah", category: "bill" },
+  { keyword: "كيف أكتشف تسرب المياه", href: "/blog/5-ayat-tasarab", category: "bill" },
   { keyword: "اختبار عداد المياه للتسرب", href: "/smart-leak-diagnosis", category: "bill" },
+  { keyword: "علامات تسرب المياه في المنزل", href: "/blog/5-ayat-tasarab", category: "bill" },
+  { keyword: "قراءة فاتورة المياه جدة", href: "/blog/irtifaa-fatura-almiyah-jeddah", category: "bill" },
 
   // —— أدوات ——
   { keyword: "مشخّص تسربات المياه", href: "/smart-leak-diagnosis", category: "tools" },
@@ -97,6 +99,8 @@ export const KEYWORD_TOPICS: KeywordTopic[] = [
   { keyword: "خدمات عزل وتسربات جدة", href: "/services", category: "local" },
   { keyword: "أحياء جدة كشف تسربات", href: "/coverage", category: "local" },
   { keyword: "مدونة تسربات وعزل", href: "/blog", category: "local" },
+  { keyword: "خطورة تسربات المياه", href: "/blog/خطورة-تسربات-المياه", category: "local" },
+  { keyword: "عزل أسطح بجدة دليل", href: "/blog/عزل-أسطح-بجدة", category: "local" },
   { keyword: "موسوعة العزل والتسربات", href: "/#encyclopedia", category: "local" },
 ];
 

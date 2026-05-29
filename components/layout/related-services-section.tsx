@@ -18,23 +18,23 @@ export function RelatedServicesSection({ currentPath, heading = "خدمات وص
 
   return (
     <section
-      className="bg-[#f8fbfc]/80 py-12 md:py-14"
+      className="overflow-x-hidden bg-[#f8fbfc]/80 py-8 sm:py-12 md:py-14"
       aria-labelledby="related-services-heading"
     >
-      <div className="mx-auto max-w-7xl px-6 text-right">
-        <h2 id="related-services-heading" className="text-xl font-extrabold text-[#163d57] md:text-2xl">
+      <div className="mx-auto w-full max-w-7xl min-w-0 px-4 text-right sm:px-6">
+        <h2 id="related-services-heading" className="text-lg font-extrabold text-[#163d57] sm:text-xl md:text-2xl">
           {heading}
         </h2>
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[#4a6677] md:text-base">
           اختر الصفحة المناسبة للتنقل بين خدمات الكشف والعزل والمدونة وتغطية الأحياء في جدة.
         </p>
         <nav className="mt-8" aria-label="روابط ذات صلة لخدمات الموقع">
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {links.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="group flex h-full flex-col rounded-2xl border-0 bg-white p-5 shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-22px_rgba(19,66,89,0.34)]"
+                  className="group flex h-full flex-col rounded-xl border-0 bg-white p-4 shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-22px_rgba(19,66,89,0.34)] sm:rounded-2xl sm:p-5"
                 >
                   <span className="text-base font-bold text-[#163d57] underline-offset-4 group-hover:underline">
                     {item.title}

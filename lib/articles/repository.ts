@@ -8,6 +8,7 @@ import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
 import { articles } from "@/lib/db/schema";
 
+import { sanitizeArticleExcerpt } from "./sanitize-article-markdown";
 import { getMergedBlogArticles, listBlogStaticPathSlugs } from "./markdown-store";
 import { blogArticleSlugLookupCandidates, blogArticleSlugsConflict } from "./slug-utils";
 import type { ArticleCard, ArticleFull } from "./types";
@@ -46,7 +47,11 @@ function asArticleDate(value: unknown): Date {
 }
 
 function hydrateArticleFull(a: ArticleFull): ArticleFull {
-  return { ...a, createdAt: asArticleDate(a.createdAt) };
+  return {
+    ...a,
+    excerpt: sanitizeArticleExcerpt(a.excerpt, a.title),
+    createdAt: asArticleDate(a.createdAt),
+  };
 }
 
 function rowToArticle(r: typeof articles.$inferSelect): ArticleFull {
@@ -55,7 +60,7 @@ function rowToArticle(r: typeof articles.$inferSelect): ArticleFull {
     slug: r.slug,
     category: r.category,
     title: r.title,
-    excerpt: r.excerpt,
+    excerpt: sanitizeArticleExcerpt(r.excerpt, r.title),
     content: r.content,
     cover: {
       src: r.coverImageUrl,

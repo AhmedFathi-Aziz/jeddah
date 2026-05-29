@@ -104,7 +104,7 @@ export default function LeakDetectionPage() {
   ] as const;
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+    <main className="page-main pb-mobile-fab py-10 md:py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <section className="rounded-3xl border border-[#e8edf0] bg-white p-7 text-right shadow-[0_16px_32px_-24px_rgba(19,66,89,0.35)] md:p-10">
         <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-[#f1f4f6] px-4 py-2 text-sm font-semibold text-[#1f7f8a]">
@@ -232,6 +232,24 @@ export default function LeakDetectionPage() {
             <li key={tip}>{tip}</li>
           ))}
         </ul>
+        <p className="mt-4 text-sm leading-7 text-[#4a6677]">
+          للمزيد:{" "}
+          <Link href="/blog/ارتفاع-فاتورة-المياه-جدة" className="font-semibold text-[#1f7f8a] hover:underline">
+            دليل ارتفاع فاتورة المياه
+          </Link>
+          {" · "}
+          <Link href="/blog/5-ayat-tasarab" className="font-semibold text-[#1f7f8a] hover:underline">
+            5 علامات تسرب
+          </Link>
+          {" · "}
+          <Link href="/smart-leak-diagnosis" className="font-semibold text-[#1f7f8a] hover:underline">
+            المشخّص الذكي
+          </Link>
+          {" · "}
+          <Link href="/blog/kaif-taktashif-tasarobat-almiyah" className="font-semibold text-[#1f7f8a] hover:underline">
+            الكشف قبل فوات الأوان
+          </Link>
+        </p>
       </section>
 
       <section className="mt-8 rounded-2xl border border-[#e8edf0] bg-white p-6 text-right">

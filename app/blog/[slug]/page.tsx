@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ChevronLeft, Mail } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
+import { ArticleTopicLinksPanel } from "@/components/blog/article-topic-links-panel";
 import { ArticleRecentPostsPanel } from "@/components/blog/article-recent-posts-panel";
 import { ArticleStickyCta } from "@/components/blog/article-sticky-cta";
 import { ArticleTableOfContents } from "@/components/blog/article-table-of-contents";
@@ -23,6 +24,7 @@ import {
   listAllSlugsForStaticBuild,
   listRecentRelatedArticleCards,
 } from "@/lib/articles/repository";
+import { getArticleSidebarLinks } from "@/lib/navigation/related-service-links";
 import { images } from "@/lib/images";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
@@ -87,47 +89,51 @@ export default async function BlogArticlePage({ params }: Props) {
     redirect(`/blog/${article.slug}`);
   }
   const recentPosts = await listRecentRelatedArticleCards(article.id, 4);
+  const sidebarQuickLinks = getArticleSidebarLinks(article.slug).map((l) => ({
+    href: l.href,
+    title: l.title,
+  }));
   const toc = buildMarkdownToc(article.content);
   const tocDisplay = getTocDisplayEntries(toc);
 
   return (
     <>
       <ArticleJsonLd article={article} toc={tocDisplay} />
-      <main className="mx-auto max-w-7xl px-6 pb-20 pt-8 text-right md:pt-10">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+      <main className="page-main pb-mobile-fab pt-6 text-right sm:pt-8 md:pt-10">
+        <div className="grid min-w-0 grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-12 lg:gap-10">
           <article className="min-w-0 lg:col-span-9">
-            <nav className="mb-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <nav className="mb-3 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-muted-foreground sm:mb-4 sm:gap-2 sm:text-sm">
               <Link href="/" className="hover:text-primary">
                 الرئيسية
               </Link>
-              <ChevronLeft className="size-4" aria-hidden />
+              <ChevronLeft className="size-3.5 shrink-0 sm:size-4" aria-hidden />
               <Link href="/blog" className="hover:text-primary">
                 المدونة
               </Link>
-              <ChevronLeft className="size-4" aria-hidden />
-              <span className="font-semibold text-primary">{article.category}</span>
+              <ChevronLeft className="size-3.5 shrink-0 sm:size-4" aria-hidden />
+              <span className="line-clamp-1 min-w-0 font-semibold text-primary">{article.category}</span>
             </nav>
 
             <Link
               href="/blog"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "sm" }),
-                "mb-6 inline-flex items-center gap-1 text-muted-foreground",
+                "mb-4 inline-flex items-center gap-1 text-xs text-muted-foreground sm:mb-6 sm:text-sm",
               )}
             >
               <ChevronLeft className="size-4" aria-hidden />
               العودة للمدونة
             </Link>
 
-            <header className="mb-8 space-y-4">
-              <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">
+            <header className="mb-5 space-y-2 sm:mb-8 sm:space-y-4">
+              <h1 className="text-balance break-words text-2xl font-extrabold leading-snug text-primary sm:text-3xl sm:leading-tight md:text-4xl lg:text-5xl">
                 {article.title}
               </h1>
-              <p className="text-base text-muted-foreground">{articleDateLocaleLong(article.createdAt)}</p>
+              <p className="text-sm text-muted-foreground sm:text-base">{articleDateLocaleLong(article.createdAt)}</p>
             </header>
 
             <ArticleHeroSection
-              className="mb-10"
+              className="mb-6 sm:mb-10"
               title={article.title}
               category={article.category}
               coverSrc={article.cover.src}
@@ -137,22 +143,24 @@ export default async function BlogArticlePage({ params }: Props) {
               priority
             />
 
-            <div className="rounded-2xl border border-[#d9dee2] bg-white p-6 md:p-8">
+            <div className="min-w-0 overflow-hidden rounded-xl border border-[#d9dee2] bg-white p-3 sm:rounded-2xl sm:p-5 md:p-8">
               {article.excerpt ? (
-                <p className="mb-8 border-b border-[#d9dee2]/70 pb-6 text-lg leading-relaxed text-[#1b5a73] md:text-xl">
+                <p className="mb-5 border-b border-[#d9dee2]/70 pb-4 text-base leading-relaxed text-[#1b5a73] sm:mb-8 sm:pb-6 sm:text-lg md:text-xl">
                   {article.excerpt}
                 </p>
               ) : null}
 
-              <ArticleRecentPostsPanel posts={recentPosts} compact className="mb-6 lg:hidden" />
               <ArticleStickyCta
                 phone={siteConfig.phone}
                 phoneDisplay={siteConfig.phoneDisplay}
-                className="mb-6 lg:hidden"
+                quickLinks={sidebarQuickLinks}
+                className="mb-4 lg:hidden"
               />
               {tocDisplay.length > 0 ? (
-                <ArticleTableOfContents items={tocDisplay} className="lg:hidden" />
+                <ArticleTableOfContents items={tocDisplay} className="mb-4 lg:hidden" />
               ) : null}
+
+              <ArticleTopicLinksPanel slug={article.slug} title={article.title} excerpt={article.excerpt} />
 
               <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(240px,300px)] lg:gap-10 lg:items-start">
                 <div className="min-w-0">
@@ -168,6 +176,7 @@ export default async function BlogArticlePage({ params }: Props) {
                     <ArticleStickyCta
                       phone={siteConfig.phone}
                       phoneDisplay={siteConfig.phoneDisplay}
+                      quickLinks={sidebarQuickLinks}
                     />
                     {tocDisplay.length > 0 ? (
                       <ArticleTableOfContents items={tocDisplay} variant="sidebar" />
@@ -177,25 +186,25 @@ export default async function BlogArticlePage({ params }: Props) {
               </div>
             </div>
 
-            <footer className="mt-12 border-t border-[#d9dee2] pt-6">
-              <p className="text-sm text-muted-foreground">
+            <footer className="mt-8 border-t border-[#d9dee2] pt-4 sm:mt-12 sm:pt-6">
+              <p className="break-words text-sm text-muted-foreground">
                 {siteConfig.name} —{" "}
-                <Link href={absUrl(`/blog/${article.slug}`)} className="text-primary underline">
+                <Link
+                  href={absUrl(`/blog/${article.slug}`)}
+                  className="font-semibold text-[#163d57] underline decoration-[#197e8f]/60 underline-offset-2 hover:text-[#197e8f]"
+                >
                   رابط المقالة الدائم ({article.title})
                 </Link>
               </p>
             </footer>
           </article>
 
-          <aside className="space-y-6 lg:col-span-3">
+          <aside className="hidden min-w-0 space-y-6 lg:col-span-3 lg:block">
             <RequestInspectionBox phone={siteConfig.phone} />
 
             <Card className="border border-[#d9dee2] bg-white shadow-sm ring-0">
               <CardHeader>
-                <CardTitle className="flex items-center justify-center gap-2 text-[#163d57]">
-                  <Mail className="size-4" aria-hidden />
-                  نصائح أسبوعية
-                </CardTitle>
+                <CardTitle className="text-center text-[#163d57]">نصائح أسبوعية</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-center text-sm text-muted-foreground">
@@ -206,7 +215,7 @@ export default async function BlogArticlePage({ params }: Props) {
           </aside>
         </div>
 
-        <div className="mt-14">
+        <div className="mt-8 sm:mt-14">
           <RelatedServicesSection currentPath={`/blog/${article.slug}`} heading="خدمات وروابط ذات صلة" />
         </div>
       </main>

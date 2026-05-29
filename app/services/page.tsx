@@ -22,7 +22,7 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default function ServicesPage() {
   return (
-    <main className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+    <main className="page-main pb-mobile-fab py-10 md:py-16">
       <section className="rounded-3xl border border-[#d7e8ee] bg-white p-7 text-right shadow-[0_16px_32px_-24px_rgba(19,66,89,0.35)] md:p-10">
         <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-[#ecf8f8] px-4 py-2 text-sm font-semibold text-[#1f7f8a]">
           <ShieldCheck className="size-4" aria-hidden />

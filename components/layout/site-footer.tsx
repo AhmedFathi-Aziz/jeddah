@@ -14,7 +14,7 @@ export function SiteFooter({
 
   return (
     <footer id="contact" className="shrink-0 border-t border-border bg-muted/40 [contain:paint]">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-12 md:grid-cols-4">
+      <div className="mx-auto grid w-full max-w-7xl min-w-0 grid-cols-1 gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:grid-cols-4">
         <div className="text-right space-y-3">
           <p className="text-lg font-bold text-primary">{siteConfig.name}</p>
           <p className="text-sm text-muted-foreground leading-relaxed">

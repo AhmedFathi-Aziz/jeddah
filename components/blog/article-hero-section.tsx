@@ -35,7 +35,7 @@ export function ArticleHeroSection({
 
   return (
     <div
-      className={cn("relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-[#d9dee2] shadow-sm", className)}
+      className={cn("relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[#d9dee2] shadow-sm sm:aspect-[16/9] sm:rounded-2xl", className)}
     >
       {useLocalWorkerHero ? (
         <ArticleCoverImage
@@ -70,9 +70,9 @@ export function ArticleHeroSection({
         aria-hidden
       />
 
-      <div className="absolute inset-x-0 top-0 flex justify-center p-4 md:justify-start md:px-6 md:pt-5">
+      <div className="absolute inset-x-0 top-0 flex justify-center p-3 sm:p-4 md:justify-start md:px-6 md:pt-5">
         <p
-          className="max-w-full rounded-xl border border-white/25 bg-[#c41e3a]/95 px-4 py-2.5 text-center text-base font-extrabold tracking-wide text-white shadow-lg backdrop-blur-sm md:text-start md:text-lg"
+          className="max-w-[calc(100%-1.5rem)] rounded-lg border border-white/25 bg-[#c41e3a]/95 px-3 py-2 text-center text-xs font-extrabold tracking-wide text-white shadow-lg backdrop-blur-sm sm:max-w-full sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm md:text-start md:text-lg"
           role="status"
         >
           خصم 20% لفترة محدودة

@@ -1,66 +1,30 @@
 /**
- * روابط خدمات ذات صلة لكل مسار — توزيع داخلي منطقي (صفحات أموال + مدونة + تغطية).
- * عند إضافة مسارات جديدة حدّث `RELATED_HREFS_BY_PATH` و`SERVICE_LINK_DEFINITIONS`.
+ * روابط ذات صلة لكل مسار — توزيع داخلي قوي (خدمات + مدونة + تغطية + عزل فرعي).
  */
+import {
+  BLOG_ARTICLE_LINKS,
+  FEATURED_DISTRICT_LINKS,
+  HUB_LINKS,
+  INSULATION_SERVICE_LINKS,
+  pickLinksByContext,
+  type InternalLink,
+} from "@/lib/navigation/internal-link-registry";
 
 export type ServiceRelatedLink = {
   href: string;
-  /** نص الرابط — وصفي لمحركات البحث وللمستخدم */
   title: string;
-  /** جملة قصيرة بجانب الرابط لتقوية السياق حول الربط الداخلي */
   description: string;
 };
 
-const SERVICE_LINK_DEFINITIONS: ServiceRelatedLink[] = [
-  {
-    href: "/",
-    title: "الصفحة الرئيسية",
-    description: "نقطة الانطلاق للتنقل بين خدمات كشف التسربات والعزل في الموقع.",
-  },
-  {
-    href: "/services",
-    title: "خدمات كشف التسربات والعزل",
-    description: "نظرة شاملة على التشخيص والعزل والتنفيذ الميداني في جدة.",
-  },
-  {
-    href: "/leak-detection",
-    title: "كشف تسربات المياه بدون تكسير",
-    description: "فحص إلكتروني حراري وصوتي وتقرير واضح قبل الإصلاح.",
-  },
-  {
-    href: "/smart-leak-diagnosis",
-    title: "مُشخّص تسربات المياه الذكي",
-    description: "اختبار قصير بالعربية ثم حجز فحص مجاني بجهاز الإيكوفون عبر واتساب.",
-  },
-  {
-    href: "/insulation",
-    title: "عزل أسطح وخزانات وفوم",
-    description: "عزل مائي وحراري يناسب مناخ الساحل ويقلل الرطوبة والحرارة.",
-  },
-  {
-    href: "/contact",
-    title: "اتصل واحجز زيارة",
-    description: "هاتف واستفسارات لمعاينات كشف التسربات والعزل.",
-  },
-  {
-    href: "/blog",
-    title: "مدونة التسربات والعزل",
-    description: "إرشادات عملية عن الفواتير والرطوبة وعزل الأسطح في جدة.",
-  },
-  {
-    href: "/news",
-    title: "الأخبار",
-    description: "مستجدات ونصائح موسمية وتحديثات حول خدمات الكشف والعزل في جدة.",
-  },
-  {
-    href: "/#coverage",
-    title: "تغطية أحياء جدة",
-    description: "صفحات محلية لخدمات الكشف والعزل حسب الحي.",
-  },
-];
+function toServiceLink(link: InternalLink): ServiceRelatedLink {
+  return { href: link.href, title: link.title, description: link.description };
+}
 
 const LINK_BY_HREF: Record<string, ServiceRelatedLink> = Object.fromEntries(
-  SERVICE_LINK_DEFINITIONS.map((l) => [l.href, l]),
+  [...HUB_LINKS, ...INSULATION_SERVICE_LINKS, ...BLOG_ARTICLE_LINKS, ...FEATURED_DISTRICT_LINKS].map((l) => [
+    l.href,
+    toServiceLink(l),
+  ]),
 );
 
 function normalizePath(path: string): string {
@@ -69,84 +33,164 @@ function normalizePath(path: string): string {
   return t.replace(/\/+$/, "");
 }
 
-/** ترتيب الروابط المقترحة حسب «نوع» الصفحة الحالية (بدون تكرار المسار الحالي). */
-function relatedHrefsForPath(normalized: string): string[] {
+function blogSlugFromPath(normalized: string): string | null {
+  if (!normalized.startsWith("/blog/")) return null;
+  const slug = normalized.slice("/blog/".length);
+  return slug || null;
+}
+
+function contextFromPath(normalized: string): string {
+  const slug = blogSlugFromPath(normalized) ?? "";
+  const decoded = decodeURIComponent(slug);
+  return `${normalized} ${decoded} ${slug.replace(/-/g, " ")}`;
+}
+
+/** روابط ثابتة حسب نوع الصفحة */
+function baseHrefsForPath(normalized: string): string[] {
   if (normalized.startsWith("/admin")) return [];
 
   if (normalized.startsWith("/blog/") && normalized !== "/blog") {
     return [
-      "/",
-      "/services",
       "/leak-detection",
       "/smart-leak-diagnosis",
       "/insulation",
+      "/services",
       "/contact",
+      "/coverage",
       "/blog",
-      "/news",
-      "/#coverage",
+      "/",
     ];
   }
 
   if (normalized.startsWith("/news/") && normalized !== "/news") {
-    return [
-      "/",
-      "/services",
-      "/leak-detection",
-      "/news",
-      "/blog",
-      "/contact",
-      "/insulation",
-      "/#coverage",
-    ];
+    return ["/", "/leak-detection", "/blog", "/services", "/insulation", "/contact", "/coverage", "/news"];
   }
 
   if (normalized.startsWith("/coverage/")) {
     return [
-      "/",
+      "/coverage",
       "/leak-detection",
       "/smart-leak-diagnosis",
       "/insulation",
       "/services",
       "/contact",
       "/blog",
-      "/news",
-      "/#coverage",
+      "/",
+    ];
+  }
+
+  if (normalized.startsWith("/insulation-services/")) {
+    return [
+      "/insulation",
+      "/leak-detection",
+      "/services",
+      "/contact",
+      "/blog/عزل-أسطح-بجدة",
+      "/blog/عزل-خزانات-بجدة",
+      "/coverage",
+      "/",
     ];
   }
 
   const map: Record<string, string[]> = {
-    "/": [
-      "/services",
-      "/leak-detection",
-      "/smart-leak-diagnosis",
-      "/insulation",
-      "/contact",
-      "/blog",
-      "/news",
-      "/#coverage",
-    ],
-    "/services": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/contact", "/blog", "/news", "/#coverage"],
-    "/leak-detection": ["/", "/smart-leak-diagnosis", "/insulation", "/services", "/contact", "/blog", "/news", "/#coverage"],
-    "/smart-leak-diagnosis": ["/", "/leak-detection", "/insulation", "/services", "/contact", "/blog", "/news", "/#coverage"],
-    "/insulation": ["/", "/leak-detection", "/smart-leak-diagnosis", "/services", "/contact", "/blog", "/news", "/#coverage"],
-    "/contact": ["/", "/services", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/blog", "/news", "/#coverage"],
-    "/blog": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/services", "/contact", "/news", "/#coverage"],
-    "/news": ["/", "/leak-detection", "/blog", "/services", "/contact", "/insulation", "/#coverage"],
+    "/": ["/services", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/coverage", "/blog", "/contact", "/news"],
+    "/services": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/coverage", "/blog", "/contact", "/news"],
+    "/leak-detection": ["/", "/smart-leak-diagnosis", "/insulation", "/services", "/blog/كشف-تسربات-بدون-تكسير", "/blog/5-ayat-tasarab", "/coverage", "/contact"],
+    "/smart-leak-diagnosis": ["/", "/leak-detection", "/insulation", "/services", "/blog/ارتفاع-فاتورة-المياه-جدة", "/blog/5-ayat-tasarab", "/coverage", "/contact"],
+    "/insulation": ["/", "/leak-detection", "/insulation-services/foam-thermal-waterproof-insulation", "/insulation-services/tank-epoxy-insulation", "/blog/عزل-أسطح-بجدة", "/services", "/coverage", "/contact"],
+    "/contact": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/services", "/blog", "/coverage", "/news"],
+    "/blog": ["/", "/leak-detection", "/smart-leak-diagnosis", "/insulation", "/services", "/blog/kaif-taktashif-tasarobat-almiyah", "/coverage", "/contact"],
+    "/news": ["/", "/leak-detection", "/blog", "/services", "/insulation", "/coverage", "/contact"],
+    "/coverage": ["/", "/leak-detection", "/insulation", "/services", "/blog", "/smart-leak-diagnosis", "/contact", "/#coverage"],
   };
 
   return map[normalized] ?? map["/"];
 }
 
+/** مقالات مدونة ذات صلة بالسياق */
+function contextualBlogHrefs(context: string, currentPath: string, count = 3): string[] {
+  return pickLinksByContext(BLOG_ARTICLE_LINKS, context, count + 2, currentPath)
+    .filter((l) => l.href !== currentPath)
+    .slice(0, count)
+    .map((l) => l.href);
+}
+
+/** أحياء ذات صلة */
+function contextualDistrictHrefs(context: string, count = 2): string[] {
+  return pickLinksByContext(FEATURED_DISTRICT_LINKS, context, count).map((l) => l.href);
+}
+
+/** خدمات عزل فرعية ذات صلة */
+function contextualInsulationHrefs(context: string, count = 2): string[] {
+  return pickLinksByContext(INSULATION_SERVICE_LINKS, context, count).map((l) => l.href);
+}
+
 /**
- * يعيد روابط ذات صلة لصفحة حالية، مع استبعاد المسار نفسه (مطابقة تامة فقط).
+ * يعيد روابط ذات صلة قوية لصفحة حالية — حتى 12 رابط بدون تكرار.
  */
-export function getRelatedServiceLinks(currentPath: string): ServiceRelatedLink[] {
+export function getRelatedServiceLinks(currentPath: string, extraContext = ""): ServiceRelatedLink[] {
   const n = normalizePath(currentPath);
-  const hrefs = relatedHrefsForPath(n).filter((href) => normalizePath(href) !== n);
-  const out: ServiceRelatedLink[] = [];
-  for (const href of hrefs) {
-    const link = LINK_BY_HREF[href];
-    if (link) out.push(link);
+  const context = `${contextFromPath(n)} ${extraContext}`.trim();
+
+  const hrefSet = new Set<string>();
+  const ordered: string[] = [];
+
+  const push = (href: string) => {
+    const norm = normalizePath(href);
+    if (norm === n || hrefSet.has(href)) return;
+    if (LINK_BY_HREF[href]) {
+      hrefSet.add(href);
+      ordered.push(href);
+    }
+  };
+
+  // روابط سياقية حسب نوع الصفحة
+  if (n.startsWith("/blog/")) {
+    for (const h of contextualBlogHrefs(context, n, 4)) push(h);
+    for (const h of contextualDistrictHrefs(context, 2)) push(h);
+    for (const h of contextualInsulationHrefs(context, 1)) push(h);
+  } else if (n.startsWith("/insulation-services/")) {
+    for (const h of contextualInsulationHrefs(context, 3)) push(h);
+    push("/blog/عزل-أسطح-بجدة");
+    push("/blog/عزل-خزانات-بجدة");
+    push("/leak-detection");
+  } else if (n.startsWith("/coverage/")) {
+    for (const h of contextualBlogHrefs(context, n, 3)) push(h);
+    for (const h of contextualDistrictHrefs(context, 3)) push(h);
+  } else if (n === "/leak-detection" || n === "/smart-leak-diagnosis") {
+    for (const h of contextualBlogHrefs(context, n, 4)) push(h);
+    for (const h of contextualDistrictHrefs(context, 2)) push(h);
+  } else if (n === "/insulation") {
+    for (const h of contextualInsulationHrefs(context, 4)) push(h);
+    for (const h of contextualBlogHrefs(context, n, 2)) push(h);
   }
-  return out;
+
+  for (const href of baseHrefsForPath(n)) push(href);
+
+  return ordered.slice(0, 12).map((href) => LINK_BY_HREF[href]!);
+}
+
+/** روابط سريعة للشريط الجانبي في المقالات */
+export function getArticleSidebarLinks(currentSlug: string): ServiceRelatedLink[] {
+  const context = decodeURIComponent(currentSlug);
+  const blogLinks = pickLinksByContext(BLOG_ARTICLE_LINKS, context, 3, `/blog/${currentSlug}`).map(toServiceLink);
+  const serviceLinks = [
+    toServiceLink(HUB_LINKS.find((l) => l.href === "/leak-detection")!),
+    toServiceLink(HUB_LINKS.find((l) => l.href === "/smart-leak-diagnosis")!),
+    toServiceLink(HUB_LINKS.find((l) => l.href === "/insulation")!),
+    toServiceLink(HUB_LINKS.find((l) => l.href === "/coverage")!),
+  ];
+  return [...serviceLinks, ...blogLinks];
+}
+
+/** روابط مقترحة لحقن داخل محتوى المقال حسب عنوان القسم */
+export function getContextualInlineLinks(sectionHeading: string, articleSlug: string): ServiceRelatedLink[] {
+  const ctx = `${sectionHeading} ${decodeURIComponent(articleSlug)}`;
+  const blogs = pickLinksByContext(BLOG_ARTICLE_LINKS, ctx, 2, `/blog/${articleSlug}`).map(toServiceLink);
+  const hubs = pickLinksByContext(
+    [...HUB_LINKS, ...INSULATION_SERVICE_LINKS],
+    ctx,
+    2,
+  ).map(toServiceLink);
+  return [...hubs, ...blogs].slice(0, 4);
 }

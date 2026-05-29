@@ -82,7 +82,7 @@ export default function ContactPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className="mx-auto max-w-7xl px-6 pb-20 pt-10 md:pb-24 md:pt-14">
+      <main className="page-main pb-mobile-fab pt-8 md:pt-14">
         <nav className="mb-8 text-right text-sm text-[#5a7588]" aria-label="مسار التصفح">
           <Link href="/" className="font-medium text-[#1f7f8a] hover:underline">
             الرئيسية

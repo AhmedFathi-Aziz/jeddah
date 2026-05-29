@@ -47,51 +47,52 @@ export function SiteHeader({ phone }: { phone: string }) {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-[60] shrink-0 border-b border-border/80 bg-[#f4f5f7] shadow-sm backdrop-blur-sm supports-[backdrop-filter]:bg-[#f4f5f7]/95"
+      className="sticky top-0 z-[60] shrink-0 overflow-x-hidden border-b border-border/80 bg-[#f4f5f7] shadow-sm backdrop-blur-sm supports-[backdrop-filter]:bg-[#f4f5f7]/95"
     >
       {/* صف واحد: اسم الموقع فقط ← روابط ← زر الهاتف */}
-      <div className="mx-auto flex w-full max-w-7xl min-h-[4.75rem] flex-row flex-wrap items-center justify-center gap-x-3 gap-y-3 px-6 py-3 md:flex-nowrap md:gap-x-6 lg:gap-x-10">
+      <div className="mx-auto grid w-full max-w-7xl min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 gap-y-2 overflow-hidden px-4 py-3 sm:px-6 md:flex md:min-h-[4.75rem] md:flex-row md:flex-nowrap md:justify-center md:gap-x-4 lg:gap-x-8">
         <Link
           href="/"
           aria-label={`الرئيسية — ${siteConfig.name}`}
           className={cn(
-            "inline-flex shrink-0 items-center outline-none",
+            "inline-flex min-w-0 items-center outline-none",
             "no-underline decoration-0 hover:no-underline",
             "visited:text-[#123a5a]",
             "focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-[#1f7f8a]/40 focus-visible:ring-offset-2",
           )}
         >
-          <span className="max-w-[min(100%,18rem)] text-balance text-center text-lg font-extrabold leading-tight text-[#123a5a] md:max-w-none md:text-xl md:leading-snug">
+          <span className="line-clamp-2 text-balance text-start text-sm font-extrabold leading-snug text-[#123a5a] sm:text-base md:line-clamp-none md:text-xl md:leading-snug">
             {siteConfig.name}
           </span>
         </Link>
 
         <nav
-          className="hidden min-w-0 flex-wrap items-center justify-center gap-x-3 md:flex md:flex-nowrap md:gap-x-5"
+          className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-x-2 gap-y-1 md:flex lg:gap-x-4"
           aria-label="التنقل الرئيسي"
         >
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="whitespace-nowrap text-sm font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-[#1f7f8a] hover:underline"
+              className="text-xs font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-[#1f7f8a] hover:underline lg:text-sm lg:whitespace-nowrap"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex shrink-0 flex-row items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <a
             href={telHref}
             className={cn(
               buttonVariants({ size: "default" }),
-              "h-auto min-h-11 rounded-full bg-[#1f7f8a] px-6 py-3 font-semibold whitespace-nowrap text-white hover:bg-[#1a6d76] md:min-h-12 md:px-8 md:py-3.5",
+              "h-auto min-h-10 rounded-full bg-[#1f7f8a] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#1a6d76] sm:min-h-11 sm:px-5 sm:py-3 sm:text-sm md:min-h-12 md:px-8 md:py-3.5",
             )}
           >
-            <span className="inline-flex flex-row items-center gap-2">
+            <span className="inline-flex flex-row items-center gap-1.5 sm:gap-2">
               <Phone className="size-4 shrink-0" aria-hidden />
-              طلب عرض سعراً
+              <span className="sm:hidden">اتصل</span>
+              <span className="hidden sm:inline">طلب عرض سعراً</span>
             </span>
           </a>
 

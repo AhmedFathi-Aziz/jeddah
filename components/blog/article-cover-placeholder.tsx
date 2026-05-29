@@ -1,5 +1,3 @@
-import { Newspaper } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 const GRADIENTS = [
@@ -54,8 +52,7 @@ export function ArticleCoverPlaceholder({ title, category, fill, compact, classN
       <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-cyan-200/25 blur-2xl" aria-hidden />
 
       <div className="relative z-[1] flex items-start justify-between gap-2">
-        <span className="inline-flex max-w-[85%] items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1 text-[11px] font-bold backdrop-blur-sm md:text-xs">
-          <Newspaper className="size-3.5 shrink-0 opacity-90" aria-hidden />
+        <span className="inline-flex max-w-[85%] items-center rounded-full border border-white/25 bg-white/15 px-3 py-1 text-[11px] font-bold backdrop-blur-sm md:text-xs">
           <span className="line-clamp-1">{category}</span>
         </span>
       </div>

@@ -154,6 +154,24 @@ export function CoverageDistrictPageContent({ row }: Props) {
                 </li>
               ))}
             </ul>
+            <p className="mt-4 text-sm leading-7 text-muted-foreground">
+              أدلة تكميلية:{" "}
+              <Link href="/blog/5-ayat-tasarab" className="font-semibold text-[#1f7f8a] hover:underline">
+                علامات التسرب
+              </Link>
+              {" · "}
+              <Link href="/blog/ارتفاع-فاتورة-المياه-جدة" className="font-semibold text-[#1f7f8a] hover:underline">
+                ارتفاع الفاتورة
+              </Link>
+              {" · "}
+              <Link href="/blog/كشف-تسربات-الحمامات" className="font-semibold text-[#1f7f8a] hover:underline">
+                تسربات الحمام
+              </Link>
+              {" · "}
+              <Link href="/insulation-services/bathroom-foam-insulation" className="font-semibold text-[#1f7f8a] hover:underline">
+                عزل حمامات
+              </Link>
+            </p>
           </section>
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
@@ -306,14 +324,28 @@ export function CoverageDistrictPageContent({ row }: Props) {
             </CardHeader>
             <CardContent>
               <ul className="flex flex-wrap justify-end gap-2">
-                {content.searchPhrases.map((phrase) => (
-                  <li
-                    key={phrase}
-                    className="rounded-full bg-[#eef7f9] px-3 py-1 text-sm font-medium text-[#35566a]"
-                  >
-                    {phrase}
-                  </li>
-                ))}
+                {content.searchPhrases.map((phrase) => {
+                  const href =
+                    phrase.includes("عزل") && phrase.includes("سطح")
+                      ? "/insulation"
+                      : phrase.includes("خزان")
+                        ? "/blog/كشف-تسربات-الخزانات-بجدة"
+                        : phrase.includes("حمام")
+                          ? "/blog/كشف-تسربات-الحمامات"
+                          : phrase.includes("فاتورة") || phrase.includes("استهلاك")
+                            ? "/blog/ارتفاع-فاتورة-المياه-جدة"
+                            : "/leak-detection";
+                  return (
+                    <li key={phrase}>
+                      <Link
+                        href={href}
+                        className="inline-block rounded-full bg-[#eef7f9] px-3 py-1 text-sm font-medium text-[#35566a] hover:bg-[#dceef2] hover:underline"
+                      >
+                        {phrase}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </CardContent>
           </Card>

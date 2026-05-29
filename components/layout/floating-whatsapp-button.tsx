@@ -15,7 +15,7 @@ export function FloatingWhatsAppButton({ phone }: FloatingWhatsAppButtonProps) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="تواصل عبر واتساب"
-      className="fixed bottom-5 right-5 z-50 inline-flex h-12 items-center gap-2 rounded-full bg-[#25D366] px-5 text-sm font-bold text-white shadow-lg transition hover:brightness-95"
+      className="fab-bottom fab-end fixed z-50 inline-flex h-11 max-w-[calc(100%-2rem)] items-center gap-2 rounded-full bg-[#25D366] px-3.5 text-xs font-bold text-white shadow-lg transition hover:brightness-95 sm:h-12 sm:px-5 sm:text-sm"
     >
       <WhatsAppLogo className="size-5 shrink-0 text-white" />
       واتساب

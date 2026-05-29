@@ -3,6 +3,7 @@ import Link from "next/link";
 import { MapPin, BookOpen } from "lucide-react";
 
 import { jeddahDistricts } from "@/lib/coverage-data";
+import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { buildCoverageIndexJsonLd } from "@/lib/seo/coverage-district-seo";
 import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
 import { buildPageMetadata } from "@/lib/seo/build-metadata";
@@ -79,6 +80,38 @@ export default function CoverageIndexPage() {
           ))}
         </ul>
       </section>
+
+      <section className="mt-14 rounded-2xl border border-[#e8edf0] bg-[#f8fbfc] p-6 md:p-8" aria-labelledby="coverage-guides-heading">
+        <h2 id="coverage-guides-heading" className="mb-4 text-2xl font-extrabold text-[#163d57]">
+          أدلة مرتبطة بخدمات الأحياء
+        </h2>
+        <p className="mb-5 max-w-3xl text-base leading-8 text-muted-foreground">
+          قبل اختيار حيّك، قد يساعدك أحد هذه الأدلة على فهم المشكلة — ثم انتقل لصفحة حيّك للتفاصيل المحلية.
+        </p>
+        <ul className="grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { href: "/leak-detection", title: "كشف تسربات بدون تكسير" },
+            { href: "/blog/كشف-تسربات-بدون-تكسير", title: "دليل الكشف الشامل" },
+            { href: "/blog/5-ayat-tasarab", title: "5 علامات تسرب" },
+            { href: "/blog/ارتفاع-فاتورة-المياه-جدة", title: "ارتفاع فاتورة المياه" },
+            { href: "/insulation", title: "عزل أسطح وخزانات" },
+            { href: "/blog/عزل-أسطح-بجدة", title: "دليل عزل الأسطح" },
+          ].map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="block rounded-xl bg-white px-4 py-3 text-base font-semibold text-[#1b5a73] shadow-sm hover:bg-[#eef7f9] hover:text-[#163d57] hover:underline"
+              >
+                {item.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <div className="mt-14">
+        <RelatedServicesSection currentPath="/coverage" heading="خدمات وروابط ذات صلة" />
+      </div>
     </main>
   );
 }

@@ -59,7 +59,7 @@ export function HomeLeaksFocus({ phone }: { phone: string }) {
               </span>
             </a>
             <Link
-              href="/#leak-detection"
+              href="/leak-detection"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
                 "h-11 rounded-xl border-[#2f7f86]/40 px-6 font-semibold text-[#214f66] hover:bg-[#edf6f7]",
@@ -67,6 +67,15 @@ export function HomeLeaksFocus({ phone }: { phone: string }) {
             >
               تفاصيل الخدمة
               <ArrowLeft className="mr-2 size-4" aria-hidden />
+            </Link>
+            <Link
+              href="/blog/كشف-تسربات-بدون-تكسير"
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "lg" }),
+                "h-11 rounded-xl px-6 font-semibold text-[#214f66] hover:bg-[#edf6f7]",
+              )}
+            >
+              دليل الكشف بدون تكسير
             </Link>
           </div>
 

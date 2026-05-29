@@ -22,7 +22,7 @@ export async function HomeArticlesPreview() {
       </header>
       <div className="grid gap-8 md:grid-cols-3">
         {previews.map((post) => (
-          <Card key={post.id} className="flex flex-col overflow-hidden border pt-0">
+          <Card key={`${post.slug}-${post.id}`} className="flex flex-col overflow-hidden border pt-0">
             <div className="relative h-48 w-full shrink-0 overflow-hidden rounded-t-lg">
               <ArticleCoverOrPlaceholder
                 fill

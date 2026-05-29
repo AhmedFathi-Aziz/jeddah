@@ -7,12 +7,30 @@
     text-wrap: balance;
   }
 
+  /** حاوية صفحات — padding وعرض آمن على الموبايل */
+  .page-main {
+    @apply mx-auto w-full min-w-0 max-w-7xl overflow-x-hidden px-4 sm:px-6;
+  }
+
+  /** مسافة سفلية لزر واتساب/طوارئ ثابت + safe area */
+  .pb-mobile-fab {
+    padding-bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem));
+  }
+
+  .fab-bottom {
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .fab-end {
+    inset-inline-end: max(1rem, env(safe-area-inset-right, 0px));
+  }
+
   /* Bottom sheet (narrow): full visual width */
   [data-slot="sheet-content"][data-side="bottom"]:not([data-full-bleed]) {
     left: 0 !important;
     right: 0 !important;
-    width: 100dvw !important;
-    max-width: 100dvw !important;
+    width: 100% !important;
+    max-width: 100% !important;
     margin-inline: 0 !important;
     box-sizing: border-box !important;
   }
@@ -49,8 +67,8 @@
   [data-slot="sheet-content"][data-full-bleed][data-side="bottom"] {
     left: 0 !important;
     right: 0 !important;
-    width: 100dvw !important;
-    max-width: 100dvw !important;
+    width: 100% !important;
+    max-width: 100% !important;
     margin-inline: 0 !important;
     box-sizing: border-box !important;
   }
@@ -58,8 +76,8 @@
   [data-slot="sheet-content"][data-full-bleed][data-side="top"] {
     left: 0 !important;
     right: 0 !important;
-    width: 100dvw !important;
-    max-width: 100dvw !important;
+    width: 100% !important;
+    max-width: 100% !important;
     margin-inline: 0 !important;
     box-sizing: border-box !important;
   }
@@ -149,11 +167,30 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply font-sans;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
   body {
     @apply bg-background text-foreground;
     background-image: none;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+    touch-action: pan-y;
+    position: relative;
   }
-  html {
-    @apply font-sans;
+  img,
+  video,
+  svg,
+  iframe {
+    max-width: 100%;
+  }
+  main {
+    max-width: 100%;
   }
 }

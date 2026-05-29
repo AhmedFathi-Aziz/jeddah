@@ -64,20 +64,20 @@ export default async function BlogPage() {
   return (
     <>
       <BlogJsonLd posts={posts} />
-      <main className="mx-auto max-w-7xl px-6 pb-20 pt-8 md:pt-12">
-        <header className="mb-12 rounded-2xl border-0 bg-card/60 p-6 text-right shadow-sm md:p-8">
-          <h1 className="text-balance text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
+      <main className="page-main pb-mobile-fab pt-6 md:pt-12">
+        <header className="mb-8 rounded-xl border-0 bg-card/60 p-4 text-right shadow-sm sm:mb-12 sm:rounded-2xl sm:p-6 md:p-8">
+          <h1 className="text-balance text-2xl font-extrabold tracking-tight text-primary sm:text-3xl md:text-4xl">
             مدونة جدة للتسربات والعزل
           </h1>
-          <p className="mt-4 max-w-3xl text-pretty leading-8 text-muted-foreground">
+          <p className="mt-3 max-w-3xl text-pretty text-sm leading-7 text-muted-foreground sm:mt-4 sm:text-base sm:leading-8">
             محتوى احترافي منظم عن كشف التسربات، العزل المائي والحراري، وترشيد استهلاك المياه في جدة.
           </p>
         </header>
 
-        <div className="grid gap-10 lg:grid-cols-12">
-          <aside className="order-2 space-y-5 lg:order-1 lg:col-span-3">
-            <div className="rounded-xl border-0 bg-card p-5 shadow-sm lg:sticky lg:top-24">
-              <h2 className="mb-4 border-e-4 border-[#3dbeff] pe-3 text-lg font-bold text-primary text-right">
+        <div className="grid gap-6 sm:gap-8 lg:grid-cols-12 lg:gap-10">
+          <aside className="order-2 min-w-0 space-y-4 sm:space-y-5 lg:order-1 lg:col-span-3">
+            <div className="rounded-xl border-0 bg-card p-4 shadow-sm sm:p-5 lg:sticky lg:top-24">
+              <h2 className="mb-3 border-e-4 border-[#3dbeff] pe-3 text-base font-bold text-primary text-right sm:mb-4 sm:text-lg">
                 التصنيفات
               </h2>
               <ul className="space-y-2 text-sm">
@@ -85,7 +85,7 @@ export default async function BlogPage() {
                   <li key={label}>
                     <Link
                       href={href}
-                      className="flex flex-row-reverse items-center justify-between gap-2 rounded-md px-2 py-2 font-medium text-muted-foreground hover:bg-muted"
+                      className="flex flex-row-reverse items-center justify-between gap-2 rounded-md px-2 py-2 text-xs font-medium text-muted-foreground hover:bg-muted sm:text-sm"
                     >
                       {label}
                       <Icon className="size-4 shrink-0 text-primary" aria-hidden />
@@ -111,15 +111,15 @@ export default async function BlogPage() {
             </div>
           </aside>
 
-          <section className="order-1 space-y-10 lg:order-2 lg:col-span-9" aria-labelledby="blog-articles-heading">
+          <section className="order-1 min-w-0 space-y-6 sm:space-y-10 lg:order-2 lg:col-span-9" aria-labelledby="blog-articles-heading">
             <h2 id="blog-articles-heading" className="sr-only">
               أحدث المقالات
             </h2>
 
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid gap-5 sm:gap-8 md:grid-cols-2">
               {posts.map((post, idx) => (
                 <article
-                  key={post.id}
+                  key={`${post.slug}-${post.id}`}
                   id={post.slug}
                   className="flex flex-col overflow-hidden rounded-xl border-0 bg-card shadow-sm scroll-mt-28 transition-all hover:-translate-y-0.5 hover:shadow-md"
                 >
@@ -140,7 +140,7 @@ export default async function BlogPage() {
                   <Card className="flex flex-1 flex-col rounded-none rounded-b-xl border-0 bg-transparent shadow-none">
                     <CardHeader className="pb-2 text-right">
                       <p className="text-xs font-bold text-[#00658d]">{post.category}</p>
-                      <h3 className="mt-2 text-xl font-bold leading-snug text-primary">
+                      <h3 className="mt-2 text-lg font-bold leading-snug text-primary sm:text-xl">
                         <Link href={`/blog/${post.slug}`} className="hover:underline">
                           {post.title}
                         </Link>
@@ -164,7 +164,7 @@ export default async function BlogPage() {
           </section>
         </div>
 
-        <section className="relative mt-16 overflow-hidden rounded-2xl border-0 bg-muted/30 p-8 shadow-sm md:p-12" aria-labelledby="newsletter-h">
+        <section className="relative mt-10 overflow-hidden rounded-xl border-0 bg-muted/30 p-5 shadow-sm sm:mt-16 sm:rounded-2xl sm:p-8 md:p-12" aria-labelledby="newsletter-h">
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.12]"
             aria-hidden
@@ -176,7 +176,7 @@ export default async function BlogPage() {
           />
           <div className="relative z-[1] mx-auto max-w-2xl text-center">
             <Mail className="mx-auto mb-4 size-12 text-primary" aria-hidden />
-            <h2 id="newsletter-h" className="text-2xl font-bold text-primary">
+            <h2 id="newsletter-h" className="text-xl font-bold text-primary sm:text-2xl">
               اشتراك في النشرة البريدية
             </h2>
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">

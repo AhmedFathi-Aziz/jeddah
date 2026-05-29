@@ -23,6 +23,9 @@ const cairo = Cairo({
 });
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
   themeColor: "#003f87",
 };
 
@@ -90,7 +93,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <GlobalJsonLd />
         <SiteHeader phone={siteConfig.phone} />
-        <div className="relative min-h-0 flex-1">{children}</div>
+        <div className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden">{children}</div>
         <FloatingWhatsAppButton phone={siteConfig.phone} />
         <SiteFooter phone={siteConfig.phone} phoneDisplay={siteConfig.phoneDisplay} />
       </body>

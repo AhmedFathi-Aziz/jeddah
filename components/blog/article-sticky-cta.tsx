@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Phone, ShieldCheck } from "lucide-react";
+import { Phone } from "lucide-react";
 
 import { WhatsAppLogo } from "@/components/icons/whatsapp-logo";
 
@@ -10,9 +10,23 @@ type Props = {
   phone: string;
   phoneDisplay?: string;
   className?: string;
+  /** روابط داخلية سريعة أسفل أزرار التواصل */
+  quickLinks?: { href: string; title: string }[];
 };
 
-export function ArticleStickyCta({ phone, phoneDisplay, className }: Props) {
+const DEFAULT_QUICK_LINKS = [
+  { href: "/leak-detection", title: "كشف بدون تكسير" },
+  { href: "/smart-leak-diagnosis", title: "المشخّص الذكي" },
+  { href: "/insulation", title: "عزل أسطح وخزانات" },
+  { href: "/coverage", title: "أحياء جدة" },
+] as const;
+
+export function ArticleStickyCta({
+  phone,
+  phoneDisplay,
+  className,
+  quickLinks = [...DEFAULT_QUICK_LINKS],
+}: Props) {
   const tel = `tel:${phone}`;
   const whatsappHref = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(
     "مرحباً، قرأت مقالكم وأحتاج معاينة/كشف تسربات في جدة.",
@@ -21,16 +35,12 @@ export function ArticleStickyCta({ phone, phoneDisplay, className }: Props) {
   return (
     <aside
       className={cn(
-        "rounded-xl border border-[#d9dee2] bg-white p-4 shadow-sm",
+        "rounded-xl border border-[#d9dee2] bg-white p-3 shadow-sm sm:p-4",
         className,
       )}
       aria-label="طلب معاينة مجانية"
     >
-      <div className="flex items-center justify-center gap-2 text-[#197e8f]">
-        <ShieldCheck className="size-4 shrink-0" aria-hidden />
-        <p className="text-xs font-semibold">معاينة مجانية في جدة</p>
-      </div>
-      <h2 className="mt-2 text-center text-base font-extrabold leading-snug text-[#163d57]">
+      <h2 className="text-center text-base font-extrabold leading-snug text-[#163d57]">
         اكتشفت تسرباً أو رطوبة؟
       </h2>
       <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground">
@@ -60,6 +70,22 @@ export function ArticleStickyCta({ phone, phoneDisplay, className }: Props) {
           واتساب
         </Link>
       </div>
+
+      <nav className="mt-4 border-t border-[#e8edf0] pt-3" aria-label="روابط خدمات سريعة">
+        <p className="mb-2 text-center text-[11px] font-semibold text-[#5a7d8f]">صفحات ذات صلة</p>
+        <ul className="flex flex-wrap justify-center gap-1.5">
+          {quickLinks.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className="inline-block rounded-md bg-[#eef7f9] px-2 py-1 text-[11px] font-semibold text-[#1b5a73] hover:bg-[#dceef2] hover:underline"
+              >
+                {link.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </aside>
   );
 }

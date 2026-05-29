@@ -5,6 +5,7 @@ import matter from "gray-matter";
 
 import { demoArticles } from "./demo-articles";
 import { blogArticleSlugLookupCandidates } from "./slug-utils";
+import { sanitizeArticleExcerpt, sanitizeArticleMarkdown } from "./sanitize-article-markdown";
 import type { ArticleFull } from "./types";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "blog");
@@ -28,8 +29,8 @@ function parseArticleFile(raw: string, filename: string): ArticleFull | null {
     slug,
     category: String(d.category ?? ""),
     title: String(d.title ?? ""),
-    excerpt: String(d.excerpt ?? ""),
-    content: typeof content === "string" ? content.trim() : "",
+    excerpt: sanitizeArticleExcerpt(String(d.excerpt ?? ""), String(d.title ?? "")),
+    content: sanitizeArticleMarkdown(typeof content === "string" ? content.trim() : ""),
     cover: {
       src: String(d.coverSrc ?? ""),
       alt: String(d.coverAlt ?? ""),

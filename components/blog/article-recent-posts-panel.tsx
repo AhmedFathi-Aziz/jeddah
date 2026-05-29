@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowLeft, Newspaper } from "lucide-react";
 
 import { ArticleCoverOrPlaceholder } from "@/components/blog/article-cover-or-placeholder";
 import { articleDateLocaleShort, safeArticleDate } from "@/lib/articles/article-date";
@@ -29,22 +28,12 @@ export function ArticleRecentPostsPanel({ posts, className, compact }: Props) {
           compact ? "px-3 py-3" : "px-4 py-4",
         )}
       >
-        <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              "flex items-center justify-center rounded-lg bg-primary/10 text-primary",
-              compact ? "size-8" : "size-9",
-            )}
-          >
-            <Newspaper className={compact ? "size-4" : "size-5"} aria-hidden />
-          </span>
-          <h2
-            id="article-recent-posts-heading"
-            className={cn("font-bold text-primary", compact ? "text-base" : "text-lg")}
-          >
-            أحدث المقالات
-          </h2>
-        </div>
+        <h2
+          id="article-recent-posts-heading"
+          className={cn("font-bold text-primary", compact ? "text-base" : "text-lg")}
+        >
+          أحدث المقالات
+        </h2>
         <Link
           href="/blog"
           className="text-xs font-semibold text-[#197e8f] hover:text-primary hover:underline"
@@ -58,7 +47,7 @@ export function ArticleRecentPostsPanel({ posts, className, compact }: Props) {
           const published = safeArticleDate(post.createdAt).toISOString();
           return (
             <li
-              key={post.id}
+              key={`${post.slug}-${post.id}`}
               className={cn(index > 0 && "mt-2 border-t border-[#d9dee2]/60 pt-2")}
             >
               <Link
@@ -96,10 +85,9 @@ export function ArticleRecentPostsPanel({ posts, className, compact }: Props) {
       <div className={cn("border-t border-[#d9dee2]/70 bg-white", compact ? "px-3 py-3" : "px-4 py-3")}>
         <Link
           href="/blog"
-          className="flex items-center justify-center gap-1 text-sm font-semibold text-[#1b5a73] transition-colors hover:text-primary"
+          className="flex items-center justify-center text-sm font-semibold text-[#1b5a73] transition-colors hover:text-primary hover:underline"
         >
           عرض كل المقالات
-          <ArrowLeft className="size-4" aria-hidden />
         </Link>
       </div>
     </section>
