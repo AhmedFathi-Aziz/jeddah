@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import { Phone, Menu } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand/brand-logo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
@@ -47,23 +48,19 @@ export function SiteHeader({ phone }: { phone: string }) {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-[60] shrink-0 overflow-x-hidden border-b border-border/80 bg-[#f4f5f7] shadow-sm backdrop-blur-sm supports-[backdrop-filter]:bg-[#f4f5f7]/95"
+      className="sticky top-0 z-[60] shrink-0 border-b border-border/80 bg-[#f4f5f7] shadow-sm backdrop-blur-sm supports-[backdrop-filter]:bg-[#f4f5f7]/95"
     >
-      {/* صف واحد: اسم الموقع فقط ← روابط ← زر الهاتف */}
-      <div className="mx-auto grid w-full max-w-7xl min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 gap-y-2 overflow-hidden px-4 py-3 sm:px-6 md:flex md:min-h-[4.75rem] md:flex-row md:flex-nowrap md:justify-center md:gap-x-4 lg:gap-x-8">
+      <div className="mx-auto flex w-full max-w-7xl min-w-0 items-center justify-between gap-2 px-4 py-3 sm:gap-3 sm:px-6 md:min-h-[4.75rem] md:gap-4 md:py-3 lg:gap-8">
         <Link
           href="/"
           aria-label={`الرئيسية — ${siteConfig.name}`}
           className={cn(
-            "inline-flex min-w-0 items-center outline-none",
+            "inline-flex shrink-0 items-center outline-none",
             "no-underline decoration-0 hover:no-underline",
-            "visited:text-[#123a5a]",
             "focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-[#1f7f8a]/40 focus-visible:ring-offset-2",
           )}
         >
-          <span className="line-clamp-2 text-balance text-start text-sm font-extrabold leading-snug text-[#123a5a] sm:text-base md:line-clamp-none md:text-xl md:leading-snug">
-            {siteConfig.name}
-          </span>
+          <BrandLogo variant="full" priority className="h-10 sm:h-12 md:h-14" sizes="(max-width: 768px) 40px, 56px" />
         </Link>
 
         <nav
@@ -86,7 +83,7 @@ export function SiteHeader({ phone }: { phone: string }) {
             href={telHref}
             className={cn(
               buttonVariants({ size: "default" }),
-              "h-auto min-h-10 rounded-full bg-[#1f7f8a] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#1a6d76] sm:min-h-11 sm:px-5 sm:py-3 sm:text-sm md:min-h-12 md:px-8 md:py-3.5",
+              "h-10 rounded-full bg-[#1f7f8a] px-3 text-xs font-semibold text-white hover:bg-[#1a6d76] sm:min-h-11 sm:px-5 sm:py-3 sm:text-sm md:min-h-12 md:px-8 md:py-3.5",
             )}
           >
             <span className="inline-flex flex-row items-center gap-1.5 sm:gap-2">
@@ -113,9 +110,8 @@ export function SiteHeader({ phone }: { phone: string }) {
               className="z-50 gap-0 border-0 border-e border-border bg-background p-0 shadow-xl"
               dir="rtl"
             >
-              <div className="border-b border-border/80 bg-background px-4 py-3 ps-14">
-                <p className="text-sm font-semibold text-[#123a5a]">القائمة</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">اختر الصفحة</p>
+              <div className="flex min-h-14 items-center border-b border-border/80 bg-background px-4 py-3 ps-14">
+                <BrandLogo variant="full" className="h-11" sizes="88px" />
               </div>
               <nav
                 className="flex min-h-0 flex-1 flex-col divide-y divide-border/60 overflow-y-auto overscroll-contain px-2 py-1 text-start"

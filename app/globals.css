@@ -21,8 +21,16 @@
     bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
   }
 
+  .fab-bottom-raised {
+    bottom: max(4.75rem, calc(env(safe-area-inset-bottom, 0px) + 3.5rem));
+  }
+
   .fab-end {
-    inset-inline-end: max(1rem, env(safe-area-inset-right, 0px));
+    inset-inline-end: max(1rem, env(safe-area-inset-left, 0px));
+  }
+
+  .fab-start {
+    inset-inline-start: max(1rem, env(safe-area-inset-right, 0px));
   }
 
   /* Bottom sheet (narrow): full visual width */

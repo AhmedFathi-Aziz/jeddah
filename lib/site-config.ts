@@ -27,6 +27,20 @@ function resolvePublicSiteUrl(): string {
 export const siteConfig = {
   name: "جدة للتسربات والعزل",
   nameEn: "Jeddah Leaks & Insulation",
+  logo: {
+    mark: {
+      src: "/logo-mark.png",
+      width: 474,
+      height: 188,
+      alt: "جذر — للعزل وكشف تسربات المياه",
+    },
+    full: {
+      src: "/brand-logo.png",
+      width: 466,
+      height: 474,
+      alt: "جذر — للعزل وكشف تسربات المياه",
+    },
+  },
   locale: "ar_SA",
   /** دومين الإنتاج (يمكن تجاوزه بمتغير NEXT_PUBLIC_SITE_URL) */
   url: resolvePublicSiteUrl(),

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Phone, MapPin } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand/brand-logo";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 export function SiteFooter({
@@ -16,7 +17,13 @@ export function SiteFooter({
     <footer id="contact" className="shrink-0 border-t border-border bg-muted/40 [contain:paint]">
       <div className="mx-auto grid w-full max-w-7xl min-w-0 grid-cols-1 gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-12 md:grid-cols-4">
         <div className="text-right space-y-3">
-          <p className="text-lg font-bold text-primary">{siteConfig.name}</p>
+          <Link
+            href="/"
+            aria-label={`الرئيسية — ${siteConfig.name}`}
+            className="inline-flex shrink-0 items-center outline-none focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
+          >
+            <BrandLogo variant="full" />
+          </Link>
           <p className="text-sm text-muted-foreground leading-relaxed">
             خدمات متخصصة لكشف تسربات المياه وعزل الأسطح والخزانات في جدة بالمملكة العربية السعودية.
           </p>

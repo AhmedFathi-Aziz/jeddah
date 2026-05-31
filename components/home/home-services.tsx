@@ -15,9 +15,9 @@ import { images } from "@/lib/images";
 
 export function HomeServices() {
   return (
-    <section id="services" className="mx-auto max-w-7xl px-6 py-16 md:py-20" aria-labelledby="services-heading">
-      <header className="mb-10 text-center md:mb-12">
-        <h2 id="services-heading" className="text-balance text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
+    <section id="services" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-20" aria-labelledby="services-heading">
+      <header className="mb-8 text-center sm:mb-10 md:mb-12">
+        <h2 id="services-heading" className="text-balance text-2xl font-extrabold leading-snug tracking-tight text-primary sm:text-3xl md:text-4xl">
           خدماتنا التخصصية في العزل وتسربات المياه بجدة
         </h2>
         <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
