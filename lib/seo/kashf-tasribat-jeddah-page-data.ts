@@ -2,7 +2,7 @@ import { SCHEMA_LOCAL_BUSINESS_ID } from "@/lib/seo/schema-ids";
 import { absImageSrc, absUrl, siteConfig } from "@/lib/site-config";
 import { images } from "@/lib/images";
 
-export const KASHF_JEDDAH_PAGE_PATH = "/kashf-tasribat-miah-jeddah" as const;
+export const KASHF_JEDDAH_PAGE_PATH = "/services/kashf-tasribat-miah-jeddah" as const;
 
 export const KASHF_JEDDAH_SEO = {
   title: "كشف تسربات المياه بجدة | فحص بدون تكسير وتقرير معتمد",

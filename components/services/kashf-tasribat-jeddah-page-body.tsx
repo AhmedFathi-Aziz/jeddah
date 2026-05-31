@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle2, MapPin, Phone, SearchCheck, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CheckCircle2, MapPin, Phone, SearchCheck, ShieldCheck } from "lucide-react";
 
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { WhatsAppLogo } from "@/components/icons/whatsapp-logo";
@@ -35,6 +35,17 @@ export function KashfTasribatJeddahPageBody() {
 
   return (
     <main className="page-main pb-mobile-fab py-10 md:py-16">
+      <Link
+        href="/services"
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "sm" }),
+          "mb-6 inline-flex items-center gap-2 rounded-xl border-0 bg-white px-4 text-[#3c596d] shadow-[0_10px_24px_-18px_rgba(19,66,89,0.28)] hover:bg-[#f8fbfc]",
+        )}
+      >
+        <ArrowLeft className="size-4" aria-hidden />
+        العودة لصفحة الخدمات
+      </Link>
+
       {/* Hero */}
       <section className="overflow-hidden rounded-3xl border border-[#e8edf0] bg-white shadow-[0_16px_32px_-24px_rgba(19,66,89,0.35)]">
         <div className="relative aspect-[3/2] w-full sm:aspect-[16/9] md:aspect-[21/9]">

@@ -14,17 +14,27 @@ const require = createRequire(import.meta.url);
 
 /** إعادة توجيه 301 من المسار القديم `/coverage/[id]` إلى `/coverage/jeddah/[id]` (SEO). */
 function legacyCoverageRedirects() {
+  const serviceRedirects = [
+    {
+      source: "/kashf-tasribat-miah-jeddah",
+      destination: "/services/kashf-tasribat-miah-jeddah",
+      permanent: true,
+    },
+  ];
   try {
     const data = require("./data/coverage-locations.json");
     const jeddah = data.cities?.find((c) => c.slug === "jeddah");
-    if (!jeddah?.districts?.length) return [];
-    return jeddah.districts.map((d) => ({
-      source: `/coverage/${d.slug}`,
-      destination: `/coverage/jeddah/${d.slug}`,
-      permanent: true,
-    }));
+    if (!jeddah?.districts?.length) return serviceRedirects;
+    return [
+      ...serviceRedirects,
+      ...jeddah.districts.map((d) => ({
+        source: `/coverage/${d.slug}`,
+        destination: `/coverage/jeddah/${d.slug}`,
+        permanent: true,
+      })),
+    ];
   } catch {
-    return [];
+    return serviceRedirects;
   }
 }
 

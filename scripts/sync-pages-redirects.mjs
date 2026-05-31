@@ -11,13 +11,13 @@ const root = path.resolve(__dirname, "..");
 const dataPath = path.join(root, "data", "coverage-locations.json");
 const outPath = path.join(root, "public", "_redirects");
 
-let lines = [];
+let lines = ["/kashf-tasribat-miah-jeddah  /services/kashf-tasribat-miah-jeddah  301"];
 try {
   const raw = fs.readFileSync(dataPath, "utf8");
   const data = JSON.parse(raw);
   const jeddah = data.cities?.find((c) => c.slug === "jeddah");
   if (jeddah?.districts?.length) {
-    lines = jeddah.districts.map((d) => `/coverage/${d.slug}  /coverage/jeddah/${d.slug}  301`);
+    lines.push(...jeddah.districts.map((d) => `/coverage/${d.slug}  /coverage/jeddah/${d.slug}  301`));
   }
 } catch (e) {
   console.warn("[sync-pages-redirects] تعذّر قراءة coverage-locations.json:", e?.message ?? e);
