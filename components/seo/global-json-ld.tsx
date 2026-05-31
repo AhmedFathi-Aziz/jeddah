@@ -19,6 +19,7 @@ const AREA_SERVED_CITIES = [{ "@type": "City" as const, name: "جدة", alternat
 const KNOWS_ABOUT = ALL_SITE_KEYWORDS;
 
 const SERVICE_CATALOG = [
+  { name: "كشف تسربات المياه بجدة", path: "/kashf-tasribat-miah-jeddah" },
   { name: "كشف تسربات المياه في جدة", path: "/leak-detection" },
   { name: "خدمات العزل المائي والحراري", path: "/insulation" },
   { name: "دليل الخدمات والموسوعة", path: "/services" },

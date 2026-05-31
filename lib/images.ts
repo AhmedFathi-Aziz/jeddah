@@ -216,4 +216,20 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  /** صفحة كشف تسربات المياه بجدة — hero */
+  kashfJeddahPageHero: {
+    src: "/images/pages/kashf-tasribat-miah-jeddah/kashf-tasribat-miah-jeddah-hero.webp",
+    alt: "فريق كشف تسربات المياه في جدة يفحص شبكة مواسير داخل مبنى سكني بأجهزة إلكترونية بدون تكسير",
+    title: "كشف تسربات المياه بجدة — فحص ميداني بدون تكسير",
+    width: 1536,
+    height: 1024,
+  },
+  /** صفحة كشف تسربات المياه بجدة — محتوى */
+  kashfJeddahPageField: {
+    src: "/images/pages/kashf-tasribat-miah-jeddah/kashf-tasribat-miah-jeddah-field-service.webp",
+    alt: "فني متخصص في كشف تسربات المياه بجدة يستخدم جهاز فحص إلكتروني على خط مياه داخل فيلا",
+    title: "فحص تسربات المياه في الفلل والشقق بجدة",
+    width: 1024,
+    height: 1536,
+  },
 } as const;

@@ -28,7 +28,8 @@ export const KEYWORD_CATEGORY_LABELS: Record<KeywordCategory, string> = {
 /** كل الموضوعات مرتبة حسب الفئة */
 export const KEYWORD_TOPICS: KeywordTopic[] = [
   // —— كشف التسربات ——
-  { keyword: "كشف تسربات المياه جدة", href: "/leak-detection", category: "leak" },
+  { keyword: "كشف تسربات المياه بجدة", href: "/kashf-tasribat-miah-jeddah", category: "leak" },
+  { keyword: "كشف تسربات المياه جدة", href: "/kashf-tasribat-miah-jeddah", category: "leak" },
   { keyword: "شركة كشف تسربات بجدة", href: "/leak-detection", category: "leak" },
   { keyword: "كشف تسربات المياه بدون تكسير", href: "/leak-detection", category: "leak" },
   { keyword: "كشف تسربات بدون تكسير جدة", href: "/leak-detection", category: "leak" },
