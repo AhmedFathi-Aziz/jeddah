@@ -232,4 +232,20 @@ export const images = {
     width: 1024,
     height: 1536,
   },
+  /** صفحة كشف تسربات بدون تكسير بجدة — hero */
+  kashfBedunTaksirPageHero: {
+    src: "/images/pages/kashf-tasribat-bedun-taksir-jeddah/kashf-tasribat-bedun-taksir-jeddah-hero.webp",
+    alt: "كشف تسربات بدون تكسير بجدة — فريق فني يفحص شبكة مياه داخل مبنى سكني بأجهزة إلكترونية دون كسر الجدران",
+    title: "كشف تسربات بدون تكسير بجدة — فحص غير تداخلي",
+    width: 1536,
+    height: 819,
+  },
+  /** صفحة كشف تسربات بدون تكسير بجدة — محتوى */
+  kashfBedunTaksirPageField: {
+    src: "/images/pages/kashf-tasribat-bedun-taksir-jeddah/kashf-tasribat-bedun-taksir-jeddah-field-service.webp",
+    alt: "فني كشف تسربات بدون تكسير في جدة يستخدم جهاز استماع صوتي على مواسير مخفية داخل فيلا",
+    title: "فحص تسربات المياه بدون تكسير للفلل والشقق بجدة",
+    width: 1024,
+    height: 1536,
+  },
 } as const;

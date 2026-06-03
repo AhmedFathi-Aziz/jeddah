@@ -11,7 +11,10 @@ const root = path.resolve(__dirname, "..");
 const dataPath = path.join(root, "data", "coverage-locations.json");
 const outPath = path.join(root, "public", "_redirects");
 
-let lines = ["/kashf-tasribat-miah-jeddah  /services/kashf-tasribat-miah-jeddah  301"];
+let lines = [
+  "/kashf-tasribat-miah-jeddah  /services/kashf-tasribat-miah-jeddah  301",
+  "/kashf-tasribat-bedun-taksir-jeddah  /services/kashf-tasribat-bedun-taksir-jeddah  301",
+];
 try {
   const raw = fs.readFileSync(dataPath, "utf8");
   const data = JSON.parse(raw);

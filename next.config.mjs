@@ -20,6 +20,11 @@ function legacyCoverageRedirects() {
       destination: "/services/kashf-tasribat-miah-jeddah",
       permanent: true,
     },
+    {
+      source: "/kashf-tasribat-bedun-taksir-jeddah",
+      destination: "/services/kashf-tasribat-bedun-taksir-jeddah",
+      permanent: true,
+    },
   ];
   try {
     const data = require("./data/coverage-locations.json");

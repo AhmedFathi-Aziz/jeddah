@@ -76,7 +76,8 @@ export function ServicesPageBody({ className }: { className?: string }) {
       </p>
       <p>
         إذا رغبت في التفاصيل التقنية والمصورة، يمكنك الانتقال إلى{" "}
-        <Link href="/services/kashf-tasribat-miah-jeddah">صفحة كشف تسربات المياه بجدة</Link> — دليل موسّع للفلل والشقق والمباني التجارية — أو إلى صفحة{" "}
+        <Link href="/services/kashf-tasribat-miah-jeddah">صفحة كشف تسربات المياه بجدة</Link> — دليل موسّع للفلل والشقق والمباني التجارية — أو{" "}
+        <Link href="/services/kashf-tasribat-bedun-taksir-jeddah">كشف تسربات بدون تكسير بجدة</Link> إذا كنت تريد فحصاً غير تداخلي دون كسر عشوائي — أو إلى صفحة{" "}
         <Link href="/leak-detection">كشف تسربات المياه في جدة بدون تكسير</Link> حيث نشرح مراحل العمل والأسئلة الشائعة. أما إن كنت تفضّل خطوة تفاعلية سريعة، فـ{" "}
         <Link href="/smart-leak-diagnosis">مُشخّص تسربات المياه الذكي</Link> يضعك على مسار استشارة أولية منظّمة قبل الحجز.
       </p>
