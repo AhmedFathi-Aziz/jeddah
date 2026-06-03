@@ -26,6 +26,7 @@ export const KASHF_BEDUN_TAKSIR_SEO = {
 
 export const KASHF_BEDUN_TAKSIR_INTERNAL_LINKS = [
   { href: "/services/kashf-tasribat-miah-jeddah", label: "كشف تسربات المياه بجدة — الدليل الشامل" },
+  { href: "/services/kashf-tasribat-al-khazanat-jeddah", label: "كشف تسربات الخزانات بجدة" },
   { href: "/leak-detection", label: "صفحة كشف التسربات العامة" },
   { href: "/smart-leak-diagnosis", label: "المشخّص الذكي للتسربات" },
   { href: "/contact", label: "اتصل بنا وحجز معاينة" },

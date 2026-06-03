@@ -248,4 +248,20 @@ export const images = {
     width: 1024,
     height: 1536,
   },
+  /** صفحة كشف تسربات الخزانات بجدة — OG/Schema (شعار فقط) */
+  kashfKhazanatPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — كشف تسربات الخزانات بجدة",
+    title: "جذر — كشف تسربات الخزانات بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة كشف تسربات الخزانات بجدة — محتوى */
+  kashfKhazanatPageField: {
+    src: "/images/pages/kashf-tasribat-al-khazanat-jeddah/kashf-tasribat-al-khazanat-jeddah-field-service.webp",
+    alt: "فني متخصص في كشف تسربات خزانات المياه بجدة يفحص خزان مياه ووصلات التغذية في فيلا",
+    title: "فحص تسرب خزان المياه للفلل والعمائر بجدة",
+    width: 1024,
+    height: 1536,
+  },
 } as const;

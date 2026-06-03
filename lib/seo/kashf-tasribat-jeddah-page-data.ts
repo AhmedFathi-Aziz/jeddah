@@ -33,6 +33,7 @@ export const KASHF_JEDDAH_INTERNAL_LINKS = [
   { href: "/blog/5-ayat-tasarab", label: "5 علامات تسرب المياه" },
   { href: "/blog/ارتفاع-فاتورة-المياه-جدة", label: "دليل ارتفاع فاتورة المياه" },
   { href: "/services/kashf-tasribat-bedun-taksir-jeddah", label: "كشف تسربات بدون تكسير بجدة" },
+  { href: "/services/kashf-tasribat-al-khazanat-jeddah", label: "كشف تسربات الخزانات بجدة" },
   { href: "/services", label: "دليل الخدمات الكامل" },
 ] as const;
 

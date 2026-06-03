@@ -91,7 +91,7 @@ export function ServicesPageBody({ className }: { className?: string }) {
           <strong>تسرب المطبخ</strong> ووصلات غسالة الصحون أو الحنفيات المخفية خلف خزائن الألمنيوم.
         </li>
         <li>
-          <strong>تسرب خزان المياه</strong> سواء علوي أو أرضي — أحياناً يظهر كرطوبة في الجدار المجاور أو كملوحة في جدار الخزان الأرضي.
+          <Link href="/services/kashf-tasribat-al-khazanat-jeddah">كشف تسربات الخزانات بجدة</Link> — علوي أو أرضي — أحياناً يظهر كرطوبة في الجدار المجاور أو كملوحة في جدار الخزان الأرضي.
         </li>
         <li>
           <strong>تسربات الأسطح</strong> و<strong>الأسقف</strong> عندما يضعف <strong>العزل المائي للأسطح</strong> أو تنسد المزاريب.

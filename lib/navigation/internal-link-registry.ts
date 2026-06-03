@@ -31,6 +31,12 @@ export const HUB_LINKS: InternalLink[] = [
     tags: ["كشف", "تسرب", "فحص", "بدون تكسير", "رطوبة"],
   },
   {
+    href: "/services/kashf-tasribat-al-khazanat-jeddah",
+    title: "كشف تسربات الخزانات بجدة",
+    description: "فحص خزان علوي وأرضي، وصلات، عزل، وتقرير فني.",
+    tags: ["خزان", "كشف", "تسرب", "خزانات", "جدة"],
+  },
+  {
     href: "/smart-leak-diagnosis",
     title: "المشخّص الذكي للتسربات",
     description: "اختبار أولي بالعربية ثم حجز فحص عبر واتساب.",
