@@ -264,4 +264,12 @@ export const images = {
     width: 1024,
     height: 1536,
   },
+  /** صفحة كشف تسربات المسابح بجدة — OG/Schema (شعار) */
+  kashfMasabihPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — كشف تسربات المسابح بجدة",
+    title: "جذر — كشف تسربات المسابح بجدة",
+    width: 466,
+    height: 474,
+  },
 } as const;

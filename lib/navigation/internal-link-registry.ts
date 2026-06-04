@@ -37,6 +37,12 @@ export const HUB_LINKS: InternalLink[] = [
     tags: ["خزان", "كشف", "تسرب", "خزانات", "جدة"],
   },
   {
+    href: "/services/kashf-tasribat-al-masabih-jeddah",
+    title: "كشف تسربات المسابح بجدة",
+    description: "اختبار منسوب، فحص خطوط التغذية والصرف، وتقرير فني.",
+    tags: ["مسبح", "مسابح", "كشف", "تسرب", "جدة"],
+  },
+  {
     href: "/smart-leak-diagnosis",
     title: "المشخّص الذكي للتسربات",
     description: "اختبار أولي بالعربية ثم حجز فحص عبر واتساب.",

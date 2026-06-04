@@ -33,7 +33,9 @@ export const KASHF_KHAZANAT_INTERNAL_LINKS = [
   { href: "/smart-leak-diagnosis", label: "المشخّص الذكي للتسربات" },
   { href: "/contact", label: "اتصل بنا وحجز معاينة" },
   { href: "/coverage", label: "تغطية أحياء جدة" },
+  { href: "/services/kashf-tasribat-al-masabih-jeddah", label: "كشف تسربات المسابح بجدة" },
   { href: "/blog/عزل-خزانات-بجدة", label: "دليل عزل خزانات بجدة" },
+  { href: "/blog/كشف-تسربات-المسابح", label: "دليل كشف تسربات المسابح" },
   { href: "/services", label: "دليل الخدمات الكامل" },
 ] as const;
 

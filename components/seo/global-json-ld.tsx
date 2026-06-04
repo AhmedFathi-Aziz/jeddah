@@ -21,6 +21,8 @@ const KNOWS_ABOUT = ALL_SITE_KEYWORDS;
 const SERVICE_CATALOG = [
   { name: "كشف تسربات المياه بجدة", path: "/services/kashf-tasribat-miah-jeddah" },
   { name: "كشف تسربات بدون تكسير بجدة", path: "/services/kashf-tasribat-bedun-taksir-jeddah" },
+  { name: "كشف تسربات الخزانات بجدة", path: "/services/kashf-tasribat-al-khazanat-jeddah" },
+  { name: "كشف تسربات المسابح بجدة", path: "/services/kashf-tasribat-al-masabih-jeddah" },
   { name: "كشف تسربات المياه في جدة", path: "/leak-detection" },
   { name: "خدمات العزل المائي والحراري", path: "/insulation" },
   { name: "دليل الخدمات والموسوعة", path: "/services" },

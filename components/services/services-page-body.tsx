@@ -94,6 +94,9 @@ export function ServicesPageBody({ className }: { className?: string }) {
           <Link href="/services/kashf-tasribat-al-khazanat-jeddah">كشف تسربات الخزانات بجدة</Link> — علوي أو أرضي — أحياناً يظهر كرطوبة في الجدار المجاور أو كملوحة في جدار الخزان الأرضي.
         </li>
         <li>
+          <Link href="/services/kashf-tasribat-al-masabih-jeddah">كشف تسربات المسابح بجدة</Link> — في الفلل والقصور والفنادق — انخفاض المنسوب أو رطوبة حول حافة المسبح غالباً مؤشر على تسرب في خطوط التغذية أو العزل.
+        </li>
+        <li>
           <strong>تسربات الأسطح</strong> و<strong>الأسقف</strong> عندما يضعف <strong>العزل المائي للأسطح</strong> أو تنسد المزاريب.
         </li>
         <li>
