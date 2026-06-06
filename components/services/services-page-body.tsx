@@ -97,6 +97,9 @@ export function ServicesPageBody({ className }: { className?: string }) {
           <Link href="/services/kashf-tasribat-al-masabih-jeddah">كشف تسربات المسابح بجدة</Link> — في الفلل والقصور والفنادق — انخفاض المنسوب أو رطوبة حول حافة المسبح غالباً مؤشر على تسرب في خطوط التغذية أو العزل.
         </li>
         <li>
+          <Link href="/services/kashf-tasribat-miah-al-takyeef-jeddah">كشف تسربات مياه التكييف بجدة</Link> — تنقيط من وحدة التكييف أو بقع على السقف — غالباً انسداد خط تصريف أو بانيو وليس تسرب شبكة مياه.
+        </li>
+        <li>
           <strong>تسربات الأسطح</strong> و<strong>الأسقف</strong> عندما يضعف <strong>العزل المائي للأسطح</strong> أو تنسد المزاريب.
         </li>
         <li>

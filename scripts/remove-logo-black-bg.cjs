@@ -55,6 +55,9 @@ async function main() {
     await knockoutToFile(logoMark, "processed");
     await writeIconFrom(logoMark);
     console.log("OK:", logoMark, ICON_OUT);
+  } else if (fs.existsSync(brandBanner)) {
+    await writeIconFrom(brandBanner);
+    console.log("OK: icon from", brandBanner, "→", ICON_OUT);
   }
 
   if (fs.existsSync(brandBanner)) {
@@ -66,6 +69,27 @@ async function main() {
     console.error("Missing public/logo-mark.png or public/brand-logo.png");
     process.exit(1);
   }
+
+  await writeFaviconIco(ICON_OUT);
+}
+
+/** favicon.ico للمتصفحات التي تطلب /favicon.ico مباشرة */
+async function writeFaviconIco(iconPngPath) {
+  if (!fs.existsSync(iconPngPath)) return;
+  const FAVICON_OUT = path.join(ROOT, "app", "favicon.ico");
+  const sizes = [16, 32, 48];
+  const pngBuffers = await Promise.all(
+    sizes.map((size) =>
+      sharp(iconPngPath)
+        .resize(size, size, { fit: "contain", background: { r: 255, g: 255, b: 255, alpha: 0 } })
+        .png()
+        .toBuffer(),
+    ),
+  );
+  const toIco = (await import("to-ico")).default;
+  const ico = await toIco(pngBuffers);
+  fs.writeFileSync(FAVICON_OUT, ico);
+  console.log("OK:", FAVICON_OUT);
 }
 
 main().catch((e) => {

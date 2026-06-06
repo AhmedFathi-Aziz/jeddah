@@ -43,6 +43,12 @@ export const HUB_LINKS: InternalLink[] = [
     tags: ["مسبح", "مسابح", "كشف", "تسرب", "جدة"],
   },
   {
+    href: "/services/kashf-tasribat-miah-al-takyeef-jeddah",
+    title: "كشف تسربات مياه التكييف بجدة",
+    description: "فحص خط تصريف المكيف، البانيو، والرطوبة خلف الوحدات.",
+    tags: ["تكييف", "مكيف", "تصريف", "كشف", "تسرب", "جدة"],
+  },
+  {
     href: "/smart-leak-diagnosis",
     title: "المشخّص الذكي للتسربات",
     description: "اختبار أولي بالعربية ثم حجز فحص عبر واتساب.",

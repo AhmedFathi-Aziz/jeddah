@@ -35,6 +35,11 @@ function legacyCoverageRedirects() {
       destination: "/services/kashf-tasribat-al-masabih-jeddah",
       permanent: true,
     },
+    {
+      source: "/kashf-tasribat-miah-al-takyeef-jeddah",
+      destination: "/services/kashf-tasribat-miah-al-takyeef-jeddah",
+      permanent: true,
+    },
   ];
   try {
     const data = require("./data/coverage-locations.json");

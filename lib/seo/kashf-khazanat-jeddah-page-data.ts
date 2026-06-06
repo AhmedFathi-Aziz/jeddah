@@ -34,6 +34,7 @@ export const KASHF_KHAZANAT_INTERNAL_LINKS = [
   { href: "/contact", label: "اتصل بنا وحجز معاينة" },
   { href: "/coverage", label: "تغطية أحياء جدة" },
   { href: "/services/kashf-tasribat-al-masabih-jeddah", label: "كشف تسربات المسابح بجدة" },
+  { href: "/services/kashf-tasribat-miah-al-takyeef-jeddah", label: "كشف تسربات مياه التكييف بجدة" },
   { href: "/blog/عزل-خزانات-بجدة", label: "دليل عزل خزانات بجدة" },
   { href: "/blog/كشف-تسربات-المسابح", label: "دليل كشف تسربات المسابح" },
   { href: "/services", label: "دليل الخدمات الكامل" },

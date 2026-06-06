@@ -7,6 +7,7 @@ import { siteConfig } from "@/lib/site-config";
 import { KASHF_BEDUN_TAKSIR_PAGE_PATH } from "@/lib/seo/kashf-bedun-taksir-jeddah-page-data";
 import { KASHF_KHAZANAT_PAGE_PATH } from "@/lib/seo/kashf-khazanat-jeddah-page-data";
 import { KASHF_MASABIH_PAGE_PATH } from "@/lib/seo/kashf-masabih-jeddah-page-data";
+import { KASHF_TAKYEEF_PAGE_PATH } from "@/lib/seo/kashf-takyeef-jeddah-page-data";
 import { KASHF_JEDDAH_PAGE_PATH } from "@/lib/seo/kashf-tasribat-jeddah-page-data";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +40,13 @@ const CARDS = [
     badge: "مسابح",
     logo: true,
   },
+  {
+    href: KASHF_TAKYEEF_PAGE_PATH,
+    title: "كشف تسربات مياه التكييف بجدة",
+    summary: "فحص خط تصريف المكيف، البانيو، والرطوبة خلف الوحدات.",
+    badge: "تكييف",
+    logo: true,
+  },
 ] as const;
 
 export function KashfJeddahServiceCards({ className }: { className?: string }) {
@@ -49,7 +57,7 @@ export function KashfJeddahServiceCards({ className }: { className?: string }) {
       </h2>
       <p className="mt-2 text-base leading-8 text-[#4a6677]">اختر الخدمة لفتح الدليل الكامل.</p>
 
-      <div className="mt-6 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-6 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {CARDS.map((card) => {
           const isLogo = "logo" in card && card.logo;
           return (

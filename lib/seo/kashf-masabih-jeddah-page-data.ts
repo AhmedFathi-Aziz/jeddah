@@ -28,6 +28,7 @@ export const KASHF_MASABIH_INTERNAL_LINKS = [
   { href: "/services/kashf-tasribat-miah-jeddah", label: "كشف تسربات المياه بجدة" },
   { href: "/services/kashf-tasribat-al-khazanat-jeddah", label: "كشف تسربات الخزانات بجدة" },
   { href: "/services/kashf-tasribat-bedun-taksir-jeddah", label: "كشف تسربات بدون تكسير بجدة" },
+  { href: "/services/kashf-tasribat-miah-al-takyeef-jeddah", label: "كشف تسربات مياه التكييف بجدة" },
   { href: "/blog/كشف-تسربات-المسابح", label: "دليل كشف تسربات المسابح" },
   { href: "/leak-detection", label: "صفحة كشف التسربات العامة" },
   { href: "/smart-leak-diagnosis", label: "المشخّص الذكي للتسربات" },

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "patch-package",
-    "dev": "next dev",
+    "dev": "node scripts/ensure-single-favicon.mjs && next dev",
     "build": "next build",
     "build:static": "node scripts/static-export-build.mjs",
     "build:pages": "node scripts/export-d1-articles-to-md.cjs && node scripts/static-export-build.mjs",
@@ -22,6 +22,7 @@
     "db:migrate:local": "wrangler d1 migrations apply tasarubat-articles --local",
     "db:migrate:remote": "wrangler d1 migrations apply tasarubat-articles --remote",
     "process-logo": "node scripts/remove-logo-black-bg.cjs",
+    "favicon:generate": "node scripts/remove-logo-black-bg.cjs",
     "images:optimize-public": "node scripts/optimize-public-images.mjs",
     "index:google": "node scripts/google-indexing-notify.cjs",
     "index:indexnow": "node scripts/indexnow-notify.mjs",
@@ -57,6 +58,7 @@
     "postcss": "^8",
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.1",
+    "to-ico": "^1.1.5",
     "tsx": "^4.21.0",
     "typescript": "^5",
     "wrangler": "^4.86.0"

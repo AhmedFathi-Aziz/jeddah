@@ -272,4 +272,12 @@ export const images = {
     width: 466,
     height: 474,
   },
+  /** صفحة كشف تسربات مياه التكييف بجدة — OG/Schema (شعار) */
+  kashfTakyeefPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — كشف تسربات مياه التكييف بجدة",
+    title: "جذر — كشف تسربات مياه التكييف بجدة",
+    width: 466,
+    height: 474,
+  },
 } as const;
