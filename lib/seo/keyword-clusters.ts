@@ -64,9 +64,13 @@ export const KEYWORD_TOPICS: KeywordTopic[] = [
   { keyword: "طوارئ تسرب مياه جدة", href: "/contact", category: "leak" },
 
   // —— العزل ——
-  { keyword: "عزل أسطح جدة", href: "/insulation", category: "insulation" },
+  { keyword: "عزل أسطح جدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
+  { keyword: "عزل أسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
+  { keyword: "شركة عزل أسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
+  { keyword: "عزل مائي للأسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
+  { keyword: "عزل حراري للأسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
   { keyword: "عزل مائي وحراري بجدة", href: "/insulation", category: "insulation" },
-  { keyword: "عزل مائي للأسطح", href: "/insulation", category: "insulation" },
+  { keyword: "عزل مائي للأسطح", href: "/services/azl-ashtof-jeddah", category: "insulation" },
   { keyword: "عزل حراري للأسطح", href: "/insulation-services/thermal-insulation", category: "insulation" },
   { keyword: "عزل فوم جدة", href: "/insulation-services/foam-thermal-waterproof-insulation", category: "insulation" },
   { keyword: "عزل فوم حراري ومائي", href: "/insulation-services/foam-thermal-waterproof-insulation", category: "insulation" },
@@ -83,10 +87,10 @@ export const KEYWORD_TOPICS: KeywordTopic[] = [
   { keyword: "عزل مساحات كبيرة", href: "/insulation-services/large-area-thermal-insulation", category: "insulation" },
   { keyword: "سعر متر العزل بجدة", href: "/insulation", category: "insulation" },
   { keyword: "أفضل شركة عزل بجدة", href: "/insulation", category: "insulation" },
-  { keyword: "عزل بيتومين للأسطح", href: "/insulation", category: "insulation" },
+  { keyword: "عزل بيتومين للأسطح", href: "/services/azl-ashtof-jeddah", category: "insulation" },
   { keyword: "عزل سيكو بروف CIC", href: "/insulation", category: "insulation" },
   { keyword: "ضمان العزل 10 سنوات", href: "/insulation", category: "insulation" },
-  { keyword: "علاج تسريب مياه السقف", href: "/insulation", category: "insulation" },
+  { keyword: "علاج تسريب مياه السقف", href: "/services/azl-ashtof-jeddah", category: "insulation" },
   { keyword: "حل رطوبة الجدران جدة", href: "/insulation", category: "insulation" },
 
   // —— الفواتير والتشخيص ——

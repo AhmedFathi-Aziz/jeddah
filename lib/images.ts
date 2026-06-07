@@ -280,4 +280,20 @@ export const images = {
     width: 466,
     height: 474,
   },
+  /** صفحة عزل أسطح بجدة — OG/Schema (شعار) */
+  azlAshtofPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — عزل أسطح بجدة",
+    title: "جذر — عزل أسطح بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة عزل أسطح بجدة — تركيب بيتومين */
+  azlAshtofPageField: {
+    src: "/images/insulation/roof-waterproofing-bitumen.webp",
+    alt: "فريق عزل أسطح في جدة يركب لفائف بيتومين لعزل مائي على سطح مبنى سكني",
+    title: "عزل مائي للأسطح — تركيب لفائف بيتومين بجدة",
+    width: 1024,
+    height: 583,
+  },
 } as const;

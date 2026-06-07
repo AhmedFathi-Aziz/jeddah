@@ -37,7 +37,7 @@ export function SiteFooter({
               </Link>
             </li>
             <li>
-              <Link href="/services" className="hover:text-primary hover:underline">
+              <Link href="/services/azl-ashtof-jeddah" className="hover:text-primary hover:underline">
                 عزل أسطح بجدة
               </Link>
             </li>

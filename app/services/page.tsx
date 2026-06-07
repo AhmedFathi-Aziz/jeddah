@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ShieldCheck, Building2 } from "lucide-react";
 
 import { KashfJeddahServiceCards } from "@/components/services/kashf-jeddah-service-cards";
+import { InsulationJeddahServiceCards } from "@/components/services/insulation-jeddah-service-cards";
 import { ServicesPageBody } from "@/components/services/services-page-body";
 import { EncyclopediaSection } from "@/components/seo/encyclopedia-section";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
@@ -59,6 +60,8 @@ export default function ServicesPage() {
       </section>
 
       <KashfJeddahServiceCards />
+
+      <InsulationJeddahServiceCards />
 
       <div className="mt-10 max-w-4xl">
         <ServicesPageBody />

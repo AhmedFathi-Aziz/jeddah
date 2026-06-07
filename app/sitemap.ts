@@ -45,6 +45,7 @@ const STATIC_PUBLIC_PAGES: StaticSitemapEntry[] = [
   { path: "/services/kashf-tasribat-al-khazanat-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/kashf-tasribat-al-masabih-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/kashf-tasribat-miah-al-takyeef-jeddah", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/services/azl-ashtof-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/leak-detection", changeFrequency: "monthly", priority: 0.85 },
   { path: "/insulation", changeFrequency: "monthly", priority: 0.85 },
   { path: "/coverage", changeFrequency: "weekly", priority: 0.85 },
