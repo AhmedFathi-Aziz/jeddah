@@ -26,6 +26,7 @@ export const AZL_ASHTOF_SEO = {
 
 export const AZL_ASHTOF_INTERNAL_LINKS = [
   { href: "/insulation", label: "صفحة العزل الرئيسية" },
+  { href: "/services/azl-fom-jeddah", label: "عزل فوم بجدة" },
   { href: "/insulation-services/foam-thermal-waterproof-insulation", label: "عزل فوم حراري ومائي" },
   { href: "/insulation-services/thermal-insulation", label: "عزل حراري للأسطح" },
   { href: "/services/kashf-tasribat-miah-jeddah", label: "كشف تسربات المياه بجدة" },

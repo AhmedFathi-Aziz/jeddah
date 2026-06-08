@@ -45,6 +45,11 @@ function legacyCoverageRedirects() {
       destination: "/services/azl-ashtof-jeddah",
       permanent: true,
     },
+    {
+      source: "/azl-fom-jeddah",
+      destination: "/services/azl-fom-jeddah",
+      permanent: true,
+    },
   ];
   try {
     const data = require("./data/coverage-locations.json");

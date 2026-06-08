@@ -296,4 +296,20 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  /** صفحة عزل فوم بجدة — OG/Schema (شعار) */
+  azlFomPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — عزل فوم بجدة",
+    title: "جذر — عزل فوم بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة عزل فوم بجدة — رش بولي يوريثان */
+  azlFomPageField: {
+    src: "/images/insulation/insulation-foam-spray.webp",
+    alt: "فني عزل في جدة يرش فوم بولي يوريثان مائي وحراري على سقف لحماية السطح من الحرارة والتسرب",
+    title: "عزل فوم بولي يوريثان — رش ميداني بجدة",
+    width: 1024,
+    height: 583,
+  },
 } as const;

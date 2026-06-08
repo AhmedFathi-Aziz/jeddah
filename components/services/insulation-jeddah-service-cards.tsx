@@ -4,6 +4,7 @@ import { ArrowLeft, Layers } from "lucide-react";
 
 import { siteConfig } from "@/lib/site-config";
 import { AZL_ASHTOF_PAGE_PATH } from "@/lib/seo/azl-ashtof-jeddah-page-data";
+import { AZL_FOM_PAGE_PATH } from "@/lib/seo/azl-fom-jeddah-page-data";
 import { cn } from "@/lib/utils";
 
 const CARDS = [
@@ -12,6 +13,13 @@ const CARDS = [
     title: "عزل أسطح بجدة",
     summary: "عزل مائي وحراري للفلل والعمائر والمستودعات — فوم، بيتومين، معاينة وتقدير واضح.",
     badge: "صفحة مفصّلة",
+    logo: true,
+  },
+  {
+    href: AZL_FOM_PAGE_PATH,
+    title: "عزل فوم بجدة",
+    summary: "رش بولي يوريثان حراري ومائي — معاينة، سماكة محسوبة، وطبقة حماية UV.",
+    badge: "فوم",
     logo: true,
   },
 ] as const;
