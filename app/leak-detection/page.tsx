@@ -13,7 +13,9 @@ import { cn } from "@/lib/utils";
 import { images } from "@/lib/images";
 import { buildPageMetadata } from "@/lib/seo/build-metadata";
 import { keywordsForPath } from "@/lib/seo/keyword-clusters";
-import { siteConfig } from "@/lib/site-config";
+import { SCHEMA_LOCAL_BUSINESS_ID } from "@/lib/seo/schema-ids";
+import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   ...buildPageMetadata({
@@ -91,6 +93,22 @@ export default function LeakDetectionPage() {
     })),
   };
 
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "كشف تسربات المياه في جدة",
+    description:
+      "كشف تسربات المياه بجدة بدون تكسير: فحص حراري وصوتي، تقرير فني، وإصلاح بخطة واضحة.",
+    url: absUrl("/leak-detection"),
+    provider: { "@id": SCHEMA_LOCAL_BUSINESS_ID },
+    areaServed: {
+      "@type": "City",
+      name: "جدة",
+      containedInPlace: { "@type": "Country", name: "المملكة العربية السعودية" },
+    },
+    serviceType: "كشف تسربات المياه",
+  };
+
   const leakGallery = [
     images.leakGalleryPipelineScan,
     images.leakGalleryBathroomMeter,
@@ -105,19 +123,37 @@ export default function LeakDetectionPage() {
 
   return (
     <main className="page-main pb-mobile-fab py-10 md:py-16">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(serviceJsonLd) }} />
+
+      <nav className="mb-6 text-sm text-[#5a7588]" aria-label="مسار التصفح">
+        <Link href="/" className="font-medium text-[#1f7f8a] hover:underline">
+          الرئيسية
+        </Link>
+        <span className="mx-2">/</span>
+        <span className="text-[#163d57]">كشف التسربات</span>
+      </nav>
+
       <section className="rounded-3xl border border-[#e8edf0] bg-white p-7 text-right shadow-[0_16px_32px_-24px_rgba(19,66,89,0.35)] md:p-10">
         <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-[#f1f4f6] px-4 py-2 text-sm font-semibold text-[#1f7f8a]">
           <SearchCheck className="size-4" aria-hidden />
-          دقة عالية بدون تكسير عشوائي
+          +500 مشروع · تقارير فنية · جدة
         </p>
         <h1 className="text-3xl font-extrabold leading-tight text-[#163d57] md:text-5xl">
-          خدمة كشف تسربات المياه
+          كشف تسربات المياه في جدة
         </h1>
         <p className="mt-4 max-w-4xl text-lg leading-8 text-[#4a6677]">
-          كشف تسربات المياه بجدة معتمدة لدى شركة المياه الوطنية لتقليل أثر ارتفاع الفاتورة وتوفير تقرير رسمي يدعم موقفك.
-          نعتمد على فحص إلكتروني احترافي لتحديد نقاط التسرب بسرعة، ثم نوصي بالحل الأنسب وفق حالة المبنى ونوع الشبكة.
-          كشف تسربات المياه بجدة معتمدة لدى شركة المياه الوطنية مع توثيق فني واضح يساعدك في متابعة الطلب مع الجهات المختصة.
+          <strong>كشف تسربات المياه في جدة</strong> يبدأ بسؤال بسيط: هل الماء يخرج من مكانه
+          خلف الجدار أو تحت البلاط؟ نستخدم فحصاً حرارياً وصوتياً لتحديد المصدر قبل أي تكسير
+          عشوائي — ثم نُقدّم تقريراً فنياً وخطة إصلاح واضحة. في مناخ جدة الساحلي، التسربات
+          الخفية شائعة بسبب الرطوبة وتآكل الوصلات.
+        </p>
+        <p className="mt-3 max-w-4xl text-base leading-8 text-[#4a6677]">
+          نخدم الحمامات، المطابخ، الخزانات، الأسطح، وخطوط التكييف. للتشخيص الأولي جرّب{" "}
+          <Link href="/smart-leak-diagnosis" className="font-semibold text-[#1f7f8a] hover:underline">
+            المشخّص الذكي
+          </Link>
+          {" — "}أو احجز زيارة ميدانية مباشرة.
         </p>
         <div className="mt-7 flex flex-row-reverse flex-wrap justify-end gap-3">
           <a
@@ -208,17 +244,26 @@ export default function LeakDetectionPage() {
       </section>
 
       <section className="mt-8 rounded-2xl border border-[#e8edf0] bg-[#f7f9fa] p-6 text-right">
-        <h2 className="text-2xl font-extrabold text-[#163d57]">خدمات كشف التسربات والعزل في جدة</h2>
+        <h2 className="text-2xl font-extrabold text-[#163d57]">خدمات الكشف المتخصصة في جدة</h2>
         <p className="mt-3 leading-8 text-[#4a6677]">
-          إذا كنت تبحث عن كشف تسربات المياه بجدة أو شركة كشف تسربات بجدة بخبرة ميدانية، فنحن نقدم فحص تسربات المياه
-          بجدة بأجهزة إلكترونية دقيقة مع تقرير كشف تسربات معتمد. كما نوفر خدمة شركة كشف تسربات معتمدة بجدة لتسهيل
-          المتابعة عند الحاجة إلى تعديل فاتورة المياه شركة المياه الوطنية وفق الإجراءات الرسمية.
+          نغطي كل مسارات التسرب الشائعة في مباني جدة — كل خدمة بصفحة تفصيلية:
         </p>
-        <p className="mt-3 leading-8 text-[#4a6677]">
-          خدماتنا تشمل كذلك عزل خزانات بجدة، وشركة عزل خزانات بجدة بخامات مناسبة، بالإضافة إلى شركة عزل أسطح بجدة
-          وتنفيذ عزل أسطح بجدة أبحر الشمالية مع مراعاة ظروف الرطوبة والحرارة. ونقدّم أيضًا كشف تسربات الخزانات بجدة
-          (بدون تكسير) في الحالات المناسبة لتقليل الضرر على التشطيبات.
-        </p>
+        <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+          {[
+            { href: "/services/kashf-tasribat-bedun-taksir-jeddah", label: "كشف تسربات بدون تكسير" },
+            { href: "/services/kashf-tasribat-al-khazanat-jeddah", label: "كشف تسربات الخزانات" },
+            { href: "/services/kashf-tasribat-al-masabih-jeddah", label: "كشف تسربات المسابح" },
+            { href: "/services/kashf-tasribat-miah-al-takyeef-jeddah", label: "كشف تسربات التكييف" },
+            { href: "/services/kashf-tasribat-miah-jeddah", label: "كشف تسربات المياه بجدة" },
+            { href: "/insulation", label: "عزل مائي وحراري بعد الإصلاح" },
+          ].map((link) => (
+            <li key={link.href}>
+              <Link href={link.href} className="font-semibold text-[#1f7f8a] hover:underline">
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="mt-8 rounded-2xl border border-[#e8edf0] bg-white p-6 text-right">
@@ -253,21 +298,10 @@ export default function LeakDetectionPage() {
       </section>
 
       <section className="mt-8 rounded-2xl border border-[#e8edf0] bg-white p-6 text-right">
-        <h2 className="text-xl font-bold text-[#163d57]">تغطية الأحياء والاحتياج الفعلي للعميل</h2>
+        <h2 className="text-xl font-bold text-[#163d57]">تغطية الأحياء في جدة</h2>
         <p className="mt-2 leading-8 text-[#4a6677]">
-          نغطي أحياء متعددة داخل جدة، وتشمل طلبات شائعة مثل كشف تسربات المياه بجدة حي الحمدانية، وشركة عزل خزانات بجدة
-          حي الصفا، وأعمال خدمات العزل والتسربات في حي الروضة، مع تركيز عملي على حل ارتفاع فاتورة المياه بجدة بسرعة
-          وتقرير واضح.
-        </p>
-        <p className="mt-2 leading-8 text-[#4a6677]">
-          عند المقارنة بين الخيارات في الأحياء السكنية، يبحث كثير من العملاء عن أفضل شركة كشف تسربات في حي السامر،
-          لذلك نركز على نتيجة قابلة للقياس: تحديد مصدر التسرب بدقة، خطة إصلاح واضحة، وتوثيق فني يساعدك في إنهاء
-          المشكلة بثقة.
-        </p>
-        <h3 className="mt-4 text-lg font-extrabold text-[#163d57]">المناطق التي نغطيها</h3>
-        <p className="mt-2 leading-8 text-[#4a6677]">
-          نحن نصل إليكم في أحياء جدة عبر صفحات تغطية محلية مخصصة. اضغط على الحي المناسب لعرض صفحة الخدمة الخاصة به،
-          وخدمة سريعة على مدار 24 ساعة لجميع مناطق جدة.
+          نغطي جميع أحياء جدة — من أبحر والشاطئ إلى الأحياء الجنوبية. اختر حيّك للتفاصيل المحلية،
+          أو اتصل مباشرة لحجز فحص في منطقتك.
         </p>
       </section>
 
@@ -350,8 +384,8 @@ export default function LeakDetectionPage() {
         <div className="mt-4 space-y-4">
           {LEAK_DETECTION_FAQ_ITEMS.map((item) => (
             <article key={item.question} className="rounded-xl border border-[#e8edf0] bg-white p-4">
-              <h3 className="text-lg font-bold leading-8 text-[#163d57]">س: {item.question}</h3>
-              <p className="mt-2 text-base leading-8 text-[#4a6677]">ج: {item.answer}</p>
+              <h3 className="text-lg font-bold leading-8 text-[#163d57]">{item.question}</h3>
+              <p className="mt-2 text-base leading-8 text-[#4a6677]">{item.answer}</p>
             </article>
           ))}
         </div>

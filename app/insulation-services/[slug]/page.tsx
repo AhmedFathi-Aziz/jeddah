@@ -1,59 +1,40 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, MapPin, Phone } from "lucide-react";
 
+import { WhatsAppLogo } from "@/components/icons/whatsapp-logo";
 import { RequestInspectionBox } from "@/components/layout/request-inspection-box";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getInsulationServiceBySlug, insulationServices } from "@/lib/insulation-services";
+import { insulationServices } from "@/lib/insulation-services";
+import { SCHEMA_LOCAL_BUSINESS_ID } from "@/lib/seo/schema-ids";
+import {
+  buildInsulationServiceFaqSchema,
+  getInsulationServiceContent,
+} from "@/lib/seo/insulation-services-content";
 import { buildPageMetadata } from "@/lib/seo/build-metadata";
-import { siteConfig } from "@/lib/site-config";
+import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
+import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
 
-const sectionTitles = [
-  "لماذا تحتاج هذه الخدمة؟",
-  "كيف ننفذ الخدمة ميدانياً؟",
-  "المواد والتقنيات المستخدمة",
-  "الأخطاء الشائعة التي نعالجها",
-  "خطة الفحص قبل التنفيذ",
-  "خطة الضبط أثناء التنفيذ",
-  "معايير الجودة بعد التسليم",
-  "تأثير الخدمة على خفض التكاليف",
-  "أفضل توقيت لتنفيذ الخدمة",
-  "نصائح للحفاظ على النتيجة",
-  "خطة الصيانة الدورية",
-  "أسئلة يتكرر طرحها من العملاء",
-] as const;
-
-function buildLongContent(serviceTitle: string): string[] {
-  const baseSentences = [
-    `تبدأ خدمة ${serviceTitle} من فهم حالة المبنى الحالية، لأن التشخيص الدقيق هو الأساس الذي يحدد نجاح النتيجة النهائية.`,
-    "نحن لا نعتمد على الحلول المؤقتة، بل نركز على معالجة السبب الجذري للمشكلة بحيث لا تتكرر الأعراض نفسها بعد فترة قصيرة.",
-    "قبل أي خطوة تنفيذية، يتم توثيق حالة الموقع وتحديد نقاط الضعف الإنشائية ونقاط الرطوبة أو التسرب أو انتقال الحرارة بدقة.",
-    "فريق التنفيذ يشرح للعميل خطة العمل بلغة واضحة، ويحدد زمن التنفيذ المتوقع، والخامات المقترحة، ومراحل الفحص بعد الانتهاء.",
-    "اختيار المادة المناسبة لا يتم بعشوائية؛ بل وفق نوع السطح، طبيعة الاستخدام، درجة التعرض للشمس أو الماء، وحالة التشطيب.",
-    "نحرص على أن تكون خطوات التنفيذ نظيفة ومنظمة، مع تقليل الإزعاج داخل الموقع، والحفاظ على سلامة العناصر المحيطة قدر الإمكان.",
-    "بعد إنهاء التطبيق، نعيد الفحص ونوثق النتائج، ثم نسلم العميل توصيات تشغيل وصيانة واضحة تساعده على إطالة عمر الخدمة.",
-    "الهدف النهائي ليس فقط تنفيذ خدمة فنية، بل تقديم حل عملي يرفع راحة المستخدم ويقلل المصروفات التشغيلية على المدى الطويل.",
-  ] as const;
-
-  const paragraphs: string[] = [];
-  const targets = 30;
-
-  for (let i = 0; i < targets; i += 1) {
-    const s1 = baseSentences[i % baseSentences.length];
-    const s2 = baseSentences[(i + 2) % baseSentences.length];
-    const s3 = baseSentences[(i + 4) % baseSentences.length];
-    paragraphs.push(
-      `${s1} في مشاريع ${serviceTitle} داخل جدة، نهتم بأن يرتبط كل قرار فني بنتيجة قابلة للقياس حتى يحصل العميل على قيمة واضحة مقابل التكلفة. العامل الفارق يظل الانضباط في التسلسل التنفيذي: تجهيز صحيح، تطبيق متدرج، ثم فحص تحقق نهائي. ${s2} لذلك نضع خطة تفصيلية لكل موقع على حدة، لأن اختلاف ظروف المباني يعني أن الحل القياسي لا يناسب الجميع. ${s3} بهذه الطريقة تتحول الخدمة من إجراء سريع إلى استثمار طويل الأثر يحسن أداء المبنى ويخفض احتمالات الأعطال اللاحقة.`,
-    );
-  }
-
-  return paragraphs;
+function renderInlineBold(text: string) {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold text-[#163d57]">
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
+  );
 }
+
+const tel = `tel:${siteConfig.phone}`;
+const whatsappHref = `https://wa.me/${siteConfig.phone.replace(/\D/g, "")}`;
 
 export async function generateStaticParams() {
   return insulationServices.map((item) => ({ slug: item.slug }));
@@ -61,107 +42,210 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const service = getInsulationServiceBySlug(slug);
-  if (!service) return { title: "الخدمة غير موجودة" };
+  const content = getInsulationServiceContent(slug);
+  if (!content) return { title: "الخدمة غير موجودة" };
 
-  const path = `/insulation-services/${service.slug}`;
+  const path = `/insulation-services/${content.slug}`;
   return buildPageMetadata({
-    title: `${service.title} في جدة`,
-    description: `${service.summary} — دليل تنفيذ، مواد، أسعار تقديرية، وضمان في جدة. ${service.keywords.slice(0, 3).join("، ")}.`,
+    title: content.metaTitle,
+    description: content.metaDescription,
     path,
-    keywords: [...service.keywords, service.title, "عزل بجدة"],
-    ogTitle: `${service.title} | ${siteConfig.name}`,
+    keywords: [content.primaryKeyword, ...insulationServices.find((s) => s.slug === slug)!.keywords],
+    ogTitle: `${content.h1} | ${siteConfig.name}`,
   });
 }
 
 export default async function InsulationServicePage({ params }: Props) {
   const { slug } = await params;
-  const service = getInsulationServiceBySlug(slug);
-  if (!service) notFound();
+  const service = insulationServices.find((s) => s.slug === slug);
+  const content = getInsulationServiceContent(slug);
+  if (!service || !content) notFound();
 
-  const paragraphs = buildLongContent(service.title);
+  const path = `/insulation-services/${content.slug}`;
+  const faqSchema = buildInsulationServiceFaqSchema(content);
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: content.h1,
+    description: content.metaDescription,
+    url: absUrl(path),
+    provider: { "@id": SCHEMA_LOCAL_BUSINESS_ID },
+    areaServed: {
+      "@type": "City",
+      name: "جدة",
+      containedInPlace: { "@type": "Country", name: "المملكة العربية السعودية" },
+    },
+    serviceType: content.primaryKeyword,
+  };
+
+  const sectionClass = "rounded-2xl border border-[#e8edf0] bg-white p-6 text-right shadow-sm md:p-8";
+  const h2Class = "text-2xl font-extrabold text-[#163d57] md:text-3xl";
+  const pClass = "mt-4 text-base leading-[1.95] text-[#4a6677] md:text-lg";
 
   return (
-    <main className="mx-auto max-w-7xl px-6 pb-20 pt-10 text-right">
-      <Link
-        href="/insulation"
-        className={cn(
-          buttonVariants({ variant: "ghost", size: "sm" }),
-          "mb-6 inline-flex items-center gap-2 rounded-xl border-0 bg-white px-4 text-[#3c596d] shadow-[0_10px_24px_-18px_rgba(19,66,89,0.28)] hover:bg-[#f8fbfc]",
-        )}
-      >
-        <ArrowLeft className="size-4" aria-hidden />
-        العودة لصفحة العزل
-      </Link>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(serviceSchema) }} />
 
-      <header className="mb-8 rounded-2xl bg-gradient-to-b from-[#f8fbfc] to-white p-6 shadow-[0_12px_30px_-20px_rgba(19,66,89,0.32)] md:p-8">
-        <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">
-          {service.title} في جدة
-        </h1>
-        <p className="mt-4 text-lg leading-8 text-muted-foreground">{service.intro}</p>
-        <p className="mt-3 text-base leading-8 text-[#2f556d]">
-          يشرح هذا الدليل خطوات التنفيذ، آليات الفحص عند الحاجة، النقاط الفنية، والمعايير التي تساعد على نتيجة مستقرة على المدى الطويل.
-        </p>
-      </header>
+      <main className="page-main pb-mobile-fab py-10 md:py-16">
+        <nav className="mx-auto mb-6 max-w-7xl px-6 text-sm text-[#5a7588]" aria-label="مسار التصفح">
+          <Link href="/" className="font-medium text-[#1f7f8a] hover:underline">
+            الرئيسية
+          </Link>
+          <span className="mx-2">/</span>
+          <Link href="/insulation" className="font-medium text-[#1f7f8a] hover:underline">
+            العزل
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-[#163d57]">{content.h1}</span>
+        </nav>
 
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start">
-        <div className="space-y-6 lg:col-span-8">
-          <section className="space-y-6">
-            {sectionTitles.map((title, index) => (
-              <article key={title} className="rounded-2xl bg-white p-6 shadow-[0_12px_30px_-20px_rgba(19,66,89,0.28)] md:p-8">
-                <h2 className="mb-4 inline-flex items-center gap-2 text-2xl font-bold text-[#163d57]">
-                  <CheckCircle2 className="size-5 text-[#2f7f86]" aria-hidden />
-                  {title}
-                </h2>
-                <div className="space-y-4 text-base leading-8 text-[#4a6677]">
-                  <p>{paragraphs[index * 2]}</p>
-                  <p>{paragraphs[index * 2 + 1]}</p>
-                </div>
-              </article>
-            ))}
-          </section>
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-12 lg:items-start">
+          <div className="space-y-8 lg:col-span-8">
+            <Link
+              href="/insulation"
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "inline-flex items-center gap-2 rounded-xl border-0 bg-white px-4 text-[#3c596d] shadow-sm hover:bg-[#f8fbfc]",
+              )}
+            >
+              <ArrowLeft className="size-4" aria-hidden />
+              العودة لصفحة العزل
+            </Link>
 
-          <section className="rounded-2xl bg-[#f8fbfc] p-6 text-right shadow-[0_12px_30px_-20px_rgba(19,66,89,0.24)] md:p-8">
-            <h2 className="text-2xl font-extrabold text-[#163d57]">خلاصة تنفيذ الخدمة</h2>
-            <p className="mt-3 text-base leading-8 text-[#4a6677]">
-              خدمة {service.title} تعتمد على الانضباط الفني أكثر من اعتمادها على مادة واحدة بعينها. عندما تتكامل خطوات
-              الفحص والتجهيز والتطبيق والمتابعة، تظهر النتيجة بشكل واضح في الأداء اليومي للمبنى، وفي انخفاض الأعطال
-              المستقبلية، وتحسن الراحة العامة. لهذا السبب نوصي دائمًا بالتنفيذ عبر فريق مختص يمتلك خبرة محلية في ظروف جدة.
-            </p>
-            <p className="mt-3 text-sm leading-7 text-[#4a6677]">
-              روابط مفيدة:{" "}
-              <Link href="/insulation" className="font-semibold text-[#1f7f8a] hover:underline">
-                صفحة العزل
-              </Link>
-              {" · "}
-              <Link href="/leak-detection" className="font-semibold text-[#1f7f8a] hover:underline">
-                كشف التسربات
-              </Link>
-              {" · "}
-              <Link href="/blog/عزل-أسطح-بجدة" className="font-semibold text-[#1f7f8a] hover:underline">
-                دليل عزل الأسطح
-              </Link>
-              {" · "}
-              <Link href="/blog/عزل-خزانات-بجدة" className="font-semibold text-[#1f7f8a] hover:underline">
-                عزل الخزانات
-              </Link>
-              {" · "}
-              <Link href="/coverage" className="font-semibold text-[#1f7f8a] hover:underline">
-                أحياء جدة
-              </Link>
-            </p>
-          </section>
+            <header className="rounded-3xl border border-[#e8edf0] bg-gradient-to-b from-[#f8fbfc] to-white p-6 md:p-10">
+              <h1 className="text-balance text-3xl font-extrabold leading-tight text-[#163d57] md:text-5xl">
+                {content.h1}
+              </h1>
+              {content.intro.map((para) => (
+                <p key={para.slice(0, 48)} className={pClass}>
+                  {renderInlineBold(para)}
+                </p>
+              ))}
+              <div className="mt-6 flex flex-row-reverse flex-wrap gap-3">
+                <a
+                  href={tel}
+                  className={cn(
+                    buttonVariants({ size: "lg" }),
+                    "h-11 rounded-xl bg-[#1f7f8a] px-6 font-bold text-white hover:bg-[#1a6d76]",
+                  )}
+                >
+                  <Phone className="size-4" aria-hidden />
+                  طلب معاينة
+                </a>
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "lg" }),
+                    "inline-flex h-11 items-center gap-2 rounded-xl border-[#25D366]/50 bg-[#25D366] px-6 font-semibold text-white hover:bg-[#20bd5a]",
+                  )}
+                >
+                  <WhatsAppLogo className="size-5 text-white" />
+                  واتساب
+                </a>
+              </div>
+            </header>
 
+            <section className={sectionClass}>
+              <h2 className={h2Class}>{content.whyHeading}</h2>
+              {content.whyBody.map((p) => (
+                <p key={p.slice(0, 40)} className={pClass}>
+                  {p}
+                </p>
+              ))}
+            </section>
+
+            <section className={cn(sectionClass, "bg-[#f7f9fa]")}>
+              <h2 className={h2Class}>خطوات تنفيذ {content.primaryKeyword}</h2>
+              <ol className="mt-6 space-y-4">
+                {content.process.map((step, i) => (
+                  <li key={step.title} className="rounded-xl bg-white p-5">
+                    <h3 className="text-lg font-bold text-[#163d57]">
+                      {i + 1}. {step.title}
+                    </h3>
+                    <p className="mt-2 leading-8 text-[#4a6677]">{step.body}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            <section className={sectionClass}>
+              <h2 className={h2Class}>المواد والتقنيات</h2>
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                {content.materials.map((m) => (
+                  <article key={m.title} className="rounded-xl border border-[#e8edf0] bg-[#f8fbfc] p-5">
+                    <h3 className="font-bold text-[#163d57]">{m.title}</h3>
+                    <p className="mt-2 text-sm leading-8 text-[#4a6677] md:text-base">{m.body}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className={cn(sectionClass, "bg-[#f7f9fa]")}>
+              <h2 className={h2Class}>فوائد الخدمة</h2>
+              <ul className="mt-4 space-y-3">
+                {content.benefits.map((b) => (
+                  <li key={b} className="flex items-start gap-3 text-[#33586d]">
+                    <CheckCircle2 className="mt-1 size-5 shrink-0 text-[#1f7f8a]" aria-hidden />
+                    <span className="leading-8">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section className={sectionClass}>
+              <h2 className={cn(h2Class, "inline-flex items-center gap-2")}>
+                <MapPin className="size-6 text-[#1f7f8a]" aria-hidden />
+                صلة الخدمة بمناخ جدة
+              </h2>
+              <p className={pClass}>{content.jeddahNote}</p>
+            </section>
+
+            <section className={cn(sectionClass, "bg-[#f7f9fa]")}>
+              <h2 className={h2Class}>أسئلة شائعة</h2>
+              <div className="mt-6 space-y-4">
+                {content.faq.map((item) => (
+                  <article key={item.question} className="rounded-xl border border-[#e8edf0] bg-white p-5">
+                    <h3 className="text-lg font-bold text-[#163d57]">{item.question}</h3>
+                    <p className="mt-2 leading-8 text-[#4a6677]">{item.answer}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className={sectionClass}>
+              <h2 className={h2Class}>خاتمة</h2>
+              <p className={pClass}>
+                <strong>{content.primaryKeyword}</strong> استثمار في راحة منزلك وحماية المبنى — ينجح
+                عندما يُبنى على معاينة صحيحة ومادة مناسبة. اتصل أو راسلنا على واتساب لتحديد موعد
+                معاينة في حيّك بجدة.
+              </p>
+              <ul className="mt-4 flex flex-wrap justify-end gap-2">
+                {content.internalLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="inline-block rounded-lg bg-[#f8fbfc] px-3 py-2 text-sm font-semibold text-[#1f7f8a] hover:underline"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </div>
+
+          <aside className="lg:col-span-4">
+            <RequestInspectionBox phone={siteConfig.phone} className="sticky top-24" />
+          </aside>
         </div>
 
-        <aside className="space-y-6 lg:col-span-4">
-          <RequestInspectionBox phone={siteConfig.phone} className="sticky top-24" />
-        </aside>
-      </div>
-
-      <div className="mt-12">
-        <RelatedServicesSection currentPath={`/insulation-services/${service.slug}`} heading="خدمات وصفحات ذات صلة" />
-      </div>
-    </main>
+        <div className="mx-auto mt-12 max-w-7xl px-6">
+          <RelatedServicesSection currentPath={path} heading="خدمات وصفحات ذات صلة" />
+        </div>
+      </main>
+    </>
   );
 }

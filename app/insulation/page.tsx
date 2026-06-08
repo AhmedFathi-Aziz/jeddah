@@ -10,17 +10,24 @@ import { cn } from "@/lib/utils";
 import { jeddahDistricts } from "@/lib/coverage-data";
 import { images } from "@/lib/images";
 import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import {
+  INSULATION_FAQ,
+  INSULATION_PAGE_PATH,
+  INSULATION_SEO,
+  buildInsulationFaqSchema,
+  buildInsulationServiceSchema,
+} from "@/lib/seo/insulation-page-data";
 import { keywordsForPath } from "@/lib/seo/keyword-clusters";
+import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   ...buildPageMetadata({
-    title: "عزل مائي وحراري بجدة — أسطح وخزانات وفوم",
-    description:
-      "عزل أسطح وخزانات وحمامات بجدة: فوم وبيتومين وإيبوكسي وسيكو بروف، سعر المتر، ضمان حتى 10 سنوات، وحل رطوبة الجدران وتسريب السقف.",
-    path: "/insulation",
-    keywords: keywordsForPath("/insulation"),
-    ogTitle: `عزل مائي وحراري بجدة — ${siteConfig.name}`,
+    title: INSULATION_SEO.title,
+    description: INSULATION_SEO.description,
+    path: INSULATION_PAGE_PATH,
+    keywords: keywordsForPath("/insulation", [...INSULATION_SEO.keywords]),
+    ogTitle: INSULATION_SEO.ogTitle,
   }),
   openGraph: {
     images: [
@@ -53,33 +60,8 @@ const insulationTypes = [
 ] as const;
 
 export default function InsulationPage() {
-  const faqItems = [
-    {
-      q: "هل تقدمون تقرير كشف تسربات معتمد لشركة المياه الوطنية بجدة؟",
-      a: "نعم، نحن شركة معتمدة ونقدم تقارير فنية تساعد في خفض فاتورة المياه المرتفعة وتسريع خطوات المعالجة.",
-    },
-    {
-      q: "ما هي أفضل مادة لـ عزل خزانات المياه بجدة؟",
-      a: "نعتمد غالباً على الإيبوكسي والسيكو بروف (CIC) بعد تجهيز السطح بشكل صحيح لضمان منع التسرب نهائياً.",
-    },
-    {
-      q: "كيف يتم علاج تسريب مياه السقف والرطوبة في الجدران بجدة؟",
-      a: "نبدأ بفحص إلكتروني دقيق لتحديد مصدر التسرب، ثم نعالج الشروخ ونطبق نظام عزل مناسب مثل الفوم أو البيتومين وفق حالة السطح.",
-    },
-  ] as const;
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqItems.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.a,
-      },
-    })),
-  };
+  const faqJsonLd = buildInsulationFaqSchema();
+  const serviceJsonLd = buildInsulationServiceSchema();
   const insulationGallery = [
     images.insulationFoamSpray,
     images.insulationRoofBitumen,
@@ -91,23 +73,38 @@ export default function InsulationPage() {
   ] as const;
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-14 md:py-16 bg-[#FFFFFF]">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+    <main className="page-main pb-mobile-fab mx-auto max-w-7xl px-6 py-14 md:py-16 bg-[#FFFFFF]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(serviceJsonLd) }} />
+
+      <nav className="mb-8 text-sm text-[#5a7588]" aria-label="مسار التصفح">
+        <Link href="/" className="font-medium text-[#1f7f8a] hover:underline">
+          الرئيسية
+        </Link>
+        <span className="mx-2">/</span>
+        <span className="text-[#163d57]">العزل</span>
+      </nav>
+
       <section className="rounded-3xl border border-[#E7EBF0] bg-[#F1F5F9] p-7 text-right shadow-[0_16px_32px_-24px_rgba(71,85,105,0.25)] md:p-10">
         <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-[#FFFFFF] px-4 py-2 text-sm font-semibold text-[#475569]">
           <Shield className="size-4" aria-hidden />
-          حماية حرارية ومائية طويلة المدى
+          ضمان حتى 10 سنوات · +500 مشروع في جدة
         </p>
         <h1 className="text-3xl font-extrabold leading-tight text-[#334155] md:text-5xl">
-          أفضل خدمات العزل المائي والحراري بجدة - حماية تدوم لسنوات
+          شركة عزل بجدة — عزل مائي وحراري للأسطح والخزانات
         </h1>
         <p className="mt-4 max-w-4xl text-lg leading-8 text-[#5F6B78]">
-          نقدم في شركتنا حلولاً متكاملة لعزل الأسطح والخزانات باستخدام تقنيات حديثة تضمن لك حماية كاملة من
-          تسربات الأمطار وحرارة الشمس الشديدة في جدة. نحن نستخدم مواد معتمدة عالمياً لضمان كفاءة العزل وتقليل
-          استهلاك الطاقة.
+          <strong className="text-[#334155]">شركة عزل بجدة</strong> متخصصة في حماية المباني من
+          تسربات الأمطار وحرارة الشمس. ننفّذ عزل أسطح بالفوم (بولي يوريثان) أو لفائف البيتومين،
+          وعزل خزانات بالإيبوكسي، وعزل حمامات قبل السيراميك — مع معاينة ميدانية قبل أي عرض سعر.
         </p>
-        <p className="mt-3 max-w-4xl text-base font-semibold leading-8 text-[#334155]">
-          أفضل شركة للعزل والتسربات — جدة للعزل والتسربات.
+        <p className="mt-3 max-w-4xl text-base leading-8 text-[#5F6B78]">
+          في مناخ جدة الساحلي، الرطوبة والملوحة تُسرّع تآكل العزل القديم. نبدأ بالمعاينة، نختار
+          المادة المناسبة، ونُسلّم ضماناً على العمل. إن وُجد تسرب نشط، نوجّهك أولاً إلى{" "}
+          <Link href="/leak-detection" className="font-semibold text-[#1f7f8a] hover:underline">
+            كشف التسربات
+          </Link>
+          .
         </p>
         <div className="mt-7 flex flex-row-reverse flex-wrap justify-end gap-3">
           <a
@@ -221,15 +218,39 @@ export default function InsulationPage() {
       </section>
 
       <section className="mt-8 rounded-2xl border border-[#E7EBF0] bg-white p-6 text-right shadow-[0_12px_24px_-20px_rgba(71,85,105,0.25)] md:p-8">
-        <h2 className="text-2xl font-extrabold text-[#334155]">خدمات كشف التسربات المعتمدة بجدة</h2>
+        <h2 className="text-2xl font-extrabold text-[#334155]">لماذا العزل ضروري في جدة؟</h2>
         <p className="mt-3 text-base leading-8 text-[#5F6B78]">
-          نقدم تقرير كشف تسربات المياه معتمد، ونوفر فحص تسربات الخزانات المعتمد عبر جهاز كشف التسربات الإلكتروني
-          (Success). كما ننفذ حلولاً عملية مثل علاج تسريب مياه السقف، حل مشكلة الرطوبة في الجدران بجدة، طريقة كشف
-          تسربات المياه في الحمامات، إصلاح كسر مواسير المياه بدون تكسير، وعلاج تشققات خزانات المياه الأرضية.
+          جدة مدينة ساحلية: رطوبة مرتفعة، أمطار موسمية، وحرارة شديدة على الأسطح. سطح غير معزّل يمرّر
+          الحر إلى الداخل ويسمح للماء بالنفاذ بعد الأمطار. العزل المائي والحراري المتكامل يحمي
+          البنية، يخفّض فاتورة الكهرباء، ويمنع خلافات الجيران من تسربات الحمامات.
         </p>
         <p className="mt-3 text-base leading-8 text-[#5F6B78]">
-          إذا كانت لديك مشكلة في أسباب ارتفاع فاتورة المياه بجدة، نبدأ بالتشخيص الدقيق ثم نقدم خطة تنفيذ واضحة تشمل
-          العزل أو الإصلاح المناسب مع شهادة ضمان على العزل بجدة.
+          نفذنا أكثر من 500 مشروع عزل في جدة — فلل بأبحر، عمائر في الروضة، ومستودعات في المنطقة
+          الصناعية. لكل مبنى مسار مختلف:{" "}
+          <Link href="/services/azl-ashtof-jeddah" className="font-semibold text-[#475569] hover:underline">
+            عزل أسطح
+          </Link>
+          ،{" "}
+          <Link href="/insulation-services/tank-epoxy-insulation" className="font-semibold text-[#475569] hover:underline">
+            عزل خزانات
+          </Link>
+          ، أو{" "}
+          <Link href="/insulation-services/foam-thermal-waterproof-insulation" className="font-semibold text-[#475569] hover:underline">
+            عزل فوم حراري ومائي
+          </Link>
+          .
+        </p>
+      </section>
+
+      <section className="mt-8 rounded-2xl border border-[#E7EBF0] bg-white p-6 text-right shadow-[0_12px_24px_-20px_rgba(71,85,105,0.25)] md:p-8">
+        <h2 className="text-2xl font-extrabold text-[#334155]">كشف التسربات قبل العزل</h2>
+        <p className="mt-3 text-base leading-8 text-[#5F6B78]">
+          عند وجود رطوبة نشطة أو بقع على السقف، نُدمج{" "}
+          <Link href="/leak-detection" className="font-semibold text-[#475569] hover:underline">
+            كشف تسربات المياه
+          </Link>{" "}
+          مع خطة العزل — لأن طبقة عزل فوق تسرب غير معالج تضيع استثمارك. نقدّم تقارير فنية عند
+          الحاجة لمتابعة شركة المياه الوطنية.
         </p>
       </section>
 
@@ -290,10 +311,10 @@ export default function InsulationPage() {
       <section className="mt-8 rounded-2xl border border-[#E7EBF0] bg-white p-6 text-right shadow-[0_12px_24px_-20px_rgba(71,85,105,0.25)] md:p-8">
         <h2 className="text-2xl font-extrabold text-[#334155]">الأسئلة الشائعة</h2>
         <div className="mt-4 space-y-4">
-          {faqItems.map((item) => (
-            <article key={item.q} className="rounded-xl border border-[#E7EBF0] bg-[#F1F5F9] p-4">
-              <h3 className="text-lg font-bold leading-8 text-[#334155]">س: {item.q}</h3>
-              <p className="mt-2 text-base leading-8 text-[#5F6B78]">ج: {item.a}</p>
+          {INSULATION_FAQ.map((item) => (
+            <article key={item.question} className="rounded-xl border border-[#E7EBF0] bg-[#F1F5F9] p-4">
+              <h3 className="text-lg font-bold leading-8 text-[#334155]">{item.question}</h3>
+              <p className="mt-2 text-base leading-8 text-[#5F6B78]">{item.answer}</p>
             </article>
           ))}
         </div>
