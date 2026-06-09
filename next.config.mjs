@@ -46,6 +46,11 @@ function legacyCoverageRedirects() {
       permanent: true,
     },
     {
+      source: "/azl-maei-jeddah",
+      destination: "/services/azl-maei-jeddah",
+      permanent: true,
+    },
+    {
       source: "/azl-fom-jeddah",
       destination: "/services/azl-fom-jeddah",
       permanent: true,

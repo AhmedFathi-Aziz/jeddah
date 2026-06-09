@@ -4,6 +4,7 @@ import { ArrowLeft, Layers } from "lucide-react";
 
 import { siteConfig } from "@/lib/site-config";
 import { AZL_ASHTOF_PAGE_PATH } from "@/lib/seo/azl-ashtof-jeddah-page-data";
+import { AZL_MAEI_PAGE_PATH } from "@/lib/seo/azl-maei-jeddah-page-data";
 import { AZL_FOM_PAGE_PATH } from "@/lib/seo/azl-fom-jeddah-page-data";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,13 @@ const CARDS = [
     title: "عزل أسطح بجدة",
     summary: "عزل مائي وحراري للفلل والعمائر والمستودعات — فوم، بيتومين، معاينة وتقدير واضح.",
     badge: "صفحة مفصّلة",
+    logo: true,
+  },
+  {
+    href: AZL_MAEI_PAGE_PATH,
+    title: "عزل مائي بجدة",
+    summary: "بيتومين، سيكو بروف، وإيبوكسي للأسطح والخزانات والحمامات — معاينة مجانية وضمان 10 سنوات.",
+    badge: "مائي",
     logo: true,
   },
   {

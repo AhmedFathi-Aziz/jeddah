@@ -66,6 +66,11 @@ export const KEYWORD_TOPICS: KeywordTopic[] = [
   // —— العزل ——
   { keyword: "عزل أسطح جدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
   { keyword: "عزل أسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
+  { keyword: "عزل مائي بجدة", href: "/services/azl-maei-jeddah", category: "insulation" },
+  { keyword: "شركة عزل مائي بجدة", href: "/services/azl-maei-jeddah", category: "insulation" },
+  { keyword: "سعر عزل مائي بجدة", href: "/services/azl-maei-jeddah", category: "insulation" },
+  { keyword: "أفضل شركة عزل مائي بجدة", href: "/services/azl-maei-jeddah", category: "insulation" },
+  { keyword: "عزل بيتومين بجدة", href: "/services/azl-maei-jeddah", category: "insulation" },
   { keyword: "شركة عزل أسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
   { keyword: "عزل مائي للأسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },
   { keyword: "عزل حراري للأسطح بجدة", href: "/services/azl-ashtof-jeddah", category: "insulation" },

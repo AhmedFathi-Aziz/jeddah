@@ -312,4 +312,41 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  /** صفحة عزل مائي بجدة — OG/Schema (شعار على خلفية بيضاء) */
+  azlMaeiPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — عزل مائي بجدة",
+    title: "جذر — عزل مائي بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة عزل مائي بجدة — تركيب بيتومين على سطح */
+  azlMaeiPageField: {
+    src: "/images/insulation/roof-waterproofing-bitumen.webp",
+    alt: "فريق عزل مائي في جدة يركب لفائف بيتومين على سطح مبنى سكني لمنع تسربات الأمطار",
+    title: "عزل مائي للأسطح — لفائف بيتومين بجدة",
+    width: 1024,
+    height: 583,
+  },
+  azlMaeiPageBitumenRoll: {
+    src: "/images/insulation/bitumen-roll-installation.webp",
+    alt: "تركيب لفائف بيتومين APP لعزل مائي على سطح خرساني في جدة",
+    title: "تركيب لفائف بيتومين — عزل مائي بجدة",
+    width: 1024,
+    height: 583,
+  },
+  azlMaeiPageTankEpoxy: {
+    src: "/images/insulation/tank-internal-epoxy.webp",
+    alt: "عزل مائي داخلي لخزان مياه بجدة بطبقة إيبوكسي بعد معالجة الشروخ",
+    title: "عزل مائي للخزانات — إيبوكسي بجدة",
+    width: 1024,
+    height: 583,
+  },
+  azlMaeiPageMoisture: {
+    src: "/images/insulation/epoxy-floor-coating.webp",
+    alt: "تطبيق طبقة عزل مائي إيبوكسي على أرضية في جدة — حماية من نفاذ المياه",
+    title: "عزل مائي للأرضيات — جدة",
+    width: 1024,
+    height: 583,
+  },
 } as const;

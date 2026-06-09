@@ -42,6 +42,11 @@ export function SiteFooter({
               </Link>
             </li>
             <li>
+              <Link href="/services/azl-maei-jeddah" className="hover:text-primary hover:underline">
+                عزل مائي بجدة
+              </Link>
+            </li>
+            <li>
               <Link href="/insulation" className="hover:text-primary hover:underline">
                 عزل خزانات
               </Link>
