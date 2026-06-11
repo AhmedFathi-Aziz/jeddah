@@ -5,6 +5,7 @@ import { ArrowLeft, Layers } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { AZL_ASHTOF_PAGE_PATH } from "@/lib/seo/azl-ashtof-jeddah-page-data";
 import { AZL_MAEI_PAGE_PATH } from "@/lib/seo/azl-maei-jeddah-page-data";
+import { AZL_HARARI_PAGE_PATH } from "@/lib/seo/azl-harari-jeddah-page-data";
 import { AZL_FOM_PAGE_PATH } from "@/lib/seo/azl-fom-jeddah-page-data";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +22,13 @@ const CARDS = [
     title: "عزل مائي بجدة",
     summary: "بيتومين، سيكو بروف، وإيبوكسي للأسطح والخزانات والحمامات — معاينة مجانية وضمان 10 سنوات.",
     badge: "مائي",
+    logo: true,
+  },
+  {
+    href: AZL_HARARI_PAGE_PATH,
+    title: "عزل حراري بجدة",
+    summary: "فوم بولي يوريثان وعزل خزانات خارجي — خفّض فاتورة التكييف مع سماكة محسوبة وضمان.",
+    badge: "حراري",
     logo: true,
   },
   {

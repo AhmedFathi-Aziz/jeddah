@@ -26,6 +26,7 @@ const SERVICE_CATALOG = [
   { name: "كشف تسربات مياه التكييف بجدة", path: "/services/kashf-tasribat-miah-al-takyeef-jeddah" },
   { name: "عزل أسطح بجدة", path: "/services/azl-ashtof-jeddah" },
   { name: "عزل مائي بجدة", path: "/services/azl-maei-jeddah" },
+  { name: "عزل حراري بجدة", path: "/services/azl-harari-jeddah" },
   { name: "عزل فوم بجدة", path: "/services/azl-fom-jeddah" },
   { name: "كشف تسربات المياه في جدة", path: "/leak-detection" },
   { name: "خدمات العزل المائي والحراري", path: "/insulation" },

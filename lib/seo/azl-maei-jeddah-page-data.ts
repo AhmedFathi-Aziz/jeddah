@@ -30,6 +30,7 @@ export const AZL_MAEI_SEO = {
 export const AZL_MAEI_INTERNAL_LINKS = [
   { href: "/insulation", label: "صفحة العزل الرئيسية" },
   { href: "/services/azl-ashtof-jeddah", label: "عزل أسطح بجدة" },
+  { href: "/services/azl-harari-jeddah", label: "عزل حراري بجدة" },
   { href: "/services/azl-fom-jeddah", label: "عزل فوم بجدة" },
   { href: "/insulation-services/tank-epoxy-insulation", label: "عزل خزانات إيبوكسي" },
   { href: "/insulation-services/bathroom-foam-insulation", label: "عزل حمامات بالفوم" },

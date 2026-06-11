@@ -349,4 +349,35 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  /** صفحة عزل حراري بجدة — OG/Schema (شعار على خلفية بيضاء) */
+  azlHarariPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — عزل حراري بجدة",
+    title: "جذر — عزل حراري بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة عزل حراري بجدة — عزل خارجي لخزان مياه (طبقة عاكسة حرارياً) */
+  azlHarariPageField: {
+    src: "/images/insulation/tank-external-protection-white.webp",
+    alt: "عزل حراري خارجي لخزان مياه علوي في جدة — طبقة عاكسة تمنع تسخين الماء تحت أشعة الشمس",
+    title: "عزل حراري خارجي للخزانات — جدة",
+    width: 1024,
+    height: 583,
+  },
+  /** صفحة عزل حراري بجدة — فوم حراري على سطح سكني تحت الشمس */
+  azlHarariPageRoofFoam: {
+    src: "https://lh3.googleusercontent.com/aida-public/AB6AXuC-BnzPRjuOFn3AHsLoSxJ8x41esDYwuZkwXDwAmMfe9qPf5JgLDhIeI3r8d4K4qxjGx0ky7TSaGtnnaGtjYMinUOrrk6rnpgQKuUXVDa8yV9VBe4auGLQju9N-LDVkWfxA9MX7PFIcGqZCvPa-2vQ-2EdNd2rBq1ny1AlzTItvFaIcOXijEQwwOtxCCeEbzehlgidqw6TFfYKSfYiaNm4dB9c21mbpVf2MsoVEWSZ8QMsQ7WxGhrTcmlDIOPRM8jyoc5fi242nC7c",
+    alt: "عزل فوم حراري على سطح سكني في جدة تحت أشعة الشمس — تقليل حرارة السطح وفاتورة التكييف",
+    title: "عزل حراري للأسطح — فوم بجدة",
+    width: 800,
+    height: 320,
+  },
+  azlHarariPageTankExternal: {
+    src: "/images/insulation/tank-external-protection-black.webp",
+    alt: "عزل حراري وحماية خارجية لخزان مياه أرضي في جدة — منع تسخين الماء والتسرب",
+    title: "عزل حراري خارجي للخزانات الأرضية — جدة",
+    width: 1024,
+    height: 583,
+  },
 } as const;
