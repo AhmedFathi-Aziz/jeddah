@@ -1,3 +1,4 @@
+import { articleAuthorToJsonLd } from "@/lib/articles/article-authors";
 import { isVisualCoverPlaceholder } from "@/lib/articles/cover-display";
 import type { ArticleCard } from "@/lib/articles/types";
 import { images } from "@/lib/images";
@@ -11,7 +12,7 @@ type JsonLdBlogPost = {
   url: string;
   image: string;
   datePublished: string;
-  author: { "@id": string };
+  author: ReturnType<typeof articleAuthorToJsonLd>;
   publisher: { "@id": string };
 };
 
@@ -22,7 +23,7 @@ export function BlogJsonLd({ posts }: { posts: ArticleCard[] }) {
     url: `${absUrl("/blog")}/${post.slug}`,
     image: isVisualCoverPlaceholder(post.cover.src) ? images.blogStains.src : absImageSrc(post.cover.src),
     datePublished: post.createdAt.toISOString().slice(0, 10),
-    author: { "@id": SCHEMA_ORGANIZATION_ID },
+    author: articleAuthorToJsonLd(post.author),
     publisher: { "@id": SCHEMA_ORGANIZATION_ID },
   }));
 

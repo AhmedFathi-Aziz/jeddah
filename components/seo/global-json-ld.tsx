@@ -36,6 +36,8 @@ const SERVICE_CATALOG = [
   { name: "مدونة التسربات والعزل", path: "/blog" },
   { name: "دليل أحياء جدة", path: "/coverage" },
   { name: "اتصل بنا — معاينة وحجز", path: "/contact" },
+  { name: "من نحن — خبرة الشركة", path: "/about" },
+  { name: "فريق العمل", path: "/team" },
   ...insulationServices.map((s) => ({
     name: `${s.title} في جدة`,
     path: `/insulation-services/${s.slug}`,

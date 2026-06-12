@@ -19,6 +19,8 @@ const nav = [
   { href: "/insulation", label: "العزل" },
   { href: "/blog", label: "المدونة" },
   { href: "/news", label: "الأخبار" },
+  { href: "/about", label: "من نحن" },
+  { href: "/team", label: "فريق العمل" },
   { href: "/contact", label: "اتصل بنا" },
 ] as const;
 

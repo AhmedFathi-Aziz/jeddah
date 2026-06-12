@@ -5,6 +5,20 @@ export type ArticleCard = {
   category: string;
   title: string;
   excerpt: string;
+  /** الكاتب الرئيسي — للعرض المختصر */
+  author: {
+    name: string;
+    role: string;
+    profileHref?: string;
+  };
+  /** فريق المقال: كاتب، مراجع، محرر */
+  contributors: {
+    name: string;
+    role: string;
+    profileHref?: string;
+    kind: "writer" | "reviewer" | "editor";
+    initials: string;
+  }[];
   /** URL صورة الغلاف (خارجية أو CDN) */
   cover: {
     src: string;

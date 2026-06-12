@@ -40,6 +40,8 @@ const STATIC_PUBLIC_PAGES: StaticSitemapEntry[] = [
   { path: "/blog", changeFrequency: "weekly", priority: 0.9 },
   { path: "/smart-leak-diagnosis", changeFrequency: "monthly", priority: 0.88 },
   { path: "/contact", changeFrequency: "monthly", priority: 0.85 },
+  { path: "/about", changeFrequency: "monthly", priority: 0.88 },
+  { path: "/team", changeFrequency: "monthly", priority: 0.86 },
   { path: "/services/kashf-tasribat-miah-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/kashf-tasribat-bedun-taksir-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/kashf-tasribat-al-khazanat-jeddah", changeFrequency: "monthly", priority: 0.9 },

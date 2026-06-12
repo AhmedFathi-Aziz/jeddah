@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ArticleAuthorByline } from "@/components/blog/article-author-byline";
 import { ArticleCoverOrPlaceholder } from "@/components/blog/article-cover-or-placeholder";
 import { articleDateLocaleShort, safeArticleDate } from "@/lib/articles/article-date";
 import type { ArticleCard } from "@/lib/articles/types";
@@ -75,6 +76,13 @@ export function ArticleRecentPostsPanel({ posts, className, compact }: Props) {
                   <time dateTime={published} className="mt-1 block text-[11px] text-muted-foreground">
                     {articleDateLocaleShort(post.createdAt)}
                   </time>
+                  <ArticleAuthorByline
+                    author={post.author}
+                    compact
+                    linkToProfile={false}
+                    teamSize={Math.max(0, (post.contributors ?? []).length - 1)}
+                    className="mt-1"
+                  />
                 </div>
               </Link>
             </li>

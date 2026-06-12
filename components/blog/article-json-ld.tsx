@@ -1,11 +1,12 @@
 import { safeArticleDate } from "@/lib/articles/article-date";
+import { articleContributorsToJsonLd } from "@/lib/articles/article-authors";
 import { isVisualCoverPlaceholder } from "@/lib/articles/cover-display";
 import type { TocEntry } from "@/lib/articles/markdown-toc";
 import type { ArticleFull } from "@/lib/articles/types";
 import { images } from "@/lib/images";
 import { SCHEMA_ORGANIZATION_ID, SCHEMA_WEBSITE_ID } from "@/lib/seo/schema-ids";
 import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
-import { absImageSrc, absUrl, siteConfig } from "@/lib/site-config";
+import { absImageSrc, absUrl } from "@/lib/site-config";
 
 export function ArticleJsonLd({ article, toc = [] }: { article: ArticleFull; toc?: TocEntry[] }) {
   const published = safeArticleDate(article.createdAt).toISOString();
@@ -56,7 +57,7 @@ export function ArticleJsonLd({ article, toc = [] }: { article: ArticleFull; toc
         datePublished: published,
         dateModified: published,
         inLanguage: "ar-SA",
-        author: { "@type": "Organization", "@id": SCHEMA_ORGANIZATION_ID, name: siteConfig.name },
+        ...articleContributorsToJsonLd(article.contributors ?? []),
         publisher: { "@id": SCHEMA_ORGANIZATION_ID },
         isPartOf: { "@id": SCHEMA_WEBSITE_ID, "@type": "WebSite" },
         ...(tocList ? { hasPart: { "@id": `${articleUrl}#toc` } } : {}),

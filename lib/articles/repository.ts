@@ -9,6 +9,10 @@ import { getDb } from "@/lib/db/client";
 import { articles } from "@/lib/db/schema";
 
 import { isBlogSlugHttpRedirectOnly } from "./blog-slug-redirects";
+import {
+  primaryAuthorFromContributors,
+  resolveArticleContributors,
+} from "./article-authors";
 import { sanitizeArticleExcerpt } from "./sanitize-article-markdown";
 import { getMergedBlogArticles, listBlogStaticPathSlugs } from "./markdown-store";
 import { blogArticleSlugLookupCandidates, blogArticleSlugsConflict } from "./slug-utils";
@@ -48,19 +52,36 @@ function asArticleDate(value: unknown): Date {
 }
 
 function hydrateArticleFull(a: ArticleFull): ArticleFull {
+  const existing = Array.isArray(a.contributors) ? a.contributors : [];
+  const input =
+    existing.length > 0
+      ? existing.map(({ name, role, profileHref, kind }) => ({
+          name,
+          role,
+          profileHref,
+          kind,
+        }))
+      : undefined;
+  const contributors = resolveArticleContributors(input, a.category);
   return {
     ...a,
+    contributors,
+    author: primaryAuthorFromContributors(contributors),
     excerpt: sanitizeArticleExcerpt(a.excerpt, a.title),
     createdAt: asArticleDate(a.createdAt),
   };
 }
 
 function rowToArticle(r: typeof articles.$inferSelect): ArticleFull {
+  const category = r.category;
+  const contributors = resolveArticleContributors(undefined, category);
   return {
     id: r.id,
     slug: r.slug,
-    category: r.category,
+    category,
     title: r.title,
+    contributors,
+    author: primaryAuthorFromContributors(contributors),
     excerpt: sanitizeArticleExcerpt(r.excerpt, r.title),
     content: r.content,
     cover: {

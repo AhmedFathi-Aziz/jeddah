@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 
+import { ArticleContributorsSection } from "@/components/blog/article-contributors-section";
 import { ArticleTopicLinksPanel } from "@/components/blog/article-topic-links-panel";
 import { ArticleRecentPostsPanel } from "@/components/blog/article-recent-posts-panel";
 import { ArticleStickyCta } from "@/components/blog/article-sticky-cta";
@@ -53,10 +54,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     redirect(`/blog/${article.slug}`);
   }
   const url = absUrl(`/blog/${article.slug}`);
+  const authorUrl = article.author.profileHref ? absUrl(article.author.profileHref) : undefined;
+  const writers = (article.contributors ?? [])
+    .filter((c) => c.kind === "writer")
+    .map((c) => ({
+      name: c.name,
+      url: c.profileHref ? absUrl(c.profileHref) : undefined,
+    }));
   return {
     title: article.title,
     description: article.excerpt,
     alternates: { canonical: url },
+    authors: writers.length > 0 ? writers : [{ name: article.author.name, url: authorUrl }],
     openGraph: {
       url,
       title: `${article.title} | ${siteConfig.name}`,
@@ -130,6 +139,7 @@ export default async function BlogArticlePage({ params }: Props) {
                 {article.title}
               </h1>
               <p className="text-sm text-muted-foreground sm:text-base">{articleDateLocaleLong(article.createdAt)}</p>
+              <ArticleContributorsSection contributors={article.contributors ?? []} />
             </header>
 
             <ArticleHeroSection

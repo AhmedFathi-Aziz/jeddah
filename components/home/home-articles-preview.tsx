@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ArticleAuthorByline } from "@/components/blog/article-author-byline";
 import { ArticleCoverOrPlaceholder } from "@/components/blog/article-cover-or-placeholder";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,11 @@ export async function HomeArticlesPreview() {
                   {post.title}
                 </Link>
               </h3>
+              <ArticleAuthorByline
+                author={post.author}
+                compact
+                teamSize={Math.max(0, (post.contributors ?? []).length - 1)}
+              />
             </CardHeader>
             <CardContent className="line-clamp-2 flex-1 text-right text-sm leading-relaxed text-muted-foreground">
               {post.excerpt}

@@ -4,6 +4,11 @@ import path from "node:path";
 import matter from "gray-matter";
 
 import { demoArticles } from "./demo-articles";
+import {
+  parseContributorsFromFrontmatter,
+  primaryAuthorFromContributors,
+  resolveArticleContributors,
+} from "./article-authors";
 import { isBlogSlugHttpRedirectOnly } from "./blog-slug-redirects";
 import { blogArticleSlugLookupCandidates } from "./slug-utils";
 import { sanitizeArticleExcerpt, sanitizeArticleMarkdown } from "./sanitize-article-markdown";
@@ -25,11 +30,17 @@ function parseArticleFile(raw: string, filename: string): ArticleFull | null {
       ? createdRaw
       : new Date(typeof createdRaw === "string" || typeof createdRaw === "number" ? createdRaw : 0);
 
+  const category = String(d.category ?? "");
+  const title = String(d.title ?? "");
+  const contributors = resolveArticleContributors(parseContributorsFromFrontmatter(d), category);
+
   return {
     id: String(d.id ?? slug),
     slug,
-    category: String(d.category ?? ""),
-    title: String(d.title ?? ""),
+    category,
+    title,
+    contributors,
+    author: primaryAuthorFromContributors(contributors),
     excerpt: sanitizeArticleExcerpt(String(d.excerpt ?? ""), String(d.title ?? "")),
     content: sanitizeArticleMarkdown(typeof content === "string" ? content.trim() : ""),
     cover: {

@@ -102,6 +102,16 @@ export function SiteFooter({
               </Link>
             </li>
             <li>
+              <Link href="/about" className="hover:text-primary hover:underline">
+                من نحن
+              </Link>
+            </li>
+            <li>
+              <Link href="/team" className="hover:text-primary hover:underline">
+                فريق العمل
+              </Link>
+            </li>
+            <li>
               <Link href="/contact" className="hover:text-primary hover:underline">
                 اتصل بنا
               </Link>

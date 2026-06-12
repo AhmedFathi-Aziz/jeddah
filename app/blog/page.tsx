@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight, Droplets, Home, Layers, Phone, Newspaper, Mail } from "lucide-react";
 
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
+import { ArticleAuthorByline } from "@/components/blog/article-author-byline";
 import { ArticleCoverOrPlaceholder } from "@/components/blog/article-cover-or-placeholder";
 import { BlogJsonLd } from "@/components/blog/blog-json-ld";
 import { BlogNewsletterForm } from "@/components/blog/blog-newsletter-form";
@@ -145,6 +146,12 @@ export default async function BlogPage() {
                           {post.title}
                         </Link>
                       </h3>
+                      <ArticleAuthorByline
+                        author={post.author}
+                        compact
+                        teamSize={Math.max(0, (post.contributors ?? []).length - 1)}
+                        className="mt-2"
+                      />
                     </CardHeader>
                     <CardContent className="line-clamp-3 flex-1 text-sm leading-7 text-muted-foreground">
                       {post.excerpt}

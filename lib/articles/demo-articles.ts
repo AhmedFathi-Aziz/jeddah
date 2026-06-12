@@ -1,9 +1,12 @@
 import { images } from "@/lib/images";
 
+import { resolveArticleContributors, primaryAuthorFromContributors } from "./article-authors";
 import type { ArticleFull } from "./types";
 
+type DemoArticleDraft = Omit<ArticleFull, "author" | "contributors">;
+
 /** تُستخدم عند عدم توفر ربط D1 (محلي بدون Wrangler) أو عند فراغ الجدول. */
-export const demoArticles: ArticleFull[] = [
+const demoArticlesDraft: DemoArticleDraft[] = [
   {
     id: "demo-leak-jeddah-guide",
     slug: "kashf-tasarubat-fi-jeddah",
@@ -186,3 +189,12 @@ export const demoArticles: ArticleFull[] = [
     createdAt: new Date(Date.UTC(2026, 2, 15)),
   },
 ];
+
+export const demoArticles: ArticleFull[] = demoArticlesDraft.map((a) => {
+  const contributors = resolveArticleContributors(undefined, a.category);
+  return {
+    ...a,
+    contributors,
+    author: primaryAuthorFromContributors(contributors),
+  };
+});
