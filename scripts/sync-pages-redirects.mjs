@@ -9,11 +9,39 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const dataPath = path.join(root, "data", "coverage-locations.json");
+const blogRedirectsPath = path.join(root, "data", "blog-slug-redirects.json");
 const outPath = path.join(root, "public", "_redirects");
+
+function blogRedirectLines() {
+  try {
+    const raw = fs.readFileSync(blogRedirectsPath, "utf8");
+    const data = JSON.parse(raw);
+    const rows = data.redirects ?? [];
+    const lines = [];
+    const seen = new Set();
+    for (const { source, destination } of rows) {
+      if (!source || !destination) continue;
+      const key = `${source}\t${destination}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      lines.push(`${source}  ${destination}  301`);
+      const trimmed = source.replace(/\/$/, "");
+      if (trimmed !== source && !seen.has(`${trimmed}\t${destination}`)) {
+        seen.add(`${trimmed}\t${destination}`);
+        lines.push(`${trimmed}  ${destination}  301`);
+      }
+    }
+    return lines;
+  } catch (e) {
+    console.warn("[sync-pages-redirects] تعذّر قراءة blog-slug-redirects.json:", e?.message ?? e);
+    return [];
+  }
+}
 
 let lines = [
   "/kashf-tasribat-miah-jeddah  /services/kashf-tasribat-miah-jeddah  301",
   "/kashf-tasribat-bedun-taksir-jeddah  /services/kashf-tasribat-bedun-taksir-jeddah  301",
+  ...blogRedirectLines(),
 ];
 try {
   const raw = fs.readFileSync(dataPath, "utf8");

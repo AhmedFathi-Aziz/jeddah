@@ -1,0 +1,54 @@
+{
+  "redirects": [
+    {
+      "source": "/blog/ahemiyat-alzal-harari",
+      "destination": "/blog/ahamiyat-alazl-bi-anwaaih",
+      "note": "GSC 404 — transliteration typo for insulation article"
+    },
+    {
+      "source": "/blog/ma-hiya-altasarubat-wa-limatha-tahduth",
+      "destination": "/blog/ما-هي-التسربات-ولماذا-تحدث",
+      "note": "GSC 404 — Latin slug for what-are-leaks article"
+    },
+    {
+      "source": "/blog/أهمية-العزل-بأنواعه",
+      "destination": "/blog/ahamiyat-alazl-bi-anwaaih",
+      "note": "GSC 404 — older Arabic slug for insulation article"
+    },
+    {
+      "source": "/blog/أهمية-العزل-بأنواعه/",
+      "destination": "/blog/ahamiyat-alazl-bi-anwaaih",
+      "note": "GSC 404 — trailing slash variant"
+    },
+    {
+      "source": "/blog/kashf-tasarubat-miyah-jeddah-2026",
+      "destination": "/blog/كشف-تسربات-المياه-جدة",
+      "note": "GSC 404 — 2026 leak-detection landing slug"
+    },
+    {
+      "source": "/blog/kashf-tasarubat-miah-jeddah-asbab-holol",
+      "destination": "/blog/kashf-tasarubat-fi-jeddah",
+      "note": "GSC 404 — causes & solutions guide slug"
+    },
+    {
+      "source": "/blog/khaturat-tasarubat-miyah",
+      "destination": "/blog/خطورة-تسربات-المياه",
+      "note": "GSC 404 — Latin slug for leak dangers article"
+    },
+    {
+      "source": "/blog/kashf-tasarubat-miyah-jeddah",
+      "destination": "/blog/kashf-tasarubat-fi-jeddah",
+      "note": "GSC 404 — older Latin slug for Jeddah leak guide"
+    },
+    {
+      "source": "/blog/كشف-تسربات-بالرياض",
+      "destination": "/blog/kashf-tasarubat-alriyadh",
+      "note": "GSC 404 — shorter Arabic slug for Riyadh article"
+    },
+    {
+      "source": "/blog/azl-alkhazanat-fi-jeddah",
+      "destination": "/blog/عزل-خزانات-بجدة",
+      "note": "GSC 404 — Latin slug for tank insulation article"
+    }
+  ]
+}

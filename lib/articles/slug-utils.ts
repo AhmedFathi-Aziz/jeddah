@@ -25,10 +25,14 @@ export function articleSlugLookupCandidates(raw: string): string[] {
 
 /** أزواج slug قديم/بديل لنفس المقال (استعلام فقط — بدون إعادة توجيه HTTP). */
 const BLOG_SLUG_LEGACY_SYNONYMS: readonly (readonly string[])[] = [
-  ["ahamiyat-alazl-bi-anwaaih", "kashf-tasarubat-almiyah-wa-alazl-bialriyadh"],
+  ["ahamiyat-alazl-bi-anwaaih", "kashf-tasarubat-almiyah-wa-alazl-bialriyadh", "ahemiyat-alzal-harari", "أهمية-العزل-بأنواعه"],
   /** روابط عربية SEO كانت في الإنتاج / D1 */
-  ["kashf-tasarubat-fi-jeddah", "كشف-تسربات-المياه-جدة"],
+  ["kashf-tasarubat-fi-jeddah", "كشف-تسربات-المياه-جدة", "kashf-tasarubat-miyah-jeddah", "kashf-tasarubat-miah-jeddah-asbab-holol"],
   ["irtifaa-fatura-almiyah-jeddah", "ارتفاع-فاتورة-المياه-جدة"],
+  ["ما-هي-التسربات-ولماذا-تحدث", "ma-hiya-altasarubat-wa-limatha-tahduth"],
+  ["خطورة-تسربات-المياه", "khaturat-tasarubat-miyah"],
+  ["kashf-tasarubat-alriyadh", "كشف-تسربات-بالرياض"],
+  ["عزل-خزانات-بجدة", "azl-alkhazanat-fi-jeddah"],
 ];
 
 /** يوسّع مرشحات البحث عن مقال عند تغيّر الـ slug مع بقاء روابط قديمة في الفهرس أو المشاركات. */

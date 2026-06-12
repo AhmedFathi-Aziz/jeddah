@@ -12,6 +12,21 @@ if (process.env.NODE_ENV === "development" && !staticExport) {
 
 const require = createRequire(import.meta.url);
 
+/** إعادة توجيه 301 من slugs مدونة قديمة (GSC / فهرس قديم) إلى الـ slug الحالي. */
+function blogSlugRedirects() {
+  try {
+    const data = require("./data/blog-slug-redirects.json");
+    const rows = data.redirects ?? [];
+    return rows.map(({ source, destination }) => ({
+      source,
+      destination,
+      permanent: true,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 /** إعادة توجيه 301 من المسار القديم `/coverage/[id]` إلى `/coverage/jeddah/[id]` (SEO). */
 function legacyCoverageRedirects() {
   const serviceRedirects = [
@@ -164,7 +179,7 @@ const nextConfig = {
   ...(!staticExport
     ? {
         async redirects() {
-          return legacyCoverageRedirects();
+          return [...legacyCoverageRedirects(), ...blogSlugRedirects()];
         },
       }
     : {}),
