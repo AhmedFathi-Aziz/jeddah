@@ -6,6 +6,7 @@ import { siteConfig } from "@/lib/site-config";
 import { AZL_ASHTOF_PAGE_PATH } from "@/lib/seo/azl-ashtof-jeddah-page-data";
 import { AZL_MAEI_PAGE_PATH } from "@/lib/seo/azl-maei-jeddah-page-data";
 import { AZL_HARARI_PAGE_PATH } from "@/lib/seo/azl-harari-jeddah-page-data";
+import { AZL_KHAZANAT_PAGE_PATH } from "@/lib/seo/azl-khazanat-jeddah-page-data";
 import { AZL_FOM_PAGE_PATH } from "@/lib/seo/azl-fom-jeddah-page-data";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,13 @@ const CARDS = [
     title: "عزل حراري بجدة",
     summary: "فوم بولي يوريثان وعزل خزانات خارجي — خفّض فاتورة التكييف مع سماكة محسوبة وضمان.",
     badge: "حراري",
+    logo: true,
+  },
+  {
+    href: AZL_KHAZANAT_PAGE_PATH,
+    title: "عزل خزانات بجدة",
+    summary: "إيبوكسي داخلي، عزل خارجي، وحقن للشروخ — علوي وأرضي مع معاينة مجانية وضمان.",
+    badge: "خزانات",
     logo: true,
   },
   {

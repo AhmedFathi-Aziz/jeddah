@@ -48,6 +48,7 @@ const STATIC_PUBLIC_PAGES: StaticSitemapEntry[] = [
   { path: "/services/azl-ashtof-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/azl-maei-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/azl-harari-jeddah", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/services/azl-khazanat-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/azl-fom-jeddah", changeFrequency: "monthly", priority: 0.9 },
   { path: "/leak-detection", changeFrequency: "monthly", priority: 0.85 },
   { path: "/insulation", changeFrequency: "monthly", priority: 0.85 },

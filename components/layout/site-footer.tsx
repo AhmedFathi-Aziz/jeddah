@@ -52,8 +52,8 @@ export function SiteFooter({
               </Link>
             </li>
             <li>
-              <Link href="/insulation" className="hover:text-primary hover:underline">
-                عزل خزانات
+              <Link href="/services/azl-khazanat-jeddah" className="hover:text-primary hover:underline">
+                عزل خزانات بجدة
               </Link>
             </li>
             <li>

@@ -56,6 +56,11 @@ function legacyCoverageRedirects() {
       permanent: true,
     },
     {
+      source: "/azl-khazanat-jeddah",
+      destination: "/services/azl-khazanat-jeddah",
+      permanent: true,
+    },
+    {
       source: "/azl-fom-jeddah",
       destination: "/services/azl-fom-jeddah",
       permanent: true,

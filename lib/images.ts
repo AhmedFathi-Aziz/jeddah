@@ -380,4 +380,34 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  /** صفحة عزل خزانات بجدة — OG/Schema (شعار على خلفية بيضاء) */
+  azlKhazanatPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — عزل خزانات بجدة",
+    title: "جذر — عزل خزانات بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة عزل خزانات بجدة — إيبوكسي داخلي */
+  azlKhazanatPageField: {
+    src: "/images/insulation/tank-internal-epoxy.webp",
+    alt: "عزل داخلي لخزان مياه في جدة بطبقة إيبوكسي زرقاء بعد معالجة الشروخ واللياسة",
+    title: "عزل خزانات بالإيبوكسي — جدة",
+    width: 1024,
+    height: 583,
+  },
+  azlKhazanatPageExternalWhite: {
+    src: "/images/insulation/tank-external-protection-white.webp",
+    alt: "خزان مياه علوي في جدة بعد عزل خارجي وحماية — منع التسرب والتسخين",
+    title: "عزل خارجي لخزانات المياه — جدة",
+    width: 1024,
+    height: 583,
+  },
+  azlKhazanatPageExternalBlack: {
+    src: "/images/insulation/tank-external-protection-black.webp",
+    alt: "خزان مياه أرضي كبير في جدة بعد عزل خارجي وحماية ضد التسرب والعوامل الجوية",
+    title: "حماية وعزل خزانات أرضية — جدة",
+    width: 1024,
+    height: 583,
+  },
 } as const;
