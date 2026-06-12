@@ -4,6 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 
 import { demoArticles } from "./demo-articles";
+import { isBlogSlugHttpRedirectOnly } from "./blog-slug-redirects";
 import { blogArticleSlugLookupCandidates } from "./slug-utils";
 import { sanitizeArticleExcerpt, sanitizeArticleMarkdown } from "./sanitize-article-markdown";
 import type { ArticleFull } from "./types";
@@ -89,14 +90,14 @@ export function listMarkdownArticleSlugs(): string[] {
 }
 
 /**
- * كل قيم `[slug]` التي يجب توليدها ثابتاً — تشمل مرادفات الـ slug (عربي/لاتيني)
- * حتى لا يحدث 404 مع ‎dynamicParams: false‎ عند روابط قديمة.
+ * كل قيم `[slug]` التي يجب توليدها ثابتاً — تشمل مرادفات الـ slug (عربي/لاتيني).
+ * روابط ‎blog-slug-redirects.json‎ تُستثنى؛ تُعالَج بـ 301 عند الحافة دون prerender.
  */
 export function listBlogStaticPathSlugs(): string[] {
   const set = new Set<string>();
   for (const a of getMergedBlogArticles()) {
     for (const s of blogArticleSlugLookupCandidates(a.slug)) {
-      if (s) set.add(s);
+      if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
     }
   }
   return [...set];

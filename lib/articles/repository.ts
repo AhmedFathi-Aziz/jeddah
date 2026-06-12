@@ -8,6 +8,7 @@ import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
 import { articles } from "@/lib/db/schema";
 
+import { isBlogSlugHttpRedirectOnly } from "./blog-slug-redirects";
 import { sanitizeArticleExcerpt } from "./sanitize-article-markdown";
 import { getMergedBlogArticles, listBlogStaticPathSlugs } from "./markdown-store";
 import { blogArticleSlugLookupCandidates, blogArticleSlugsConflict } from "./slug-utils";
@@ -129,7 +130,7 @@ export async function listAllSlugsForStaticBuild(): Promise<{ slug: string }[]> 
   const set = new Set(listBlogStaticPathSlugs());
   for (const slug of readSlugExportJson()) {
     for (const s of blogArticleSlugLookupCandidates(slug)) {
-      if (s) set.add(s);
+      if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
     }
   }
   try {
@@ -141,7 +142,7 @@ export async function listAllSlugsForStaticBuild(): Promise<{ slug: string }[]> 
         .where(eq(articles.published, true));
       for (const { slug } of rows) {
         for (const s of blogArticleSlugLookupCandidates(slug)) {
-          if (s) set.add(s);
+          if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
         }
       }
     }
