@@ -22,9 +22,9 @@ export const revalidate = false;
 
 export const metadata: Metadata = {
   ...buildPageMetadata({
-    title: "مدونة كشف تسربات المياه والعزل في جدة",
+    title: "مدونة كشف تسربات المياه والعزل في جدة | نصائح ودلائل عملية محلية",
     description:
-      "مقالات عن كشف التسربات، عزل الأسطح، ارتفاع فاتورة المياه، رطوبة الجدران، وعزل الخزانات — دليل عربي لسكان جدة.",
+      "مقالات عربية عن كشف التسربات وعزل الأسطح في جدة: ارتفاع فاتورة المياه، رطوبة الجدران، عزل الخزانات، ونصائح عملية من فريق ميداني بخبرة محلية.",
     path: "/blog",
     keywords: keywordsForPath("/blog"),
     ogTitle: `مدونة التسربات والعزل — ${siteConfig.name}`,
@@ -122,7 +122,7 @@ export default async function BlogPage() {
                 <article
                   key={`${post.slug}-${post.id}`}
                   id={post.slug}
-                  className="flex flex-col overflow-hidden rounded-xl border-0 bg-card shadow-sm scroll-mt-28 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                  className="flex flex-col overflow-hidden rounded-xl border-0 bg-card shadow-[0_14px_32px_-26px_rgba(19,66,89,0.35)] scroll-mt-28 transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-22px_rgba(19,66,89,0.34)]"
                 >
                   <Link href={`/blog/${post.slug}`} className="relative block aspect-[5/3] shrink-0 overflow-hidden">
                     <ArticleCoverOrPlaceholder
@@ -138,7 +138,7 @@ export default async function BlogPage() {
                       compact
                     />
                   </Link>
-                  <Card className="flex flex-1 flex-col rounded-none rounded-b-xl border-0 bg-transparent shadow-none">
+                  <Card className="flex flex-1 flex-col rounded-none rounded-b-xl border-0 bg-transparent shadow-none ring-0">
                     <CardHeader className="pb-2 text-right">
                       <p className="text-xs font-bold text-[#00658d]">{post.category}</p>
                       <h3 className="mt-2 text-lg font-bold leading-snug text-primary sm:text-xl">

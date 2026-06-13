@@ -10,7 +10,7 @@ import {
   resolveArticleContributors,
 } from "./article-authors";
 import { isBlogSlugHttpRedirectOnly } from "./blog-slug-redirects";
-import { blogArticleSlugLookupCandidates } from "./slug-utils";
+import { normalizeArticleSlugParam } from "./slug-utils";
 import { sanitizeArticleExcerpt, sanitizeArticleMarkdown } from "./sanitize-article-markdown";
 import type { ArticleFull } from "./types";
 
@@ -101,15 +101,14 @@ export function listMarkdownArticleSlugs(): string[] {
 }
 
 /**
- * كل قيم `[slug]` التي يجب توليدها ثابتاً — تشمل مرادفات الـ slug (عربي/لاتيني).
- * روابط ‎blog-slug-redirects.json‎ تُستثنى؛ تُعالَج بـ 301 عند الحافة دون prerender.
+ * كل قيم `[slug]` التي يجب توليدها ثابتاً — slug واحد فقط لكل مقال (القيمة المخزَّنة).
+ * المرادفات القديمة تُعالَج بـ 301 في ‎_redirects‎ وليس بصفحات مكررة.
  */
 export function listBlogStaticPathSlugs(): string[] {
   const set = new Set<string>();
   for (const a of getMergedBlogArticles()) {
-    for (const s of blogArticleSlugLookupCandidates(a.slug)) {
-      if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
-    }
+    const s = normalizeArticleSlugParam(a.slug);
+    if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
   }
   return [...set];
 }

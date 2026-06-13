@@ -5,7 +5,7 @@ import { images } from "@/lib/images";
 export const KASHF_BEDUN_TAKSIR_PAGE_PATH = "/services/kashf-tasribat-bedun-taksir-jeddah" as const;
 
 export const KASHF_BEDUN_TAKSIR_SEO = {
-  title: "كشف تسربات بدون تكسير بجدة | فحص إلكتروني وتقرير فني",
+  title: "كشف تسربات بدون تكسير بجدة | فحص حراري وصوتي وتقرير فني معتمد",
   description:
     "كشف تسربات بدون تكسير بجدة للفلل والشقق والمباني التجارية: تصوير حراري، فحص صوتي، تحديد مصدر التسرب بدقة، وتقرير فني — دون كسر عشوائي للجدران أو البلاط. احجز معاينة.",
   slug: "kashf-tasribat-bedun-taksir-jeddah",

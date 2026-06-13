@@ -23,7 +23,10 @@ export async function HomeArticlesPreview() {
       </header>
       <div className="grid gap-8 md:grid-cols-3">
         {previews.map((post) => (
-          <Card key={`${post.slug}-${post.id}`} className="flex flex-col overflow-hidden border pt-0">
+          <Card
+            key={`${post.slug}-${post.id}`}
+            className="flex flex-col overflow-hidden border-0 pt-0 ring-0 shadow-[0_14px_32px_-26px_rgba(19,66,89,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-22px_rgba(19,66,89,0.34)]"
+          >
             <div className="relative h-48 w-full shrink-0 overflow-hidden rounded-t-lg">
               <ArticleCoverOrPlaceholder
                 fill

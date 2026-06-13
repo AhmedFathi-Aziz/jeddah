@@ -19,9 +19,9 @@ import { absUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   ...buildPageMetadata({
-    title: "كشف تسربات المياه في جدة بدون تكسير",
+    title: "دليل كشف تسربات المياه بجدة | أعراض، فحص ذاتي، وحجز ميداني",
     description:
-      "كشف تسربات المياه بجدة بدون تكسير: فحص حراري وصوتي، كشف خزانات وحمامات وأسطح، تقرير معتمد لشركة المياه، وإصلاح بخطة واضحة.",
+      "دليل تعليمي لسكان جدة: أعراض التسرب الخفي، فحص ذاتي للعداد، متى تحتاج فنيًا، وروابط لصفحة الحجز والمشخّص الذكي — بعيداً عن صفحات الخدمة التجارية.",
     path: "/leak-detection",
     keywords: keywordsForPath("/leak-detection"),
     ogTitle: `كشف تسربات المياه — ${siteConfig.name}`,
@@ -140,20 +140,24 @@ export default function LeakDetectionPage() {
           +500 مشروع · تقارير فنية · جدة
         </p>
         <h1 className="text-3xl font-extrabold leading-tight text-[#163d57] md:text-5xl">
-          كشف تسربات المياه في جدة
+          دليل كشف تسربات المياه في جدة — أعراض، فحص، وإصلاح
         </h1>
         <p className="mt-4 max-w-4xl text-lg leading-8 text-[#4a6677]">
-          <strong>كشف تسربات المياه في جدة</strong> يبدأ بسؤال بسيط: هل الماء يخرج من مكانه
-          خلف الجدار أو تحت البلاط؟ نستخدم فحصاً حرارياً وصوتياً لتحديد المصدر قبل أي تكسير
-          عشوائي — ثم نُقدّم تقريراً فنياً وخطة إصلاح واضحة. في مناخ جدة الساحلي، التسربات
-          الخفية شائعة بسبب الرطوبة وتآكل الوصلات.
+          هذه الصفحة <strong>دليل تعليمي</strong> لساكن جدة: كيف تميّز التسرب الخفي،
+          ماذا تفعل قبل الاتصال بفني، وما الفرق بين الفحص الذاتي والفحص الميداني.
+          لا نكرّر عروض الخدمة هنا — للحجز والتسعير المباشر انتقل إلى{" "}
+          <Link href="/services/kashf-tasribat-miah-jeddah" className="font-semibold text-[#1f7f8a] hover:underline">
+            صفحة خدمة كشف التسربات
+          </Link>
+          .
         </p>
         <p className="mt-3 max-w-4xl text-base leading-8 text-[#4a6677]">
-          نخدم الحمامات، المطابخ، الخزانات، الأسطح، وخطوط التكييف. للتشخيص الأولي جرّب{" "}
+          نغطي أعراض التسرب في الحمامات والمطابخ والخزانات والأسطح وخطوط التكييف.
+          للتشخيص الأولي جرّب{" "}
           <Link href="/smart-leak-diagnosis" className="font-semibold text-[#1f7f8a] hover:underline">
             المشخّص الذكي
           </Link>
-          {" — "}أو احجز زيارة ميدانية مباشرة.
+          {" — "}ثم احجز زيارة ميدانية إذا استمرت الشكوى.
         </p>
         <div className="mt-7 flex flex-row-reverse flex-wrap justify-end gap-3">
           <a

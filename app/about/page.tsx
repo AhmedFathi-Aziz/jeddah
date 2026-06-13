@@ -72,7 +72,7 @@ export default function AboutPage() {
             الخبرة · التخصص · الموثوقية
           </p>
           <h1 className="text-balance text-3xl font-extrabold leading-tight text-[#163d57] md:text-5xl">
-            من نحن — {siteConfig.name}
+            من نحن — خبرة كشف تسربات وعزل المياه في جدة
           </h1>
           <p className="mt-4 max-w-4xl text-pretty text-lg leading-8 text-[#4a6677]">
             {ABOUT_PROJECTS.paragraphs[0]}

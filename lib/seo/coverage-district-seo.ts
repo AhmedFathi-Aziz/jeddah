@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import type { ResolvedCoverageDistrict } from "@/lib/coverage-data";
 import { getDistrictRichContent } from "@/lib/seo/coverage-district-content";
+import { normalizeMetaDescription } from "@/lib/seo/build-metadata";
 import { PRIMARY_KEYWORDS } from "@/lib/seo/keyword-clusters";
 import { SCHEMA_LOCAL_BUSINESS_ID } from "@/lib/seo/schema-ids";
 import { absUrl, siteConfig } from "@/lib/site-config";
@@ -31,9 +32,13 @@ export function buildCoverageDistrictMetadata(
   const rich = getDistrictRichContent(districtSlug, row.district, row.city.nameAr);
   const descSnippet = rich.highlight.intro.slice(0, 120).trim();
 
+  const metaDescription = normalizeMetaDescription(
+    `${descSnippet}… كشف تسربات وعزل في ${row.district} بجدة — فحص بدون تكسير، تقارير فنية، فوم وإيبوكسي. ${siteConfig.name}.`,
+  );
+
   return {
-    title: row.label,
-    description: `${descSnippet}… كشف تسربات وعزل في ${row.district} بجدة — فحص بدون تكسير، تقارير فنية، فوم وإيبوكسي. ${siteConfig.name}.`,
+    title: { absolute: row.label },
+    description: metaDescription,
     keywords: [
       ...PRIMARY_KEYWORDS,
       `كشف تسربات المياه ${districtShort}`,
@@ -52,7 +57,7 @@ export function buildCoverageDistrictMetadata(
     openGraph: {
       url: path,
       title: `${row.label} | ${siteConfig.name}`,
-      description: `خدمات كشف التسربات والعزل في ${row.district}: معاينة، فحص إلكتروني، إصلاح، وضمان — ${cityAr(row)}.`,
+      description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
       type: "website",
     },

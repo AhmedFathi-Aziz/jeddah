@@ -5,7 +5,7 @@ import { images } from "@/lib/images";
 export const KASHF_MASABIH_PAGE_PATH = "/services/kashf-tasribat-al-masabih-jeddah" as const;
 
 export const KASHF_MASABIH_SEO = {
-  title: "كشف تسربات المسابح بجدة | فحص خطوط وعزل وتقرير فني",
+  title: "كشف تسربات المسابح بجدة | فحص خطوط المياه والعزل وتقرير فني معتمد",
   description:
     "كشف تسربات المسابح بجدة للفلل والقصور والفنادق والمجمعات: اختبار انخفاض المنسوب، فحص خطوط التغذية والصرف، تحديد مصدر التسرب، وتقرير فني. احجز معاينة.",
   slug: "kashf-tasribat-al-masabih-jeddah",

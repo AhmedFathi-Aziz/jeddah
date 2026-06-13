@@ -70,6 +70,7 @@ export function InsulationJeddahServiceCards({ className }: { className?: string
                 fill
                 sizes="(max-width: 640px) 50vw, 320px"
                 quality={90}
+                loading="lazy"
                 className="object-contain p-6"
               />
             </div>

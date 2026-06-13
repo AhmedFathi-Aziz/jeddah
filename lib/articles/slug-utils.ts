@@ -23,13 +23,8 @@ export function articleSlugLookupCandidates(raw: string): string[] {
   return Array.from(new Set([normalized, trimmed].filter(Boolean)));
 }
 
-/** أزواج slug قديم/بديل لنفس المقال (استعلام فقط — بدون إعادة توجيه HTTP). */
-const BLOG_SLUG_LEGACY_SYNONYMS: readonly (readonly string[])[] = [
-  ["ahamiyat-alazl-bi-anwaaih", "kashf-tasarubat-almiyah-wa-alazl-bialriyadh"],
-  /** روابط عربية SEO كانت في الإنتاج / D1 */
-  ["kashf-tasarubat-fi-jeddah", "كشف-تسربات-المياه-جدة"],
-  ["irtifaa-fatura-almiyah-jeddah", "ارتفاع-فاتورة-المياه-جدة"],
-];
+/** أزواج slug قديم/بديل — للبحث فقط عند روابط قديمة؛ لا تُولَّد لها صفحات ثابتة (انظر blog-slug-redirects). */
+const BLOG_SLUG_LEGACY_SYNONYMS: readonly (readonly string[])[] = [];
 
 /** يوسّع مرشحات البحث عن مقال عند تغيّر الـ slug مع بقاء روابط قديمة في الفهرس أو المشاركات. */
 export function blogArticleSlugLookupCandidates(raw: string): string[] {

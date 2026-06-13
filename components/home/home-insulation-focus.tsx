@@ -67,6 +67,7 @@ export function HomeInsulationFocus({ phone }: { phone: string }) {
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="h-full w-full object-cover"
               quality={76}
+              loading="lazy"
             />
           </div>
         </div>

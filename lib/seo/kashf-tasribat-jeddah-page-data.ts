@@ -5,7 +5,7 @@ import { images } from "@/lib/images";
 export const KASHF_JEDDAH_PAGE_PATH = "/services/kashf-tasribat-miah-jeddah" as const;
 
 export const KASHF_JEDDAH_SEO = {
-  title: "كشف تسربات المياه بجدة | فحص بدون تكسير وتقرير معتمد",
+  title: "كشف تسربات المياه بجدة | فحص إلكتروني بدون تكسير وتقرير معتمد",
   description:
     "كشف تسربات المياه بجدة للفلل والشقق والمباني التجارية: فحص حراري وصوتي بدون تكسير، تحديد مصدر التسرب، تقرير فني، وإصلاح بخطة واضحة. احجز معاينة اليوم.",
   slug: "kashf-tasribat-miah-jeddah",

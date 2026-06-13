@@ -31,6 +31,9 @@ export function sanitizeArticleExcerpt(excerpt: string, title = ""): string {
   return text;
 }
 
+/** العنوان يُعرض في ‎<h1>‎ من frontmatter — أول ‎#‎ في Markdown يكرّر العنوان ويضر SEO */
+const LEADING_MARKDOWN_H1 = /^\s*#\s+[^\n]+(?:\n+---\s*\n+)?/;
+
 /**
  * يزيل علامات المعالجة الداخلية من Markdown قبل العرض.
  * الروابط داخل النص تبقى كما هي.
@@ -42,6 +45,7 @@ export function sanitizeArticleMarkdown(content: string): string {
     .replace(SEO_TITLE_COMMENT, "")
     .replace(SEO_VISIBLE_PREFIX, "")
     .replace(DECORATIVE_EMOJI, "")
+    .replace(LEADING_MARKDOWN_H1, "")
     .replace(/\n{3,}/g, "\n\n")
     .trimEnd();
 }

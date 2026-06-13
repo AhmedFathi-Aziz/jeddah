@@ -15,12 +15,12 @@ import {
 } from "./article-authors";
 import { sanitizeArticleExcerpt } from "./sanitize-article-markdown";
 import { getMergedBlogArticles, listBlogStaticPathSlugs } from "./markdown-store";
-import { blogArticleSlugLookupCandidates, blogArticleSlugsConflict } from "./slug-utils";
+import { blogArticleSlugLookupCandidates, blogArticleSlugsConflict, normalizeArticleSlugParam } from "./slug-utils";
 import type { ArticleCard, ArticleFull } from "./types";
 
 export const ARTICLE_CACHE_REVALIDATE_SEC = 900;
 
-const MERGE_CACHE_KEY = "blog-articles-md-d1-merge";
+const MERGE_CACHE_KEY = "blog-articles-md-d1-merge-v2";
 /** كاش أطول يقلّل استعلامات D1 المتكررة على Worker */
 const MERGE_REVALIDATE_SEC = 3600;
 
@@ -109,20 +109,59 @@ async function fetchPublishedFromDb(): Promise<ArticleFull[]> {
   }
 }
 
+/** يمنع تكرار نفس slug في القائمة (ملف + D1 أو إدخالات مكررة). */
+function dedupeArticlesByCanonicalSlug(list: ArticleFull[]): ArticleFull[] {
+  const seen = new Set<string>();
+  const out: ArticleFull[] = [];
+  for (const a of list) {
+    const key = normalizeArticleSlugParam(a.slug);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(a);
+  }
+  return out;
+}
+
 /** Markdown + عرض تجريبي أولاً؛ ثم D1 لأي slug لا يتعارض مع مقال ملف (نفس المقال بمرادفات). */
 function mergeFileAndDb(fileArticles: ArticleFull[], dbArticles: ArticleFull[]): ArticleFull[] {
+  const fileIds = new Set(fileArticles.map((m) => m.id).filter(Boolean));
   const merged: ArticleFull[] = [...fileArticles];
   for (const d of dbArticles) {
+    if (fileIds.has(d.id)) continue;
     if (merged.some((m) => blogArticleSlugsConflict(m.slug, d.slug))) continue;
     merged.push(d);
   }
-  return merged.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  return dedupeArticlesByCanonicalSlug(merged).sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  );
+}
+
+/** يفرض غلاف/محتوى ‎content/blog‎ على أي صف D1 يطابق ‎id‎ أو ‎slug‎ — يمنع روابط Cloudinary المكسورة. */
+function applyMarkdownOverrides(fileArticles: ArticleFull[], merged: ArticleFull[]): ArticleFull[] {
+  const byId = new Map(fileArticles.filter((f) => f.id).map((f) => [f.id, f]));
+  return merged.map((article) => {
+    const md =
+      byId.get(article.id) ??
+      fileArticles.find((f) => blogArticleSlugsConflict(f.slug, article.slug));
+    if (!md) return article;
+    return {
+      ...article,
+      slug: md.slug,
+      title: md.title,
+      excerpt: md.excerpt,
+      content: md.content,
+      cover: md.cover,
+      category: md.category,
+      contributors: md.contributors,
+      author: md.author,
+    };
+  });
 }
 
 async function getAllMergedUncached(): Promise<ArticleFull[]> {
   const fromFiles = getMergedBlogArticles();
   const fromDb = await fetchPublishedFromDb();
-  return mergeFileAndDb(fromFiles, fromDb);
+  return applyMarkdownOverrides(fromFiles, mergeFileAndDb(fromFiles, fromDb));
 }
 
 const getAllMergedFromDisk = unstable_cache(
@@ -132,9 +171,9 @@ const getAllMergedFromDisk = unstable_cache(
 );
 
 const getAllArticles = cache(async (): Promise<ArticleFull[]> => {
-  /** مع ‎TASARUBAT_STATIC_EXPORT‎ لا نستخدم ‎unstable_cache‎ حتى لا تُخزَّن قائمة فارغة/قديمة بين مراحل توليد الصفحات على بيئة البناء. */
+  /** في التطوير والتصدير الثابت نقرأ الملفات مباشرة — ‎unstable_cache‎ يُبقي روابط D1 القديمة ساعة كاملة. */
   const raw =
-    process.env.TASARUBAT_STATIC_EXPORT === "1"
+    process.env.TASARUBAT_STATIC_EXPORT === "1" || process.env.NODE_ENV === "development"
       ? await getAllMergedUncached()
       : await getAllMergedFromDisk();
   return raw.map(hydrateArticleFull);
@@ -150,9 +189,8 @@ export const getAllBlogArticlesMerged = getAllArticles;
 export async function listAllSlugsForStaticBuild(): Promise<{ slug: string }[]> {
   const set = new Set(listBlogStaticPathSlugs());
   for (const slug of readSlugExportJson()) {
-    for (const s of blogArticleSlugLookupCandidates(slug)) {
-      if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
-    }
+    const s = normalizeArticleSlugParam(slug);
+    if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
   }
   try {
     const db = await getDb();
@@ -162,9 +200,8 @@ export async function listAllSlugsForStaticBuild(): Promise<{ slug: string }[]> 
         .from(articles)
         .where(eq(articles.published, true));
       for (const { slug } of rows) {
-        for (const s of blogArticleSlugLookupCandidates(slug)) {
-          if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
-        }
+        const s = normalizeArticleSlugParam(slug);
+        if (s && !isBlogSlugHttpRedirectOnly(s)) set.add(s);
       }
     }
   } catch {

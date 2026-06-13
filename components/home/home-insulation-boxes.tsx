@@ -56,9 +56,9 @@ export function HomeInsulationBoxes() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-14" aria-labelledby="insulation-boxes-heading">
       <header className="mb-8 text-right">
-        <h3 id="insulation-boxes-heading" className="text-2xl font-extrabold text-[#173f55] md:text-3xl">
+        <h2 id="insulation-boxes-heading" className="text-2xl font-extrabold text-[#173f55] md:text-3xl">
           حلول العزل المتخصصة
-        </h3>
+        </h2>
         <p className="mt-2 text-sm leading-7 text-muted-foreground md:text-base">
           اختر نوع الخدمة المناسبة لمشروعك، وسننفذها بخطة واضحة ومعايير فنية دقيقة.
         </p>

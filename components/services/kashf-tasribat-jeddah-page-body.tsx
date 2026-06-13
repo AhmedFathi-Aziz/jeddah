@@ -71,6 +71,10 @@ export function KashfTasribatJeddahPageBody() {
             </h1>
             <p className="mt-3 max-w-3xl text-pretty text-base leading-8 text-white/95 md:text-lg">
               للفلل والشقق والعمائر والمستودعات — نحدد مصدر التسرب بدقة ونوقف الهدر قبل أن تتضاعف الأضرار.
+              {" "}
+              <Link href="/leak-detection" className="font-semibold underline underline-offset-2 hover:text-white">
+                الدليل التعليمي للأعراض والفحص الذاتي
+              </Link>
             </p>
             <div className="mt-6 flex flex-row-reverse flex-wrap justify-end gap-3">
               <a

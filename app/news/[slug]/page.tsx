@@ -11,6 +11,7 @@ import { RelatedServicesSection } from "@/components/layout/related-services-sec
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getAllNewsSlugs, getNewsBySlug, listNews } from "@/lib/news/repository";
+import { normalizeMetaDescription } from "@/lib/seo/build-metadata";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -24,14 +25,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = getNewsBySlug(slug);
   if (!item) return { title: "الخبر غير موجود" };
   const url = absUrl(`/news/${item.slug}`);
+  const metaDescription = normalizeMetaDescription(item.excerpt);
   return {
-    title: `${item.title} — أخبار ${siteConfig.name}`,
-    description: item.excerpt,
+    title: { absolute: item.title },
+    description: metaDescription,
     alternates: { canonical: url },
     openGraph: {
       url,
       title: item.title,
-      description: item.excerpt,
+      description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
     },
   };

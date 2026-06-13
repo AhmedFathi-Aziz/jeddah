@@ -23,31 +23,72 @@ function buildSearchPhrases(district: string, slug: string): string[] {
   return [...new Set(base)];
 }
 
-function buildBaseFaq(district: string, cityAr: string): { question: string; answer: string }[] {
+function districtSeed(slug: string, salt = 0): number {
+  let h = salt;
+  for (let i = 0; i < slug.length; i++) {
+    h = (h * 31 + slug.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
+
+function pickVariant<T>(slug: string, salt: number, options: readonly T[]): T {
+  return options[districtSeed(slug, salt) % options.length];
+}
+
+function buildBaseFaq(
+  district: string,
+  cityAr: string,
+  slug: string,
+): { question: string; answer: string }[] {
+  const short = stripDistrictPrefix(district);
   return [
     {
       question: `هل تقدمون كشف تسربات المياه في ${district} بجدة؟`,
-      answer: `نعم، نغطي ${district} ضمن ${cityAr} بزيارات ميدانية وفحص حراري وصوتي، مع تقرير يوضح مصدر المشكلة قبل أي إصلاح.`,
+      answer: pickVariant(slug, 1, [
+        `نعم، نغطي ${district} ضمن ${cityAr} بزيارات ميدانية وفحص حراري وصوتي، مع تقرير يوضح مصدر المشكلة قبل أي إصلاح.`,
+        `فريقنا يصل إلى ${short} في جدة بخطة فحص واضحة: معاينة، تشخيص إلكتروني، ثم تقرير مكتوب قبل التكسير.`,
+        `نخدم سكان ${district} بكشف تسربات وعزل — نبدأ بتحديد نوع المبنى في الحي ثم نختار أجهزة الفحص المناسبة.`,
+      ]),
     },
     {
       question: `كم يستغرق كشف التسرب في ${district}؟`,
-      answer: `الشقة الصغيرة غالبًا 45–90 دقيقة. الفلل والعمائر الكبيرة قد تحتاج ساعتين أو أكثر حسب عدد الحمامات والخزانات؛ نعطيك تقديرًا بعد وصف الحالة.`,
+      answer: pickVariant(slug, 2, [
+        `الشقة الصغيرة في ${short} غالبًا 45–90 دقيقة. الفلل والعمائر قد تحتاج ساعتين أو أكثر حسب عدد الحمامات والخزانات.`,
+        `في ${district} نحدد المدة بعد وصف الأعراض: شقة واحدة غالبًا أقل من ساعة؛ فيلا بخزانين قد تحتاج نصف يوم.`,
+        `معظم زيارات ${short} تنتهي في زيارة واحدة. الحالات المعقدة (خط مشترك أو أكثر من طابق) قد تتطلب جولة ثانية.`,
+      ]),
     },
     {
       question: `هل يمكن الكشف بدون تكسير في ${district}؟`,
-      answer: `نعم، نحدد النقطة إلكترونيًا أولًا. أحيانًا يُفتح موضع ضيق فوق النقطة المؤكدة فقط — وليس هدم حمام كامل.`,
+      answer: pickVariant(slug, 3, [
+        `نعم، نحدد النقطة إلكترونيًا أولًا في ${district}. أحيانًا يُفتح موضع ضيق فوق النقطة المؤكدة فقط — وليس هدم حمام كامل.`,
+        `في ${short} نعتمد مسحًا حراريًا وصوتيًا قبل أي كسر. التكسير يقتصر على نقطة واحدة مؤكدة عند الحاجة للإصلاح.`,
+        `سكان ${district} يطلبون غالبًا فحصًا غير تدميري — نلتزم بذلك ونوثّق موضع التسرب في التقرير قبل فتح الجدار.`,
+      ]),
     },
     {
       question: `ما خدمات العزل المتوفرة في ${district}؟`,
-      answer: `عزل أسطح (فوم وبيتومين)، عزل خزانات بالإيبوكسي، وعزل حمامات بالفوم — بعد معاينة ميدانية تُحدد المادة والسعر لكل متر.`,
+      answer: pickVariant(slug, 4, [
+        `عزل أسطح (فوم وبيتومين)، عزل خزانات بالإيبوكسي، وعزل حمامات بالفوم في ${district} — بعد معاينة تُحدد المادة والسعر.`,
+        `في ${short} ننفذ عزل مائي وحراري للأسطح، عزل داخلي للخزانات، وعزل حمامات — حسب عمر المبنى وحالة السطح.`,
+        `خدمات ${district} تشمل فوم بولي يوريثان، لفائف بيتومين، وإيبوكسي للخزانات؛ المعاينة تحدد الأنسب لمناخ جدة.`,
+      ]),
     },
     {
       question: `هل تقدمون تقريرًا لشركة المياه الوطنية من ${district}؟`,
-      answer: `نوفر تقريرًا فنيًا يوثّق نتيجة الفحص عند الحاجة لمتابعة الفاتورة أو الإثبات الرسمي، وفق ما يُقاس ميدانيًا.`,
+      answer: pickVariant(slug, 5, [
+        `نوفر تقريرًا فنيًا لسكان ${district} يوثّق نتيجة الفحص عند متابعة الفاتورة أو الإثبات الرسمي.`,
+        `عند طلب تقرير من ${short}، نوضّح ما تم قياسه ميدانيًا — دون وعود خارج نطاق الفحص الفعلي.`,
+        `كثير من طلبات ${district} تكون لتوثيق عدم وجود تسرب داخلي؛ نُسلّم تقريرًا واضحًا عند اكتمال الفحص.`,
+      ]),
     },
     {
       question: `متى أطلب معاينة عاجلة في ${district}؟`,
-      answer: `عند ارتفاع مفاجئ في الفاتورة، رطوبة متوسعة، صوت مياه في الجدار، أو تحرك العداد بعد إغلاق المحابس.`,
+      answer: pickVariant(slug, 6, [
+        `في ${short} عند ارتفاع مفاجئ في الفاتورة، رطوبة متوسعة، صوت مياه في الجدار، أو تحرك العداد بعد إغلاق المحابس.`,
+        `اطلب زيارة سريعة لـ${district} إذا ظهرت بقعة جديدة على السقف، أو رائحة عفن، أو ضعف ضغط مفاجئ.`,
+        `لا تؤجل في ${district} إذا تحرك العداد ليلًا، أو تسرب الماء من سقف الحمام إلى الجار — كل يوم تأخير يزيد التلف.`,
+      ]),
     },
   ];
 }
@@ -58,6 +99,7 @@ export function getDistrictRichContent(
   district: string,
   cityAr: string,
 ): DistrictRichContent {
+  const short = stripDistrictPrefix(district);
   const profile = getDistrictProfile(slug);
   const highlight = profile
     ? {
@@ -76,9 +118,17 @@ export function getDistrictRichContent(
         : highlight;
     return {
       highlight: fallbackHighlight,
-      heroExtra: `نقدم في ${district} كشف تسربات المياه والعزل المائي والحراري بخطة واضحة: معاينة، فحص، تقرير، ثم إصلاح أو عزل يناسب منزلك أو عمارتك.`,
+      heroExtra: pickVariant(slug, 7, [
+        `نقدم في ${district} كشف تسربات المياه والعزل المائي والحراري بخطة واضحة: معاينة، فحص، تقرير، ثم إصلاح أو عزل يناسب منزلك أو عمارتك.`,
+        `سكان ${short} في جدة يحصلون على مسار واحد: تشخيص التسرب أولًا، ثم عزل وقائي إن لزم — دون خلط بين سبب المشكلة وعلاجها.`,
+        `في ${district} نربط بين كشف التسربات وعزل الأسطح والخزانات: لأن العزل فوق تسرب نشط يضيع استثمارك.`,
+      ]),
       buildingProfile: [
-        `يختلف ${district} في نوع المباني والشبكات؛ لذلك نبدأ بمعاينة ميدانية قبل أي تكسير أو عزل.`,
+        pickVariant(slug, 8, [
+          `يختلف ${district} في نوع المباني والشبكات؛ لذلك نبدأ بمعاينة ميدانية قبل أي تكسير أو عزل.`,
+          `مباني ${short} تتراوح بين عمائر قديمة وفلل حديثة — نعدّل خطة الفحص حسب عمر المبنى ونوع التمديدات.`,
+          `في ${district} نلاحظ أن أنماط التسرب تختلف بين الشقق العلوية والفلل بخزان أرضي؛ المعاينة تحدد المسار.`,
+        ]),
       ],
       servicesDetail: [
         `فحص دقيق للتسربات في ${district} بوسائل غير هدّامة قدر الإمكان، مع تقرير يوضح مصدر المشكلة.`,
@@ -113,7 +163,7 @@ export function getDistrictRichContent(
         "التقرير: توثيق فني عند الحاجة.",
       ],
       searchPhrases: buildSearchPhrases(district, slug),
-      faq: buildBaseFaq(district, cityAr),
+      faq: buildBaseFaq(district, cityAr, slug),
       neighborSlugs: [],
     };
   }
@@ -152,7 +202,7 @@ export function getDistrictRichContent(
     `موسميًا: ${profile.seasonalNote.slice(0, 80)}${profile.seasonalNote.length > 80 ? "…" : ""}`,
   ];
 
-  const faq = [...buildBaseFaq(district, cityAr), ...profile.extraFaqs];
+  const faq = [...buildBaseFaq(district, cityAr, slug), ...profile.extraFaqs];
 
   return {
     highlight: {

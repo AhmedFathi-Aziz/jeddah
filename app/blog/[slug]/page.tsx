@@ -27,6 +27,7 @@ import {
 } from "@/lib/articles/repository";
 import { getArticleSidebarLinks } from "@/lib/navigation/related-service-links";
 import { images } from "@/lib/images";
+import { normalizeMetaDescription } from "@/lib/seo/build-metadata";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -61,15 +62,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       name: c.name,
       url: c.profileHref ? absUrl(c.profileHref) : undefined,
     }));
+  const metaDescription = normalizeMetaDescription(article.excerpt);
   return {
-    title: article.title,
-    description: article.excerpt,
+    title: { absolute: article.title },
+    description: metaDescription,
     alternates: { canonical: url },
     authors: writers.length > 0 ? writers : [{ name: article.author.name, url: authorUrl }],
     openGraph: {
       url,
       title: `${article.title} | ${siteConfig.name}`,
-      description: article.excerpt,
+      description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
       images: [
         isVisualCoverPlaceholder(article.cover.src)

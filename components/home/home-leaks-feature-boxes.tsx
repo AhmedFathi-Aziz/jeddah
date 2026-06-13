@@ -38,9 +38,9 @@ export function HomeLeaksFeatureBoxes() {
   return (
     <section className="mx-auto max-w-7xl px-6 pb-14" aria-labelledby="leaks-feature-boxes-heading">
       <header className="mb-8 text-right">
-        <h3 id="leaks-feature-boxes-heading" className="text-2xl font-extrabold text-[#173f55] md:text-3xl">
+        <h2 id="leaks-feature-boxes-heading" className="text-2xl font-extrabold text-[#173f55] md:text-3xl">
           مراحل خدمة التسربات
-        </h3>
+        </h2>
         <p className="mt-2 text-sm leading-7 text-muted-foreground md:text-base">
           ثلاث خطوات واضحة من التشخيص وحتى الإصلاح النهائي، بنفس جودة التنفيذ في كل مرحلة.{" "}
           <Link href="/smart-leak-diagnosis" className="font-semibold text-[#1f7f8a] hover:underline">

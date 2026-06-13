@@ -23,6 +23,7 @@ export function HomeLeaksFocus({ phone }: { phone: string }) {
             sizes="(max-width: 1024px) 100vw, 50vw"
             quality={76}
             unoptimized
+            loading="lazy"
             className="h-full w-full object-cover"
           />
         </div>
@@ -38,9 +39,9 @@ export function HomeLeaksFocus({ phone }: { phone: string }) {
             ))}
           </ul>
 
-          <h3 id="leaks-focus-heading" className="text-balance text-4xl font-extrabold leading-tight text-[#163c55] md:text-5xl">
-            كشف التسربات وعلاجها
-          </h3>
+          <h2 id="leaks-focus-heading" className="text-balance text-4xl font-extrabold leading-tight text-[#163c55] md:text-5xl">
+            كشف تسربات المياه وعلاجها في جدة
+          </h2>
           <p className="mt-4 text-lg leading-8 text-[#35566a]">
             فحص تسربات المياه بأجهزة حرارية وأكوستيكية لتحديد مكان العطل بدقة، ثم تنفيذ الإصلاح المناسب وتقليل الأثر على التشطيبات.
           </p>

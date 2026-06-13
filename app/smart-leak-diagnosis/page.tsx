@@ -15,9 +15,9 @@ import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   ...buildPageMetadata({
-    title: "مُشخّص تسربات المياه الذكي — اختبار مجاني",
+    title: "مُشخّص تسربات المياه الذكي بجدة | اختبار مجاني يحدد مصدر التسرب",
     description:
-      "اختبار تسربات المياه بالعربية: حدد مصدر التسرب (جدار، سقف، خزان، فاتورة) في جدة ثم احجز فحصاً إلكترونياً مجانياً.",
+      "اختبار تسربات المياه بالعربية في جدة: حدّد مصدر التسرب من الجدار أو السقف أو الخزان أو الفاتورة، ثم احجز فحصاً إلكترونياً مجانياً مع فريق متخصص.",
     path: "/smart-leak-diagnosis",
     keywords: keywordsForPath("/smart-leak-diagnosis"),
     ogTitle: `مُشخّص التسربات — ${siteConfig.name}`,

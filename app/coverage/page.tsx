@@ -11,9 +11,9 @@ import { keywordsForPath } from "@/lib/seo/keyword-clusters";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "دليل أحياء جدة — كشف تسربات وعزل",
+  title: "أحياء جدة | دليل كشف تسربات وعزل المياه لـ 60 حيّاً محلياً",
   description:
-    "60 صفحة محلية لأحياء جدة: كشف تسربات بدون تكسير، عزل أسطح وخزانات، أسئلة شائعة، وكلمات بحث لكل حي.",
+    "ستون صفحة محلية لأحياء جدة: كشف تسربات بدون تكسير، عزل أسطح وخزانات، أسئلة شائعة لكل حي، وكلمات بحث محلية تساعدك على العثور على خدمة قريبة منك.",
   path: "/coverage",
   keywords: keywordsForPath("/coverage"),
   ogTitle: `أحياء جدة | ${siteConfig.name}`,

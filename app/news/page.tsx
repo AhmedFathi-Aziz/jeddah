@@ -9,18 +9,20 @@ import { cn } from "@/lib/utils";
 import { formatNewsDate } from "@/lib/news/format-date";
 import { listNews } from "@/lib/news/repository";
 import { images } from "@/lib/images";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { keywordsForPath } from "@/lib/seo/keyword-clusters";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "أخبار وتحديثات — كشف تسربات وعزل في جدة",
-  description:
-    "مستجدات ونصائح موسمية وتحديثات خدمة من جدة للتسربات والعزل: فحص التسربات، الخزانات، الأسطح، والمجمعات السكنية.",
-  alternates: { canonical: absUrl("/news") },
+  ...buildPageMetadata({
+    title: "أخبار كشف التسربات والعزل في جدة | مستجدات ونصائح موسمية محلية",
+    description:
+      "مستجدات ونصائح موسمية وتحديثات خدمة من جدة للتسربات والعزل: فحص التسربات بدون تكسير، صيانة الخزانات، عزل الأسطح، والمجمعات السكنية في المدينة.",
+    path: "/news",
+    keywords: keywordsForPath("/news"),
+    ogTitle: `الأخبار — ${siteConfig.name}`,
+  }),
   openGraph: {
-    url: absUrl("/news"),
-    title: `الأخبار — ${siteConfig.name}`,
-    description: "مجموعة أخبار وتحديثات حول كشف التسربات والعزل في جدة.",
-    locale: siteConfig.locale.replace("_", "-"),
     images: [
       {
         url: images.blogStains.src,

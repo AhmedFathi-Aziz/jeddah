@@ -12,12 +12,12 @@
     },
     {
       "source": "/blog/أهمية-العزل-بأنواعه",
-      "destination": "/blog/ahamiyat-alazl-bi-anwaaih",
-      "note": "GSC 404 — older Arabic slug for insulation article"
+      "destination": "/blog/anwaa-alazl-miyae-harari-sawti",
+      "note": "GSC 404 — older Arabic slug for insulation types article"
     },
     {
       "source": "/blog/أهمية-العزل-بأنواعه/",
-      "destination": "/blog/ahamiyat-alazl-bi-anwaaih",
+      "destination": "/blog/anwaa-alazl-miyae-harari-sawti",
       "note": "GSC 404 — trailing slash variant"
     },
     {
@@ -39,6 +39,11 @@
       "source": "/blog/kashf-tasarubat-miyah-jeddah",
       "destination": "/blog/kashf-tasarubat-fi-jeddah",
       "note": "GSC 404 — older Latin slug for Jeddah leak guide"
+    },
+    {
+      "source": "/blog/kashf-tasarubat-almiyah-wa-alazl-bialriyadh",
+      "destination": "/blog/ahamiyat-alazl-bi-anwaaih",
+      "note": "GSC 404 — legacy slug alias for insulation article"
     },
     {
       "source": "/blog/كشف-تسربات-بالرياض",

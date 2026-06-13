@@ -14,9 +14,9 @@ import { keywordsForPath } from "@/lib/seo/keyword-clusters";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "دليل خدمات كشف التسربات والعزل في جدة",
+  title: "دليل خدمات كشف التسربات والعزل في جدة | مرجع شامل ومحلي",
   description:
-    "كل خدمات كشف تسربات المياه والعزل في جدة: بدون تكسير، فوم، خزانات، حمامات، فواتير، تقارير، و60 حيّاً — مرجع واحد لأي بحث في المجال.",
+    "كل خدمات كشف تسربات المياه والعزل في جدة في مكان واحد: فحص بدون تكسير، عزل فوم وخزانات وحمامات، تقارير فواتير، وأكثر من 60 حيّاً — مرجع موثوق لسكان المدينة.",
   path: "/services",
   keywords: keywordsForPath("/services"),
   ogTitle: `خدمات التسربات والعزل — ${siteConfig.name}`,
