@@ -410,4 +410,41 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  /** صفحة عزل حمامات بجدة — OG/Schema (شعار على خلفية بيضاء) */
+  azlHamamatPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — عزل حمامات بجدة",
+    title: "جذر — عزل حمامات بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة عزل حمامات بجدة — فحص تسربات الحمام */
+  azlHamamatPageField: {
+    src: "/images/insulation/azl-hamamat-liquid-membrane.webp",
+    alt: "دهان غشاء عزل مائي سائل على أرضية حمام في جدة قبل تركيب السيراميك",
+    title: "عزل حمامات بجدة — أغشية سائلة على أرضية الحمام",
+    width: 1024,
+    height: 583,
+  },
+  azlHamamatPageFoam: {
+    src: "/images/insulation/azl-hamamat-shower-waterproofing.webp",
+    alt: "عزل منطقة الدش والصرف في حمام سكني بجدة قبل البلاط — حماية من تسرب المياه بين الطوابق",
+    title: "عزل حمامات بجدة — منطقة الدش والصرف",
+    width: 1024,
+    height: 583,
+  },
+  azlHamamatPageFloor: {
+    src: "/images/insulation/azl-hamamat-bathroom-foam.webp",
+    alt: "عزل حمامات بالفوم في جدة — طبقة فوم بولي يوريثان ممتدة وواضحة في زاوية الدش بين الجدار والأرضية قبل السيراميك",
+    title: "شكل فوم عزل الحمامات — رش بولي يوريثان بجدة",
+    width: 1024,
+    height: 583,
+  },
+  azlHamamatPageMoisture: {
+    src: "/images/leak-detection/leak-thermal-wall-scan.webp",
+    alt: "كشف رطوبة جدار مجاور لحمام في جدة بكاميرا حرارية قبل تنفيذ عزل الحمام",
+    title: "فحص رطوبة الحمامات — كاميرا حرارية بجدة",
+    width: 1024,
+    height: 583,
+  },
 } as const;

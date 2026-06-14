@@ -143,6 +143,12 @@ export const INSULATION_SERVICE_LINKS: InternalLink[] = [
     tags: ["حمام", "فوم", "عزل"],
   },
   {
+    href: "/services/azl-hamamat-jeddah",
+    title: "عزل حمامات بجدة — دليل الخدمة",
+    description: "صفحة خدمة كاملة: فوم، سائل، بيتومين، واختبار رش.",
+    tags: ["حمام", "جدة", "عزل", "خدمة"],
+  },
+  {
     href: "/insulation-services/thermal-insulation",
     title: "عزل حراري للأسطح",
     description: "تقليل حرارة السطح واستهلاك التكييف.",

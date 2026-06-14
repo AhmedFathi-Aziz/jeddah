@@ -162,6 +162,7 @@ export const INSULATION_SERVICES_CONTENT: Record<string, InsulationServiceConten
       { question: "كيف أحجز لحمام في شقتي بجدة؟", answer: "اتصل مع وصف الحالة (تجديد أم تسرب قائم) ومساحة الحمام التقريبية." },
     ],
     internalLinks: [
+      { href: "/services/azl-hamamat-jeddah", label: "عزل حمامات بجدة — دليل كامل" },
       { href: "/insulation", label: "صفحة العزل" },
       { href: "/leak-detection", label: "كشف تسربات الحمامات" },
       { href: "/insulation-services/thermal-bathroom-insulation", label: "عزل حمامات حراري" },

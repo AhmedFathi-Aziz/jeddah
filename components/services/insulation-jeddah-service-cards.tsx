@@ -8,6 +8,7 @@ import { AZL_MAEI_PAGE_PATH } from "@/lib/seo/azl-maei-jeddah-page-data";
 import { AZL_HARARI_PAGE_PATH } from "@/lib/seo/azl-harari-jeddah-page-data";
 import { AZL_KHAZANAT_PAGE_PATH } from "@/lib/seo/azl-khazanat-jeddah-page-data";
 import { AZL_FOM_PAGE_PATH } from "@/lib/seo/azl-fom-jeddah-page-data";
+import { AZL_HAMAMAT_PAGE_PATH } from "@/lib/seo/azl-hamamat-jeddah-page-data";
 import { cn } from "@/lib/utils";
 
 const CARDS = [
@@ -44,6 +45,13 @@ const CARDS = [
     title: "عزل فوم بجدة",
     summary: "رش بولي يوريثان حراري ومائي — معاينة، سماكة محسوبة، وطبقة حماية UV.",
     badge: "فوم",
+    logo: true,
+  },
+  {
+    href: AZL_HAMAMAT_PAGE_PATH,
+    title: "عزل حمامات بجدة",
+    summary: "فوم وأغشية سائلة وبيتومين قبل السيراميك — اختبار رش وضمان على التنفيذ.",
+    badge: "حمامات",
     logo: true,
   },
 ] as const;

@@ -34,6 +34,7 @@ export const AZL_MAEI_INTERNAL_LINKS = [
   { href: "/services/azl-fom-jeddah", label: "عزل فوم بجدة" },
   { href: "/insulation-services/tank-epoxy-insulation", label: "عزل خزانات إيبوكسي" },
   { href: "/insulation-services/bathroom-foam-insulation", label: "عزل حمامات بالفوم" },
+  { href: "/services/azl-hamamat-jeddah", label: "عزل حمامات بجدة — صفحة الخدمة" },
   { href: "/services/kashf-tasribat-miah-jeddah", label: "كشف تسربات المياه بجدة" },
   { href: "/services/kashf-tasribat-bedun-taksir-jeddah", label: "كشف تسربات بدون تكسير" },
   { href: "/leak-detection", label: "كشف التسربات قبل العزل" },
