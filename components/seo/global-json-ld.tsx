@@ -30,6 +30,7 @@ const SERVICE_CATALOG = [
   { name: "عزل خزانات بجدة", path: "/services/azl-khazanat-jeddah" },
   { name: "عزل فوم بجدة", path: "/services/azl-fom-jeddah" },
   { name: "عزل حمامات بجدة", path: "/services/azl-hamamat-jeddah" },
+  { name: "عزل إيبوكسي بجدة", path: "/services/azl-epoxy-jeddah" },
   { name: "كشف تسربات المياه في جدة", path: "/leak-detection" },
   { name: "خدمات العزل المائي والحراري", path: "/insulation" },
   { name: "دليل الخدمات والموسوعة", path: "/services" },

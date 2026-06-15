@@ -31,6 +31,7 @@ export const AZL_KHAZANAT_INTERNAL_LINKS = [
   { href: "/insulation", label: "صفحة العزل الرئيسية" },
   { href: "/services/kashf-tasribat-al-khazanat-jeddah", label: "كشف تسربات الخزانات بجدة" },
   { href: "/insulation-services/tank-epoxy-insulation", label: "عزل خزانات بالإيبوكسي" },
+  { href: "/services/azl-epoxy-jeddah", label: "عزل إيبوكسي بجدة — صفحة الخدمة" },
   { href: "/insulation-services/tank-injection", label: "حقن خزانات المياه" },
   { href: "/insulation-services/external-tank-thermal-insulation", label: "عزل خزانات خارجي" },
   { href: "/services/azl-maei-jeddah", label: "عزل مائي بجدة" },

@@ -447,4 +447,49 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  /** صفحة عزل إيبوكسي بجدة — OG/Schema (شعار على خلفية بيضاء) */
+  azlEpoxyPageHero: {
+    src: "/brand-logo.png",
+    alt: "شعار جذر للعزل وكشف تسربات المياه — عزل إيبوكسي بجدة",
+    title: "جذر — عزل إيبوكسي بجدة",
+    width: 466,
+    height: 474,
+  },
+  /** صفحة عزل إيبوكسي بجدة — من داخل الخزان، عمال يطبّقون الطلاء */
+  azlEpoxyPageTankInterior: {
+    src: "/images/insulation/azl-epoxy-tank-interior-workers.webp",
+    alt: "من داخل خزان مياه كبير في جدة — عمال يطبّقون طلاء إيبوكسي أزرق لامع على الجدران والأرضية بخوذ وسترات سلامة",
+    title: "عزل إيبوكسي داخل الخزان — فريق العمل بجدة",
+    width: 1024,
+    height: 583,
+  },
+  /** صفحة عزل إيبوكسي بجدة — طلاء داخلي للخزان */
+  azlEpoxyPageField: {
+    src: "/images/insulation/azl-epoxy-tank-interior-workers.webp",
+    alt: "من داخل خزان مياه كبير في جدة — عمال يطبّقون طلاء إيبوكسي أزرق لامع على الجدران والأرضية",
+    title: "عزل إيبوكسي للخزانات — جدة",
+    width: 1024,
+    height: 583,
+  },
+  azlEpoxyPageFloor: {
+    src: "/images/insulation/epoxy-floor-coating.webp",
+    alt: "طلاء إيبوكسي على أرضية صناعية في جدة — حماية من الرطوبة والتآكل في المستودعات",
+    title: "عزل إيبوكسي للأرضيات الصناعية — جدة",
+    width: 1024,
+    height: 583,
+  },
+  azlEpoxyPageTankExternal: {
+    src: "/images/insulation/tank-external-protection-white.webp",
+    alt: "خزان مياه علوي في جدة بعد عزل خارجي يكمّل العزل الإيبوكسي الداخلي",
+    title: "حماية وعزل خزانات المياه — جدة",
+    width: 1024,
+    height: 583,
+  },
+  azlEpoxyPageMoisture: {
+    src: "/images/insulation/azl-epoxy-tank-full-interior.webp",
+    alt: "خزان مياه كبير من الداخل في جدة — طلاء إيبوكسي أزرق لامع على الجدران والأرضية وفريق العمل يطبّق الطلاء بالرول",
+    title: "عزل إيبوكسي داخل الخزان — جدة",
+    width: 1024,
+    height: 583,
+  },
 } as const;

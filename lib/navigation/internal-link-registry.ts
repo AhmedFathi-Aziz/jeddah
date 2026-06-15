@@ -149,6 +149,12 @@ export const INSULATION_SERVICE_LINKS: InternalLink[] = [
     tags: ["حمام", "جدة", "عزل", "خدمة"],
   },
   {
+    href: "/services/azl-epoxy-jeddah",
+    title: "عزل إيبوكسي بجدة — دليل الخدمة",
+    description: "خزانات داخلية وأرضيات صناعية: تفريغ، طبقات معتمدة، واختبار عدم تسرب.",
+    tags: ["إيبوكسي", "خزان", "جدة", "عزل", "خدمة"],
+  },
+  {
     href: "/insulation-services/thermal-insulation",
     title: "عزل حراري للأسطح",
     description: "تقليل حرارة السطح واستهلاك التكييف.",

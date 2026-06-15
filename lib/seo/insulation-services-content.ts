@@ -111,6 +111,7 @@ export const INSULATION_SERVICES_CONTENT: Record<string, InsulationServiceConten
       { question: "كيف أحجز معاينة خزان في جدة؟", answer: "اتصل أو واتساب. اذكر نوع الخزان (علوي/أرضي) وعمره التقريبي إن عرفت." },
     ],
     internalLinks: [
+      { href: "/services/azl-epoxy-jeddah", label: "عزل إيبوكسي بجدة — دليل كامل" },
       { href: "/insulation", label: "صفحة العزل" },
       { href: "/services/kashf-tasribat-al-khazanat-jeddah", label: "كشف تسربات الخزانات" },
       { href: "/insulation-services/tank-injection", label: "حقن خزانات" },
