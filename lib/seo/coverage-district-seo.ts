@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import type { ResolvedCoverageDistrict } from "@/lib/coverage-data";
 import { getDistrictRichContent } from "@/lib/seo/coverage-district-content";
 import { normalizeMetaDescription } from "@/lib/seo/build-metadata";
+import { defaultOgImageForPath } from "@/lib/seo/page-og-images";
 import { PRIMARY_KEYWORDS } from "@/lib/seo/keyword-clusters";
+import { toAbsoluteOgImage } from "@/lib/seo/social-metadata-helpers";
 import { SCHEMA_LOCAL_BUSINESS_ID } from "@/lib/seo/schema-ids";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
@@ -37,12 +39,14 @@ export function buildCoverageDistrictMetadata(
   );
 
   const pageTitle = rich.seoTitle ?? row.label;
+  const pagePath = `/coverage/${citySlug}/${districtSlug}`;
+  const ogImage = toAbsoluteOgImage(defaultOgImageForPath(pagePath));
 
   return {
     title: { absolute: pageTitle },
     description: metaDescription,
     keywords: [
-      ...PRIMARY_KEYWORDS,
+      ...PRIMARY_KEYWORDS.slice(0, 3),
       ...(rich.searchPhrases.slice(0, 6) ?? []),
       `كشف تسربات المياه ${districtShort}`,
       `كشف تسربات ${districtShort} جدة`,
@@ -63,7 +67,15 @@ export function buildCoverageDistrictMetadata(
       description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
       type: "website",
+      images: [ogImage],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description: metaDescription,
+      images: [ogImage.url],
+    },
+    robots: { index: true, follow: true },
   };
 }
 

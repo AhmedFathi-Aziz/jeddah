@@ -5,7 +5,6 @@ import {
 } from "@/lib/seo/schema-ids";
 import { ALL_SITE_KEYWORDS } from "@/lib/seo/keyword-clusters";
 import { insulationServices } from "@/lib/insulation-services";
-import { SCHEMA_MOCK_AGGREGATE_RATING } from "@/lib/seo/aggregate-rating-mock";
 import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
 import { images } from "@/lib/images";
 import { absImageSrc, absUrl, siteConfig } from "@/lib/site-config";
@@ -122,7 +121,6 @@ export function GlobalJsonLd() {
           },
         ],
         priceRange: "$$",
-        aggregateRating: SCHEMA_MOCK_AGGREGATE_RATING,
         knowsAbout: KNOWS_ABOUT,
         hasOfferCatalog: {
           "@type": "OfferCatalog",

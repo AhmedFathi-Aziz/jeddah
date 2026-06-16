@@ -75,6 +75,18 @@ function runSyncRedirects() {
   }
 }
 
+function runOptimizePublicImages() {
+  const isWin = process.platform === "win32";
+  const r = spawnSync(isWin ? "node.exe" : "node", [path.join(__dirname, "optimize-public-images.mjs")], {
+    cwd: root,
+    stdio: "inherit",
+    shell: false,
+  });
+  if (r.status !== 0) {
+    console.warn("[static-export-build] optimize-public-images exited with", r.status, "— continuing build.");
+  }
+}
+
 /**
  * بروتوكول IndexNow: يجب أن يكون ملف المفتاح متاحاً على نفس النطاق (مثل ‎/{key}.txt‎).
  * يُكتَب من ‎INDEXNOW_KEY‎ عند البناء حتى يُصدَّر مع ‎out‎ دون الاعتماد على قاعدة بيانات.
@@ -101,6 +113,7 @@ try {
   moveToStash();
   stashed = true;
   runSyncRedirects();
+  runOptimizePublicImages();
   ensureIndexNowPublicKeyFile();
 
   const env = {

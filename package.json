@@ -7,7 +7,7 @@
     "dev": "node scripts/ensure-single-favicon.mjs && next dev",
     "build": "next build",
     "build:static": "node scripts/static-export-build.mjs",
-    "build:pages": "node scripts/export-d1-articles-to-md.cjs && node scripts/static-export-build.mjs",
+    "build:pages": "node scripts/export-d1-articles-to-md.cjs && node scripts/optimize-public-images.mjs && node scripts/static-export-build.mjs",
     "sync:pages-redirects": "node scripts/sync-pages-redirects.mjs",
     "deploy:pages": "npm run build:pages && node scripts/pages-deploy.mjs",
     "preview:pages": "wrangler pages dev out",

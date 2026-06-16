@@ -17,7 +17,6 @@ import { ArticleJsonLd } from "@/components/blog/article-json-ld";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { isVisualCoverPlaceholder } from "@/lib/articles/cover-display";
 import { articlePathSlugMatchesStored } from "@/lib/articles/slug-utils";
 import { articleDateLocaleLong } from "@/lib/articles/article-date";
 import {
@@ -26,8 +25,12 @@ import {
   listRecentRelatedArticleCards,
 } from "@/lib/articles/repository";
 import { getArticleSidebarLinks } from "@/lib/navigation/related-service-links";
-import { images } from "@/lib/images";
+import { resolveBlogCanonicalUrl } from "@/lib/seo/blog-seo-overrides";
 import { normalizeMetaDescription } from "@/lib/seo/build-metadata";
+import {
+  buildSocialMetadataFields,
+  resolveArticleCoverOgImage,
+} from "@/lib/seo/social-metadata-helpers";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -55,6 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     redirect(`/blog/${article.slug}`);
   }
   const url = absUrl(`/blog/${article.slug}`);
+  const canonicalUrl = resolveBlogCanonicalUrl(article.slug, url);
   const authorUrl = article.author.profileHref ? absUrl(article.author.profileHref) : undefined;
   const writers = (article.contributors ?? [])
     .filter((c) => c.kind === "writer")
@@ -63,32 +67,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: c.profileHref ? absUrl(c.profileHref) : undefined,
     }));
   const metaDescription = normalizeMetaDescription(article.excerpt);
+  const ogTitle = `${article.title} | ${siteConfig.name}`;
+  const coverOg = resolveArticleCoverOgImage(article.cover);
+  const social = buildSocialMetadataFields({
+    title: ogTitle,
+    description: metaDescription,
+    ogImages: [coverOg],
+  });
+
   return {
     title: { absolute: article.title },
     description: metaDescription,
-    alternates: { canonical: url },
+    alternates: { canonical: canonicalUrl },
     authors: writers.length > 0 ? writers : [{ name: article.author.name, url: authorUrl }],
     openGraph: {
+      ...social.openGraph,
       url,
-      title: `${article.title} | ${siteConfig.name}`,
-      description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
-      images: [
-        isVisualCoverPlaceholder(article.cover.src)
-          ? {
-              url: images.blogStains.src,
-              width: images.blogStains.width,
-              height: images.blogStains.height,
-              alt: images.blogStains.alt,
-            }
-          : {
-              url: article.cover.src,
-              width: article.cover.width,
-              height: article.cover.height,
-              alt: article.cover.alt,
-            },
-      ],
     },
+    twitter: social.twitter,
+    robots: social.robots,
   };
 }
 

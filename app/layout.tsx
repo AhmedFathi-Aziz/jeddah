@@ -8,8 +8,6 @@ import { FloatingWhatsAppButton } from "@/components/layout/floating-whatsapp-bu
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GlobalJsonLd } from "@/components/seo/global-json-ld";
-import { images } from "@/lib/images";
-import { ALL_SITE_KEYWORDS, PRIMARY_KEYWORDS } from "@/lib/seo/keyword-clusters";
 import { HOME_SEO } from "@/lib/seo/home-page-data";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
@@ -37,33 +35,13 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: HOME_SEO.description,
-  keywords: [...PRIMARY_KEYWORDS, ...ALL_SITE_KEYWORDS],
   alternates: {
     canonical: absUrl("/"),
   },
   openGraph: {
     type: "website",
     locale: siteConfig.locale.replace("_", "-"),
-    url: absUrl("/"),
     siteName: siteConfig.name,
-    title: "كشف تسربات المياه والعزل بجدة — جدة للتسربات والعزل",
-    description:
-      "شركة كشف تسربات المياه وعزل أسطح بجدة: فحص حراري وصوتي بدون تكسير، عزل فوم وخزانات، ضمان 10 سنوات، وأكثر من 500 مشروع.",
-    images: [
-      {
-        url: images.hero.src,
-        width: images.hero.width,
-        height: images.hero.height,
-        alt: images.hero.alt,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "كشف تسربات المياه والعزل بجدة",
-    description:
-      "أجهزة صوتية وحرارية بدون تكسير، عزل أسطح وخزانات وفوم في جدة.",
-    images: [images.hero.src],
   },
   robots: { index: true, follow: true },
   authors: [{ name: siteConfig.name }],

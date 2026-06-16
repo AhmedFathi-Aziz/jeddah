@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
-import { ALL_SITE_KEYWORDS, PRIMARY_KEYWORDS } from "@/lib/seo/keyword-clusters";
+import { PRIMARY_KEYWORDS } from "@/lib/seo/keyword-clusters";
+import { defaultOgImageForPath, type OgImageDescriptor } from "@/lib/seo/page-og-images";
+import { toAbsoluteOgImage } from "@/lib/seo/social-metadata-helpers";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 type PageMetaInput = {
@@ -11,6 +13,8 @@ type PageMetaInput = {
   keywords?: string[];
   /** إن وُجدت تُدمج مع العنوان في Open Graph */
   ogTitle?: string;
+  /** صورة مشاركة اختيارية؛ إن لم تُمرَّر تُختار حسب المسار */
+  ogImage?: OgImageDescriptor;
 };
 
 /** قصّ الوصف الطويل؛ العناوين تُمرَّر كاملة عبر `absolute` لتفادي تكرار اسم الموقع من القالب. */
@@ -21,13 +25,16 @@ export function normalizeMetaDescription(text: string, max = 165): string {
 }
 
 /**
- * بناء Metadata موحّد مع كلمات مفتاحية و canonical و OG.
+ * بناء Metadata موحّد مع كلمات مفتاحية و canonical و OG/Twitter.
  */
 export function buildPageMetadata(input: PageMetaInput): Metadata {
-  const { title, description, path, keywords = [], ogTitle } = input;
+  const { title, description, path, keywords = [], ogTitle, ogImage } = input;
   const canonical = absUrl(path);
-  const mergedKeywords = [...new Set([...keywords, ...PRIMARY_KEYWORDS, ...ALL_SITE_KEYWORDS.slice(0, 40)])];
+  const mergedKeywords = [...new Set([...keywords, ...PRIMARY_KEYWORDS.slice(0, 3)])];
   const metaDescription = normalizeMetaDescription(description);
+  const resolvedOgImage = ogImage ?? defaultOgImageForPath(path);
+  const absoluteOgImage = toAbsoluteOgImage(resolvedOgImage);
+  const ogTitleResolved = ogTitle ?? `${title} | ${siteConfig.name}`;
 
   return {
     title: { absolute: title },
@@ -37,16 +44,20 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
     openGraph: {
       type: "website",
       url: canonical,
-      title: ogTitle ?? `${title} | ${siteConfig.name}`,
+      title: ogTitleResolved,
       description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
       siteName: siteConfig.name,
+      images: [absoluteOgImage],
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle ?? title,
       description: metaDescription,
+      images: [absoluteOgImage.url],
     },
     robots: { index: true, follow: true },
   };
 }
+
+export type { OgImageDescriptor };

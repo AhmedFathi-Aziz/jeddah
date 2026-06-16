@@ -12,6 +12,29 @@ const dataPath = path.join(root, "data", "coverage-locations.json");
 const blogRedirectsPath = path.join(root, "data", "blog-slug-redirects.json");
 const outPath = path.join(root, "public", "_redirects");
 
+/** نفس القائمة في ‎next.config.mjs › legacyCoverageRedirects()‎ */
+const LEGACY_SERVICE_REDIRECTS = [
+  ["/kashf-tasribat-miah-jeddah", "/services/kashf-tasribat-miah-jeddah"],
+  ["/kashf-tasribat-bedun-taksir-jeddah", "/services/kashf-tasribat-bedun-taksir-jeddah"],
+  ["/kashf-tasribat-al-khazanat-jeddah", "/services/kashf-tasribat-al-khazanat-jeddah"],
+  ["/kashf-tasribat-al-masabih-jeddah", "/services/kashf-tasribat-al-masabih-jeddah"],
+  ["/kashf-tasribat-miah-al-takyeef-jeddah", "/services/kashf-tasribat-miah-al-takyeef-jeddah"],
+  ["/azl-ashtof-jeddah", "/services/azl-ashtof-jeddah"],
+  ["/azl-maei-jeddah", "/services/azl-maei-jeddah"],
+  ["/azl-harari-jeddah", "/services/azl-harari-jeddah"],
+  ["/azl-khazanat-jeddah", "/services/azl-khazanat-jeddah"],
+  ["/azl-fom-jeddah", "/services/azl-fom-jeddah"],
+  ["/azl-hamamat-jeddah", "/services/azl-hamamat-jeddah"],
+  ["/azl-epoxy-jeddah", "/services/azl-epoxy-jeddah"],
+];
+
+/** إنforcement HTTPS + apex على Cloudflare Pages (middleware غير متاح في التصدير الثابت). */
+const HOST_CANONICAL_REDIRECTS = [
+  "https://www.tasarubat-jeddah.com/*  https://tasarubat-jeddah.com/:splat  301",
+  "http://tasarubat-jeddah.com/*  https://tasarubat-jeddah.com/:splat  301",
+  "http://www.tasarubat-jeddah.com/*  https://tasarubat-jeddah.com/:splat  301",
+];
+
 function blogRedirectLines() {
   try {
     const raw = fs.readFileSync(blogRedirectsPath, "utf8");
@@ -39,8 +62,8 @@ function blogRedirectLines() {
 }
 
 let lines = [
-  "/kashf-tasribat-miah-jeddah  /services/kashf-tasribat-miah-jeddah  301",
-  "/kashf-tasribat-bedun-taksir-jeddah  /services/kashf-tasribat-bedun-taksir-jeddah  301",
+  ...HOST_CANONICAL_REDIRECTS,
+  ...LEGACY_SERVICE_REDIRECTS.map(([from, to]) => `${from}  ${to}  301`),
   ...blogRedirectLines(),
 ];
 try {

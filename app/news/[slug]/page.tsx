@@ -12,6 +12,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getAllNewsSlugs, getNewsBySlug, listNews } from "@/lib/news/repository";
 import { normalizeMetaDescription } from "@/lib/seo/build-metadata";
+import { images } from "@/lib/images";
+import { buildSocialMetadataFields } from "@/lib/seo/social-metadata-helpers";
 import { absUrl, siteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -26,16 +28,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!item) return { title: "الخبر غير موجود" };
   const url = absUrl(`/news/${item.slug}`);
   const metaDescription = normalizeMetaDescription(item.excerpt);
+  const social = buildSocialMetadataFields({
+    title: item.title,
+    description: metaDescription,
+    ogImages: [
+      {
+        url: images.blogStains.src,
+        width: images.blogStains.width,
+        height: images.blogStains.height,
+        alt: images.blogStains.alt,
+      },
+    ],
+  });
+
   return {
     title: { absolute: item.title },
     description: metaDescription,
     alternates: { canonical: url },
     openGraph: {
+      ...social.openGraph,
       url,
-      title: item.title,
-      description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
     },
+    twitter: social.twitter,
+    robots: social.robots,
   };
 }
 

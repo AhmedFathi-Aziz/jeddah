@@ -44,8 +44,9 @@ export const siteConfig = {
   locale: "ar_SA",
   /** دومين الإنتاج (يمكن تجاوزه بمتغير NEXT_PUBLIC_SITE_URL) */
   url: resolvePublicSiteUrl(),
-  phone: "+966500000000",
-  phoneDisplay: "٠٥٠ ‌٠٠٠٠ ‌٠٠٠٠",
+  /** رقم الاتصال — اضبط NEXT_PUBLIC_PHONE في الإنتاج لـ NAP متسق في Schema والواجهة */
+  phone: process.env.NEXT_PUBLIC_PHONE?.trim() || "+966500000000",
+  phoneDisplay: process.env.NEXT_PUBLIC_PHONE_DISPLAY?.trim() || "٠٥٠ ‌٠٠٠٠ ‌٠٠٠٠",
 } as const;
 
 export function absUrl(path = "") {
