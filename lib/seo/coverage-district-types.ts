@@ -65,4 +65,32 @@ export type DistrictRichContent = {
   searchPhrases: string[];
   faq: { question: string; answer: string }[];
   neighborSlugs: string[];
+  /** محتوى موسّع من ملف Markdown — أقسام فريدة لكل حي */
+  extended?: DistrictExtendedSections;
+  seoTitle?: string;
+  metaDescription?: string;
+  pageH1?: string;
+  internalLinks?: { href: string; label: string }[];
+  imageAlts?: string[];
+};
+
+export type DistrictPropertyTypeBlock = {
+  title: string;
+  body: string;
+};
+
+export type DistrictProcessStep = {
+  title: string;
+  body: string;
+};
+
+export type DistrictExtendedSections = {
+  introduction: string[];
+  aboutDistrict: string[];
+  propertyTypes: DistrictPropertyTypeBlock[];
+  commonProblems: string[];
+  howWeServe: DistrictProcessStep[];
+  benefits: string[];
+  trustPoints: string[];
+  conclusion: string[];
 };

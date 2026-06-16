@@ -492,4 +492,11 @@ export const images = {
     width: 1024,
     height: 583,
   },
+  coverageAsSafaCover: {
+    src: "/images/coverage/jeddah/as-safa-district-cover.webp",
+    alt: "شوارع وفلل سكنية في حي الصفا شمال جدة — منطقة نخدمها بكشف تسربات المياه والعزل",
+    title: "حي الصفا جدة — دليل كشف تسربات المياه",
+    width: 1200,
+    height: 675,
+  },
 } as const;

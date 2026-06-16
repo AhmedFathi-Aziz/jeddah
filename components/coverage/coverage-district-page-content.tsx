@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowLeft, Phone, Shield, Droplets, Thermometer } from "lucide-react";
 
 import { RequestInspectionBox } from "@/components/layout/request-inspection-box";
+import { CoverageDistrictConclusionCta } from "@/components/coverage/coverage-district-conclusion-cta";
+import { CoverageInlineMarkdown } from "@/components/coverage/coverage-inline-markdown";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDistrictById, jeddahDistricts, type ResolvedCoverageDistrict } from "@/lib/coverage-data";
@@ -36,8 +38,9 @@ const SERVICE_LINKS = [
 
 export function CoverageDistrictPageContent({ row }: Props) {
   const tel = `tel:${siteConfig.phone}`;
-  const content = getDistrictRichContent(row.slug, row.district, row.city.nameAr);
+  const content = getDistrictRichContent(row.slug, row.district, row.city.nameAr, row.city.slug);
   const { highlight } = content;
+  const ext = content.extended;
 
   const neighborLinks =
     content.neighborSlugs.length > 0
@@ -80,20 +83,40 @@ export function CoverageDistrictPageContent({ row }: Props) {
           {row.city.nameAr} — خدمة ميدانية في {row.district}
         </p>
         <h1 className="text-balance text-4xl font-extrabold leading-tight text-primary md:text-5xl">
-          {row.label}
+          {content.pageH1 ?? row.label}
         </h1>
-        <p className="text-lg leading-8 text-muted-foreground">{highlight.intro}</p>
+        <p className="text-lg leading-8 text-muted-foreground">
+          <CoverageInlineMarkdown text={highlight.intro} />
+        </p>
+        {ext?.introduction && ext.introduction.length > 1
+          ? ext.introduction.slice(1).map((para) => (
+              <p key={para.slice(0, 48)} className="text-base leading-8 text-muted-foreground">
+                <CoverageInlineMarkdown text={para} />
+              </p>
+            ))
+          : content.heroExtra ? (
+              <p className="text-lg leading-8 text-muted-foreground">
+                <CoverageInlineMarkdown text={content.heroExtra} />
+              </p>
+            ) : null}
         <p className="text-base leading-8 text-muted-foreground">
-          <strong className="text-[#163d57]">ما يقلق السكان:</strong> {highlight.painPoint}
+          <strong className="text-[#163d57]">ما يقلق السكان:</strong>{" "}
+          <CoverageInlineMarkdown text={highlight.painPoint} />
         </p>
         <p className="text-base leading-8 text-muted-foreground">
-          <strong className="text-[#163d57]">نهجنا في الحي:</strong> {highlight.focus}
+          <strong className="text-[#163d57]">نهجنا في الحي:</strong>{" "}
+          <CoverageInlineMarkdown text={highlight.focus} />
         </p>
         {highlight.localContext ? (
-          <p className="text-base leading-8 text-muted-foreground">{highlight.localContext}</p>
+          <p className="text-base leading-8 text-muted-foreground">
+            <CoverageInlineMarkdown text={highlight.localContext} />
+          </p>
         ) : null}
-        <p className="text-lg leading-8 text-muted-foreground">{content.heroExtra}</p>
-        <p className="text-sm leading-7 text-muted-foreground">{highlight.note}</p>
+        {highlight.note ? (
+          <p className="text-sm leading-7 text-muted-foreground">
+            <CoverageInlineMarkdown text={highlight.note} />
+          </p>
+        ) : null}
       </header>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start">
@@ -174,39 +197,85 @@ export function CoverageDistrictPageContent({ row }: Props) {
             </p>
           </section>
 
+          {ext?.aboutDistrict.length ? (
+            <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
+              <CardHeader>
+                <CardTitle className="text-[#163d57]">عن {row.district}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
+                {ext.aboutDistrict.map((para) => (
+                  <p key={para.slice(0, 40)}>
+                    <CoverageInlineMarkdown text={para} className="text-base leading-8 text-muted-foreground" />
+                  </p>
+                ))}
+              </CardContent>
+            </Card>
+          ) : null}
+
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">طبيعة المباني والمنطقة في {row.district}</CardTitle>
+              <CardTitle className="text-[#163d57]">
+                {ext?.propertyTypes.length
+                  ? `أنواع العقارات في ${row.district}`
+                  : `طبيعة المباني والمنطقة في ${row.district}`}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
-              {content.buildingProfile.map((para) => (
-                <p key={para.slice(0, 40)}>{para}</p>
-              ))}
+              {ext?.propertyTypes.length
+                ? ext.propertyTypes.map((block) => (
+                    <article key={block.title}>
+                      <h3 className="text-lg font-bold text-[#163d57]">{block.title}</h3>
+                      <p className="mt-2 text-base leading-8 text-muted-foreground">
+                        <CoverageInlineMarkdown text={block.body} />
+                      </p>
+                    </article>
+                  ))
+                : content.buildingProfile.map((para) => (
+                    <p key={para.slice(0, 40)} className="text-base leading-8 text-muted-foreground">
+                      <CoverageInlineMarkdown text={para} />
+                    </p>
+                  ))}
             </CardContent>
           </Card>
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
-              <CardTitle className="text-[#163d57]">ماذا نقدم في {row.district}؟</CardTitle>
+              <CardTitle className="text-[#163d57]">
+                {ext?.howWeServe.length ? `كيف نقدم الخدمة في ${row.district}` : `ماذا نقدم في ${row.district}؟`}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
-              {content.servicesDetail.map((para) => (
-                <p key={para.slice(0, 48)}>{para}</p>
-              ))}
-              <p>
-                للتفاصيل العامة راجع{" "}
-                <Link href="/services" className="font-semibold text-[#1f7f8a] hover:underline">
-                  دليل الخدمات
-                </Link>{" "}
-                أو{" "}
-                <Link href="/#encyclopedia" className="font-semibold text-[#1f7f8a] hover:underline">
-                  موسوعة الموقع
-                </Link>
-                .
-              </p>
+              {ext?.howWeServe.length
+                ? ext.howWeServe.map((step) => (
+                    <article key={step.title}>
+                      <h3 className="text-lg font-bold text-[#163d57]">{step.title}</h3>
+                      <p className="mt-2 text-base leading-8 text-muted-foreground">
+                        <CoverageInlineMarkdown text={step.body} />
+                      </p>
+                    </article>
+                  ))
+                : content.servicesDetail.map((para) => (
+                    <p key={para.slice(0, 48)} className="text-base leading-8 text-muted-foreground">
+                      <CoverageInlineMarkdown text={para} />
+                    </p>
+                  ))}
+              {!ext?.howWeServe.length ? (
+                <p>
+                  للتفاصيل العامة راجع{" "}
+                  <Link href="/services" className="font-semibold text-[#1f7f8a] hover:underline">
+                    دليل الخدمات
+                  </Link>{" "}
+                  أو{" "}
+                  <Link href="/#encyclopedia" className="font-semibold text-[#1f7f8a] hover:underline">
+                    موسوعة الموقع
+                  </Link>
+                  .
+                </p>
+              ) : null}
             </CardContent>
           </Card>
 
+          {!ext?.howWeServe.length ? (
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
               <CardTitle className="text-[#163d57]">كيف نقوم بالكشف في {row.district}؟</CardTitle>
@@ -214,11 +283,14 @@ export function CoverageDistrictPageContent({ row }: Props) {
             <CardContent>
               <ol className="list-decimal space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
                 {content.inspectionSteps.map((step) => (
-                  <li key={step}>{step}</li>
+                  <li key={step} className="text-base leading-8 text-muted-foreground">
+                    <CoverageInlineMarkdown text={step} />
+                  </li>
                 ))}
               </ol>
             </CardContent>
           </Card>
+          ) : null}
 
           <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
@@ -228,10 +300,46 @@ export function CoverageDistrictPageContent({ row }: Props) {
             </CardHeader>
             <CardContent className="space-y-5 text-base leading-8 text-muted-foreground">
               {content.problemAnalysis.map((para) => (
-                <p key={para.slice(0, 48)}>{para}</p>
+                <p key={para.slice(0, 48)} className="text-base leading-8 text-muted-foreground">
+                  <CoverageInlineMarkdown text={para} />
+                </p>
               ))}
             </CardContent>
           </Card>
+
+          {ext?.benefits.length ? (
+            <Card className="border-0 ring-0 bg-gradient-to-b from-[#eef7f9] to-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
+              <CardHeader>
+                <CardTitle className="text-[#163d57]">فوائد لسكان {row.district}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
+                  {ext.benefits.map((item) => (
+                    <li key={item.slice(0, 40)} className="text-base leading-8 text-muted-foreground">
+                      <CoverageInlineMarkdown text={item} />
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ) : null}
+
+          {ext?.trustPoints.length ? (
+            <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
+              <CardHeader>
+                <CardTitle className="text-[#163d57]">لماذا يثق بنا سكان {row.district}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
+                  {ext.trustPoints.map((item) => (
+                    <li key={item.slice(0, 40)} className="text-base leading-8 text-muted-foreground">
+                      <CoverageInlineMarkdown text={item} />
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ) : null}
 
           <Card className="border-0 ring-0 bg-gradient-to-b from-[#eef7f9] to-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>
@@ -239,7 +347,9 @@ export function CoverageDistrictPageContent({ row }: Props) {
             </CardHeader>
             <CardContent className="space-y-4 text-base leading-8 text-muted-foreground">
               {content.insulationParagraphs.map((para) => (
-                <p key={para.slice(0, 48)}>{para}</p>
+                <p key={para.slice(0, 48)} className="text-base leading-8 text-muted-foreground">
+                  <CoverageInlineMarkdown text={para} />
+                </p>
               ))}
             </CardContent>
           </Card>
@@ -270,7 +380,9 @@ export function CoverageDistrictPageContent({ row }: Props) {
             <CardContent>
               <ul className="list-disc space-y-3 pr-6 text-base leading-8 text-muted-foreground marker:text-[#1f7f8a]">
                 {content.tips.map((tip) => (
-                  <li key={tip}>{tip}</li>
+                  <li key={tip} className="text-base leading-8 text-muted-foreground">
+                    <CoverageInlineMarkdown text={tip} />
+                  </li>
                 ))}
               </ul>
             </CardContent>
@@ -294,6 +406,32 @@ export function CoverageDistrictPageContent({ row }: Props) {
               ))}
             </CardContent>
           </Card>
+
+          {ext?.conclusion.length ? (
+            <CoverageDistrictConclusionCta district={row.district} paragraphs={ext.conclusion} />
+          ) : null}
+
+          {content.internalLinks?.length ? (
+            <Card className="border-0 ring-0 bg-white shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
+              <CardHeader>
+                <CardTitle className="text-[#163d57]">روابط مفيدة لسكان {row.district}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="flex flex-wrap justify-end gap-2">
+                  {content.internalLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="inline-block rounded-lg bg-[#eef7f9] px-3 py-2 text-sm font-semibold text-[#1f7f8a] hover:underline"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ) : null}
 
           <Card className="border-0 ring-0 bg-[#f8fbfc] shadow-[0_12px_30px_-20px_rgba(19,66,89,0.3)]">
             <CardHeader>

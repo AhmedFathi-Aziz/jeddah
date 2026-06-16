@@ -3,6 +3,8 @@ import Link from "next/link";
 import { MapPin, BookOpen } from "lucide-react";
 
 import { jeddahDistricts } from "@/lib/coverage-data";
+import { listFeaturedCoverageDistricts } from "@/lib/coverage-featured-districts";
+import { CoverageFeaturedDistrictCards } from "@/components/coverage/coverage-featured-district-cards";
 import { RelatedServicesSection } from "@/components/layout/related-services-section";
 import { buildCoverageIndexJsonLd } from "@/lib/seo/coverage-district-seo";
 import { serializeJsonLd } from "@/lib/seo/serialize-json-ld";
@@ -21,6 +23,9 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default function CoverageIndexPage() {
   const jsonLd = buildCoverageIndexJsonLd();
+  const featuredDistricts = listFeaturedCoverageDistricts("jeddah");
+  const featuredSlugs = new Set(featuredDistricts.map((d) => d.slug));
+  const remainingDistricts = jeddahDistricts.filter((d) => !featuredSlugs.has(d.id));
 
   return (
     <main className="mx-auto max-w-7xl px-6 pb-20 pt-10 text-right">
@@ -60,12 +65,16 @@ export default function CoverageIndexPage() {
         </p>
       </header>
 
+      <CoverageFeaturedDistrictCards districts={featuredDistricts} />
+
       <section aria-labelledby="districts-heading">
         <h2 id="districts-heading" className="mb-6 text-2xl font-bold text-[#163d57]">
-          جميع أحياء جدة ({jeddahDistricts.length})
+          {featuredDistricts.length > 0
+            ? `باقي أحياء جدة (${remainingDistricts.length})`
+            : `جميع أحياء جدة (${jeddahDistricts.length})`}
         </h2>
         <ul className="grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {jeddahDistricts.map((district) => (
+          {remainingDistricts.map((district) => (
             <li key={district.id}>
               <Link
                 href={district.href}

@@ -1,6 +1,7 @@
 import { getDistrictProfile } from "@/lib/seo/coverage-district-profiles";
 import type { DistrictRichContent } from "@/lib/seo/coverage-district-types";
 import { generatedHighlight, getDistrictHighlight } from "@/lib/seo/coverage-district-highlights";
+import { getDistrictMarkdownBundle } from "@/lib/seo/coverage-district-markdown";
 
 function stripDistrictPrefix(district: string): string {
   return district.replace(/^حي\s+/, "");
@@ -98,6 +99,7 @@ export function getDistrictRichContent(
   slug: string,
   district: string,
   cityAr: string,
+  citySlug = "jeddah",
 ): DistrictRichContent {
   const short = stripDistrictPrefix(district);
   const profile = getDistrictProfile(slug);
@@ -116,7 +118,7 @@ export function getDistrictRichContent(
       highlight.intro === generatedHighlight(slug, district).intro
         ? getDistrictHighlight(slug, district)
         : highlight;
-    return {
+    const fallback: DistrictRichContent = {
       highlight: fallbackHighlight,
       heroExtra: pickVariant(slug, 7, [
         `نقدم في ${district} كشف تسربات المياه والعزل المائي والحراري بخطة واضحة: معاينة، فحص، تقرير، ثم إصلاح أو عزل يناسب منزلك أو عمارتك.`,
@@ -166,6 +168,7 @@ export function getDistrictRichContent(
       faq: buildBaseFaq(district, cityAr, slug),
       neighborSlugs: [],
     };
+    return applyDistrictMarkdownOverride(fallback, citySlug, slug);
   }
 
   const buildingProfile = [
@@ -204,7 +207,7 @@ export function getDistrictRichContent(
 
   const faq = [...buildBaseFaq(district, cityAr, slug), ...profile.extraFaqs];
 
-  return {
+  const base: DistrictRichContent = {
     highlight: {
       intro: profile.character,
       painPoint: `${profile.issues[0].title} — ${profile.issues[0].detail}`,
@@ -224,5 +227,57 @@ export function getDistrictRichContent(
     searchPhrases: buildSearchPhrases(district, slug),
     faq,
     neighborSlugs: profile.neighbors,
+  };
+
+  return applyDistrictMarkdownOverride(base, citySlug, slug);
+}
+
+function applyDistrictMarkdownOverride(
+  base: DistrictRichContent,
+  citySlug: string,
+  slug: string,
+): DistrictRichContent {
+  const md = getDistrictMarkdownBundle(citySlug, slug);
+  if (!md) return base;
+
+  const { extended: ext } = md;
+
+  return {
+    ...base,
+    extended: ext,
+    seoTitle: md.seoTitle,
+    metaDescription: md.metaDescription,
+    pageH1: md.h1,
+    internalLinks: md.internalLinks,
+    imageAlts: md.imageAlts,
+    faq: md.faq && md.faq.length > 0 ? md.faq : base.faq,
+    searchPhrases: md.keywords?.length
+      ? [...new Set([...md.keywords, ...base.searchPhrases])]
+      : base.searchPhrases,
+    highlight: {
+      intro: ext.introduction[0] ?? base.highlight.intro,
+      painPoint: ext.commonProblems[0] ?? base.highlight.painPoint,
+      focus:
+        ext.howWeServe[0]?.body
+          ? ext.howWeServe[0].body
+          : base.highlight.focus,
+      note: ext.aboutDistrict.at(-1)?.slice(0, 160) ?? base.highlight.note,
+      localContext: ext.aboutDistrict[0] ?? base.highlight.localContext,
+    },
+    heroExtra: ext.introduction[1] ?? base.heroExtra,
+    buildingProfile: ext.aboutDistrict.length > 0 ? ext.aboutDistrict : base.buildingProfile,
+    problemAnalysis: ext.commonProblems.length > 0 ? ext.commonProblems : base.problemAnalysis,
+    inspectionSteps:
+      ext.howWeServe.length > 0
+        ? ext.howWeServe.map((s, i) => `${i + 1}. ${s.title}: ${s.body}`)
+        : base.inspectionSteps,
+    servicesDetail:
+      ext.propertyTypes.length > 0
+        ? ext.propertyTypes.map((p) => `${p.title}: ${p.body}`)
+        : base.servicesDetail,
+    tips:
+      ext.benefits.length > 0
+        ? [...ext.benefits, ...base.tips.slice(0, 3)]
+        : base.tips,
   };
 }

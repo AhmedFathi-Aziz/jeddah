@@ -29,18 +29,21 @@ export function buildCoverageDistrictMetadata(
   const path = absUrl(`/coverage/${citySlug}/${districtSlug}`);
   const districtShort = row.district.replace(/^حي\s+/, "");
 
-  const rich = getDistrictRichContent(districtSlug, row.district, row.city.nameAr);
-  const descSnippet = rich.highlight.intro.slice(0, 120).trim();
+  const rich = getDistrictRichContent(districtSlug, row.district, row.city.nameAr, citySlug);
 
   const metaDescription = normalizeMetaDescription(
-    `${descSnippet}… كشف تسربات وعزل في ${row.district} بجدة — فحص بدون تكسير، تقارير فنية، فوم وإيبوكسي. ${siteConfig.name}.`,
+    rich.metaDescription ??
+      `${rich.highlight.intro.slice(0, 120).trim()}… كشف تسربات وعزل في ${row.district} بجدة — فحص بدون تكسير، تقارير فنية، فوم وإيبوكسي. ${siteConfig.name}.`,
   );
 
+  const pageTitle = rich.seoTitle ?? row.label;
+
   return {
-    title: { absolute: row.label },
+    title: { absolute: pageTitle },
     description: metaDescription,
     keywords: [
       ...PRIMARY_KEYWORDS,
+      ...(rich.searchPhrases.slice(0, 6) ?? []),
       `كشف تسربات المياه ${districtShort}`,
       `كشف تسربات ${districtShort} جدة`,
       `شركة كشف تسربات ${districtShort}`,
@@ -56,7 +59,7 @@ export function buildCoverageDistrictMetadata(
     alternates: { canonical: path },
     openGraph: {
       url: path,
-      title: `${row.label} | ${siteConfig.name}`,
+      title: `${pageTitle} | ${siteConfig.name}`,
       description: metaDescription,
       locale: siteConfig.locale.replace("_", "-"),
       type: "website",
@@ -76,6 +79,8 @@ export function buildCoverageDistrictJsonLd(
   const path = `/coverage/${citySlug}/${districtSlug}`;
   const pageUrl = absUrl(path);
   const faqItems = getDistrictFaqItems(row.district, row.city.nameAr, districtSlug);
+  const rich = getDistrictRichContent(districtSlug, row.district, row.city.nameAr, citySlug);
+  const pageName = rich.seoTitle ?? row.label;
   const placeName = `${row.district}، ${row.city.nameAr}`;
 
   return {
@@ -85,8 +90,8 @@ export function buildCoverageDistrictJsonLd(
         "@type": "WebPage",
         "@id": `${pageUrl}#webpage`,
         url: pageUrl,
-        name: row.label,
-        description: `كشف تسربات المياه والعزل في ${placeName}`,
+        name: pageName,
+        description: rich.metaDescription ?? `كشف تسربات المياه والعزل في ${placeName}`,
         inLanguage: "ar-SA",
         isPartOf: { "@id": absUrl("/") },
         about: {
