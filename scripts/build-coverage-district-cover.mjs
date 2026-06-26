@@ -24,6 +24,14 @@ const sources = {
     "jeddah",
     "as-safa-district-base.png",
   ),
+  "al-naseem": path.join(
+    root,
+    "public",
+    "images",
+    "coverage",
+    "jeddah",
+    "al-naseem-district-base.png",
+  ),
 };
 
 const srcPath = sources[slug];
