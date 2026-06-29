@@ -1,8 +1,8 @@
 ---
-slug: al-faisaliyyah
+slug: al-faiha
 district: حي الفيحاء
 city: جدة
-urlSlug: /coverage/jeddah/al-faisaliyyah
+urlSlug: /coverage/jeddah/al-faiha
 h1: كشف تسربات المياه في حي الفيحاء جدة
 seoTitle: كشف تسربات المياه في حي الفيحاء جدة | خدمة سريعة للفلل والشقق
 metaDescription: كشف تسربات المياه في حي الفيحاء بجدة للفلل والشقق والمباني السكنية — فحص حراري وصوتي دقيق، تحديد المصدر بدون تكسير، تقرير فني معتمد، وعزل خزانات وأسطح. احجز معاينة في الفيحاء.
@@ -23,7 +23,7 @@ imageAlts:
   - فحص خزان أرضي في فيلا بحي الفيحاء جدة بدون تكسير واسع
   - كشف تسرب في شقة حديثة بحي الفيحاء قبل ظهور الرطوبة
   - معاينة رطوبة في مبنى سكني بحي الفيحاء جدة بالكاميرا الحرارية
-coverImage: /images/coverage/jeddah/al-faisaliyyah-district-cover.webp
+coverImage: /images/coverage/jeddah/al-faiha-district-cover.webp
 coverAlt: شوارع هادئة ومباني سكنية في حي الفيحاء شمال جدة — منطقة نخدمها بكشف تسربات المياه والعزل
 internalLinks:
   - href: /services/kashf-tasribat-miah-jeddah
